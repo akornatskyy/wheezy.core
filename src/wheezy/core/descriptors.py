@@ -2,6 +2,7 @@
 """ ``descriptors`` module.
 """
 
+
 class attribute(object):
     """ ``attribute`` decorator is intended to promote a
         function call to object attribute. This means the
