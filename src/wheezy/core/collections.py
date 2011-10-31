@@ -87,3 +87,33 @@ class ItemAdapter(object):
         if l:
             return l[self.index]
         return None
+
+
+class attrdict(dict):
+    """ A dictionary with attribute-style access. Maps attribute
+        access to dictionary.
+
+        >>> d = attrdict(a=1, b=2)
+        >>> d
+        {'a': 1, 'b': 2}
+        >>> d.a
+        1
+
+        >>> d.c = 3
+        >>> d.c
+        3
+        >>> d.d # doctest: +ELLIPSIS
+        Traceback (most recent call last):
+            ...
+        AttributeError: ...
+    """
+    __slots__ = []
+
+    def __setattr__(self, key, value):
+        return super(attrdict, self).__setitem__(key, value)
+
+    def __getattr__(self, name):
+        try:
+            return super(attrdict, self).__getitem__(name)
+        except KeyError:
+            raise AttributeError(name)
