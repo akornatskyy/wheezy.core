@@ -44,8 +44,8 @@ class TranslationsManager(object):
             >>> localedir = os.path.join(curdir, 'tests', 'i18n')
             >>> tm = TranslationsManager()
             >>> tm.load(localedir)
-            >>> tm.translations.keys()
-            ['de', 'en']
+            >>> tuple(tm.translations.keys())
+            ('de', 'en')
             >>> lang = tm['en']
             >>> lang.messages.gettext('hello')
             'Hello'
