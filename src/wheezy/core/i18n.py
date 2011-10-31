@@ -10,7 +10,7 @@ from wheezy.core.collections import attrdict
 
 
 class TranslationsManager(object):
-    """ Manages several languages and translation domains.        
+    """ Manages several languages and translation domains.
     """
 
     def __init__(self, default_lang='en'):
