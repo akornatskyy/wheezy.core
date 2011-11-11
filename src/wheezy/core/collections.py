@@ -117,3 +117,23 @@ class attrdict(dict):
             return super(attrdict, self).__getitem__(name)
         except KeyError:
             raise AttributeError(name)
+
+
+def distinct(seq):
+    """ Returns generator for unique items in ``seq`` with preserved
+        order.
+
+        >>> list(distinct('1234512345'))
+        ['1', '2', '3', '4', '5']
+
+        If the order is not important consider using ``set`` which is
+        approximately eight times faster on large sequences.
+
+        >>> list(set('1234512345'))
+        ['1', '3', '2', '5', '4']
+    """
+    unique = {}
+    for item in seq:
+        if item not in unique:
+            unique[item] = None
+            yield item
