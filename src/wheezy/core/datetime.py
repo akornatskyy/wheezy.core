@@ -1,6 +1,9 @@
 
 """ ``datetime`` module.
 """
+from time import gmtime
+from time import localtime
+from time import mktime
 
 from wheezy.core.introspection import import_name
 
@@ -28,6 +31,16 @@ def format_http_datetime(stamp):
         >>> format_http_datetime(now)
         'Mon, 19 Sep 2011 10:45:30 GMT'
 
+        if timezone is not set in datetime instance the ``stamp``
+        is assumed to be in UTC (``datetime.utcnow``).
+
+        >>> now = datetime(2011, 9, 19, 10, 45, 30, 0)
+        >>> format_http_datetime(now)
+        'Mon, 19 Sep 2011 10:45:30 GMT'
+
+        >>> now = datetime.utcnow()
+        >>> assert format_http_datetime(now)
+
         if ``stamp`` is a string just return it
 
         >>> format_http_datetime('x')
@@ -41,9 +54,8 @@ def format_http_datetime(stamp):
     if isinstance(stamp, datetime):
         if stamp.tzinfo:
             stamp = stamp.astimezone(UTC).timetuple()
-        else:  # pragma: nocover
-            # TODO: the output depends on local timezone
-            stamp = gmtime(mktime(stamp.timetuple()))
+        else:
+            stamp = localtime(mktime(stamp.timetuple()))
     elif isinstance(stamp, str):
         return stamp
     else:
