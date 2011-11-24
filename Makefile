@@ -1,4 +1,4 @@
-.SILENT: clean env po doctest-cever test doc release
+.SILENT: clean env po doctest-cover test doc release
 .PHONY: clean env po doctest-cover test doc release
 
 VERSION=2.6
