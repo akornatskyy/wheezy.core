@@ -1,5 +1,5 @@
-.SILENT: clean env doc release test
-.PHONY: clean env doc release test
+.SILENT: clean env po doctest-cever test doc release
+.PHONY: clean env po doctest-cover test doc release
 
 VERSION=2.6
 PYPI=http://pypi.python.org/simple
@@ -10,7 +10,7 @@ PYTEST=env/bin/py.test-$(VERSION)
 NOSE=env/bin/nosetests-$(VERSION)
 SPHINX=env/bin/sphinx-build
 
-all: clean test release
+all: clean po doctest-cover test release
 
 debian:
 	apt-get -yq update
@@ -19,7 +19,7 @@ debian:
 	# http://mindref.blogspot.com/2011/09/compile-python-from-source.html
 	apt-get -yq install libbz2-dev build-essential python \
 		python-dev python-setuptools python-virtualenv \
-		python-sphinx mercurial
+		python-sphinx mercurial gettext
 
 env:
 	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
@@ -39,6 +39,7 @@ env:
 clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
+	find src/ -name '*.mo' -delete
 	rm -rf dist/ build/ MANIFEST src/*.egg-info
 
 release:
@@ -62,3 +63,10 @@ doc:
 
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/
+
+po:
+	for l in `ls --hide *.po src/wheezy/core/tests/i18n`; do \
+		echo -n "$$l => "; \
+		msgfmt -v src/wheezy/core/tests/i18n/$$l/LC_MESSAGES/messages.po \
+			-o src/wheezy/core/tests/i18n/$$l/LC_MESSAGES/messages.mo; \
+	done
