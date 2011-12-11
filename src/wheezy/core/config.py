@@ -45,7 +45,7 @@ class Config(object):
         'b'
 
         if ``options`` is an instance of ``Config`` than use
-        borg pattern to share state.
+        its options only so this config can have own master.
 
         >>> options = Config(dict(A='a'))
         >>> c = Config(options)
@@ -55,16 +55,16 @@ class Config(object):
 
     def __init__(self, options=None, master=None):
         if isinstance(options, Config):
-            self.__dict__ = options.__dict__
+            self.options = options.options
         else:
             self.options = options or {}
-            if master:
-                if isinstance(master, dict):
-                    self.get_master = lambda n: master[n]
-                else:
-                    self.get_master = lambda n: getattr(master, n)
+        if master:
+            if isinstance(master, dict):
+                self.get_master = lambda n: master[n]
             else:
-                self.get_master = lambda n: None
+                self.get_master = lambda n: getattr(master, n)
+        else:
+            self.get_master = lambda n: None
 
     def __getattr__(self, name):
         if name in self.options:
