@@ -10,6 +10,15 @@ PY_MINOR = sys.version_info[1]
 PY2 = PY_MAJOR == 2
 PY3 = PY_MAJOR >= 3
 
+
+if PY3:  # pragma: nocover
+    b = lambda s: s.encode('latin1')
+    u = lambda s: s
+else:  # pragma: nocover
+    b = lambda s: s
+    u = lambda s: unicode(s, "unicode_escape")
+
+
 if PY2 and PY_MINOR == 4:  # pragma: nocover
     __import__ = __import__
 else:  # pragma: nocover
@@ -54,3 +63,10 @@ except ImportError:  # pragma: nocover
         def __repr__(self):
             return 'defaultdict(%s, %s)' % (self.default_factory,
                                             dict.__repr__(self))
+
+
+try:  # pragma: nocover
+    from email.utils import parsedate
+except ImportError:  # pragma: nocover
+    import time
+    parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")
