@@ -1,10 +1,12 @@
 
 """ ``datetime`` module.
 """
+
 from time import gmtime
 from time import localtime
 from time import mktime
 
+from wheezy.core.comp import parsedate
 from wheezy.core.introspection import import_name
 
 # The lines below are equivalent to:
@@ -65,6 +67,14 @@ def format_http_datetime(stamp):
     return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
         WEEKDAYS[wd], day, MONTHS[month], year, hh, mm, ss
     )
+
+
+def parse_http_datetime(stamp):
+    """
+        >>> parse_http_datetime('Mon, 19 Sep 2011 10:45:30 GMT')
+        datetime.datetime(2011, 9, 19, 10, 45, 30)
+    """
+    return datetime.fromtimestamp(mktime(parsedate(stamp)))
 
 
 def total_seconds(delta):
