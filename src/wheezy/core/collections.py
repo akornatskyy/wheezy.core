@@ -119,6 +119,29 @@ class attrdict(dict):
             raise AttributeError(name)
 
 
+class defaultattrdict(defaultdict):
+    """ A dictionary with attribute-style access. Maps attribute
+        access to dictionary.
+
+        >>> d = defaultattrdict(str, a=1, b=2)
+        >>> d.a
+        1
+
+        >>> d.c = 3
+        >>> d.c
+        3
+        >>> d.d
+        ''
+    """
+    #__slots__ = []
+
+    def __setattr__(self, key, value):
+        return super(defaultattrdict, self).__setitem__(key, value)
+
+    def __getattr__(self, name):
+        return super(defaultattrdict, self).__getitem__(name)
+
+
 def distinct(seq):
     """ Returns generator for unique items in ``seq`` with preserved
         order.
