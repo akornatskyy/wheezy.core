@@ -38,7 +38,7 @@ except ImportError:  # pragma: nocover
             if default_factory and \
                 not hasattr(default_factory, '__call__'):
                 raise TypeError('first argument must be callable')
-            dict.__init__(self, *args, **kwargs)
+            super(defaultdict, self).__init__(*args, **kwargs)
             self.default_factory = default_factory
 
         def __getitem__(self, key):
@@ -70,3 +70,10 @@ try:  # pragma: nocover
 except ImportError:  # pragma: nocover
     import time
     parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")
+
+if PY3:  # pragma: nocover
+    from urllib.parse import urlsplit
+    from urllib.parse import urlunsplit
+else:  # pragma: nocover
+    from urlparse import urlsplit
+    from urlparse import urlunsplit
