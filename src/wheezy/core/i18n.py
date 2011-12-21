@@ -6,7 +6,11 @@ import os.path
 import gettext
 
 from wheezy.core.comp import defaultdict
+from wheezy.core.comp import ref_gettext
 from wheezy.core.collections import attrdict
+
+
+null_translations = gettext.NullTranslations()
 
 
 class TranslationsManager(object):

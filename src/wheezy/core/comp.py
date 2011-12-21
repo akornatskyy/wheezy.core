@@ -77,3 +77,8 @@ if PY3:  # pragma: nocover
 else:  # pragma: nocover
     from urlparse import urlsplit
     from urlparse import urlunsplit
+
+if PY3:  # pragma: nocover
+    ref_gettext = lambda t: t.gettext
+else:  # pragma: nocover
+    ref_gettext = lambda t: t.ugettext
