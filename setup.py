@@ -49,6 +49,7 @@ setup(
     ],
     extras_require = {
         'dev': [
+            'uuid',
             'wsgiref',
             'coverage',
             'nose',
