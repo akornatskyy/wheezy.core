@@ -14,9 +14,22 @@ PY3 = PY_MAJOR >= 3
 if PY3:  # pragma: nocover
     b = lambda s: s.encode('latin1')
     u = lambda s: s
+
+    def n(s):
+        if isinstance(s, bytes):
+            return s.decode('latin1')
+        else:
+            return s
+
 else:  # pragma: nocover
     b = lambda s: s
     u = lambda s: unicode(s, "unicode_escape")
+
+    def n(s):
+        if isinstance(s, unicode):
+            return s.encode('latin1')
+        else:
+            return s
 
 
 if PY2 and PY_MINOR == 4:  # pragma: nocover

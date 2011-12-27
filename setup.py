@@ -9,6 +9,12 @@ except:
 
 README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
+install_requires = []
+try:
+    import uuid
+except:
+    install_requires.append('uuid')
+
 setup(
     name = 'wheezy.core',
     version = '0.1',
@@ -45,8 +51,7 @@ setup(
     namespace_packages=['wheezy'],
 
     zip_safe = True,
-    install_requires = [
-    ],
+    install_requires = install_requires,
     extras_require = {
         'dev': [
             'uuid',
