@@ -6,8 +6,8 @@ from base64 import b64decode
 from base64 import b64encode
 from binascii import Error
 
-from wheezy.core.comp import ntob
 from wheezy.core.comp import bton
+from wheezy.core.comp import ntob
 from wheezy.core.introspection import import_name
 
 
