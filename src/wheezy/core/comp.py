@@ -86,6 +86,14 @@ except ImportError:  # pragma: nocover
                                             dict.__repr__(self))
 
 
+if PY3:  # pragma: nocover
+    from urllib.parse import quote_plus
+    url_escape = quote_plus
+else:  # pragma: nocover
+    from urllib import quote_plus
+    url_escape = lambda s: quote_plus(b(s, 'utf-8'))
+
+
 try:  # pragma: nocover
     from email.utils import parsedate
 except ImportError:  # pragma: nocover

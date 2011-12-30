@@ -1,6 +1,7 @@
 """ ``url`` module
 """
 
+from wheezy.core.comp import url_escape
 from wheezy.core.comp import urlunsplit
 
 
