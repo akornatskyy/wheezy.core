@@ -7,7 +7,7 @@ import gettext
 
 from wheezy.core.comp import defaultdict
 from wheezy.core.comp import ref_gettext
-from wheezy.core.collections import attrdict
+from wheezy.core.collections import defaultattrdict
 
 
 null_translations = gettext.NullTranslations()
@@ -17,10 +17,14 @@ class TranslationsManager(object):
     """ Manages several languages and translation domains.
     """
 
-    def __init__(self, default_lang='en'):
+    def __init__(self, directories=None, default_lang='en'):
         self.default_lang = default_lang
         self.fallbacks = {}
-        self.translations = defaultdict(attrdict)
+        self.translations = defaultdict(
+                lambda: defaultattrdict(lambda: null_translations))
+        if directories:
+            for localedir in directories:
+                self.load(localedir)
 
     def add_fallback(self, languages):
         """ Adds fallback languages.
