@@ -18,6 +18,14 @@ class TranslationsManager(object):
     """
 
     def __init__(self, directories=None, default_lang='en'):
+        """
+
+            >>> curdir = os.path.dirname(__file__)
+            >>> localedir = os.path.join(curdir, 'tests', 'i18n')
+            >>> tm = TranslationsManager(directories=[localedir])
+            >>> tuple(tm.translations.keys())
+            ('de', 'en')
+        """
         self.default_lang = default_lang
         self.fallbacks = {}
         self.translations = defaultdict(
