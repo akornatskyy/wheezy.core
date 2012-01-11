@@ -30,5 +30,5 @@ class attribute(object):
 
     def __get__(self, obj, t=None):
         val = self.f(obj)
-        setattr(obj, self.f.__name__, val)
+        setattr(obj, self.__name__, val)
         return val
