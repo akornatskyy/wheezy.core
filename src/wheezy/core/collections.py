@@ -170,7 +170,7 @@ def distinct(seq):
             yield item
 
 
-def gzip_iterator(items, compresslevel=6):
+def gzip_iterator(items, compress_level=6):
     """
         ``items`` - a list of bytes
 
@@ -181,7 +181,7 @@ def gzip_iterator(items, compresslevel=6):
     """
     size = 0
     crc = 0
-    gzip = zlib.compressobj(compresslevel, zlib.DEFLATED,
+    gzip = zlib.compressobj(compress_level, zlib.DEFLATED,
             -zlib.MAX_WBITS, zlib.DEF_MEM_LEVEL, 0)
     yield GZIP_HEADER
     for item in items:
