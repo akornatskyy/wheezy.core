@@ -2,7 +2,15 @@
 """ ``collections`` module.
 """
 
+import struct
+import zlib
+
 from wheezy.core.comp import defaultdict
+from wheezy.core.comp import ntob
+
+
+GZIP_HEADER = ntob('\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF', 'latin1')
+MAX_INT = int('FFFFFFFF', 16)
 
 
 def first_item_adapter(adaptee):
@@ -160,3 +168,27 @@ def distinct(seq):
         if item not in unique:
             unique[item] = None
             yield item
+
+
+def gzip_iterator(items, compresslevel=6):
+    """
+        ``items`` - a list of bytes
+
+        >>> items = [ntob('Hello World', 'latin1')]
+        >>> result = list(gzip_iterator(items))
+        >>> assert 3 == len(result)
+        >>> assert GZIP_HEADER == result[0]
+    """
+    size = 0
+    crc = 0
+    gzip = zlib.compressobj(compresslevel, zlib.DEFLATED,
+            -zlib.MAX_WBITS, zlib.DEF_MEM_LEVEL, 0)
+    yield GZIP_HEADER
+    for item in items:
+        size += len(item)
+        crc = zlib.crc32(item, crc) & MAX_INT
+        chunk = gzip.compress(item)
+        if chunk:  # pragma: nocover
+            yield chunk
+    yield gzip.flush()
+    yield struct.pack('<2L', crc, size & MAX_INT)
