@@ -16,17 +16,17 @@ except:
     install_requires.append('uuid')
 
 setup(
-    name = 'wheezy.core',
-    version = '0.1',
-    description = 'A lightweight core library',
-    long_description = README,
-    url = 'https://bitbucket.org/akorn/wheezy.core',
+    name='wheezy.core',
+    version='0.1',
+    description='A lightweight core library',
+    long_description=README,
+    url='https://bitbucket.org/akorn/wheezy.core',
 
-    author = 'Andriy Kornatskyy',
-    author_email = 'andriy.kornatskyy at live.com',
+    author='Andriy Kornatskyy',
+    author_email='andriy.kornatskyy at live.com',
 
-    license = 'MIT',
-    classifiers = [
+    license='MIT',
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -43,17 +43,15 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities'
     ],
-    keywords = [
-        'core collections config datetime descriptor i18n '
-        'introspection url uuid'
-    ],
-    packages = ['wheezy', 'wheezy.core'],
-    package_dir = {'': 'src'},
+    keywords='core collections config datetime descriptor i18n '
+             'introspection url uuid',
+    packages=['wheezy', 'wheezy.core'],
+    package_dir={'': 'src'},
     namespace_packages=['wheezy'],
 
-    zip_safe = True,
-    install_requires = install_requires,
-    extras_require = {
+    zip_safe=True,
+    install_requires=install_requires,
+    extras_require={
         'dev': [
             'uuid',
             'wsgiref',
@@ -65,5 +63,5 @@ setup(
         ]
     },
 
-    platforms = 'any'
+    platforms='any'
 )
