@@ -18,7 +18,7 @@ except:
 setup(
     name = 'wheezy.core',
     version = '0.1',
-    description = 'A lightweight object core library',
+    description = 'A lightweight core library',
     long_description = README,
     url = 'https://bitbucket.org/akorn/wheezy.core',
 
@@ -44,7 +44,8 @@ setup(
         'Topic :: Utilities'
     ],
     keywords = [
-        'core'
+        'core collections config datetime descriptor i18n '
+        'introspection url uuid'
     ],
     packages = ['wheezy', 'wheezy.core'],
     package_dir = {'': 'src'},
