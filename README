@@ -4,7 +4,7 @@ code. It provides core features.
 Install
 -------
 
-:ref:`wheezy.core` requires `python`_ version 2.4 to 2.7 or 3.2.
+`wheezy.core`_ requires `python`_ version 2.4 to 2.7 or 3.2.
 It is independent of operating system. You can install it from `pypi`_ 
 site using `setuptools`_::
 
@@ -46,6 +46,7 @@ Generate documentation with `sphinx`_::
 If you run into any issue or have comments, go ahead and add on
 `bitbucket`_.
 
+.. _`wheezy.core`: http://pypi.python.org/pypi/wheezy.core
 .. _`pypi`: http://pypi.python.org/pypi/wheezy.core
 .. _`python`: http://www.python.org
 .. _`setuptools`: http://pypi.python.org/pypi/setuptools
