@@ -18,7 +18,8 @@ UUID_EMPTY = UUID('00000000-0000-0000-0000-000000000000')
 
 
 def shrink_uuid(uuid):
-    """
+    """ Returns base64 representation of ``uuid``.
+
         >>> shrink_uuid(UUID('a4af2f54-e988-4f5c-bfd6-351c79299b74'))
         'pK8vVOmIT1y_1jUceSmbdA'
         >>> shrink_uuid(UUID('d17aba88-19c3-400e-adee-3ecf935db272'))

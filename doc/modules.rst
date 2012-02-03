@@ -1,0 +1,56 @@
+Modules
+=======
+
+wheezy.core
+-----------
+
+.. automodule:: wheezy.core
+   :members:
+
+wheezy.core.collections
+-----------------------
+
+.. automodule:: wheezy.core.collections
+   :members:
+
+wheezy.core.config
+------------------
+
+.. automodule:: wheezy.core.config
+   :members:
+
+wheezy.core.datetime
+--------------------
+
+.. automodule:: wheezy.core.datetime
+   :members:
+
+wheezy.core.descriptors
+-----------------------
+
+.. automodule:: wheezy.core.descriptors
+   :members:
+
+wheezy.core.i18n
+----------------
+
+.. automodule:: wheezy.core.i18n
+   :members:
+
+wheezy.core.introspection
+-------------------------
+
+.. automodule:: wheezy.core.introspection
+   :members:
+
+wheezy.core.url
+---------------
+
+.. automodule:: wheezy.core.url
+   :members:
+
+wheezy.core.uuid
+----------------
+
+.. automodule:: wheezy.core.uuid
+   :members:

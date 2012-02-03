@@ -1,5 +1,6 @@
 
-""" ``collections`` module.
+""" The ``collections`` module  contains types and functions that define
+    various collections and algorithms.
 """
 
 import struct
@@ -171,7 +172,8 @@ def distinct(seq):
 
 
 def gzip_iterator(items, compress_level=6):
-    """
+    """ Iterates over ``items`` and returns generator of gzipped items.
+
         ``items`` - a list of bytes
 
         >>> items = [ntob('Hello World', 'latin1')]

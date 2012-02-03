@@ -27,7 +27,7 @@ MONTHS = (None, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 
 
 def format_http_datetime(stamp):
-    """ Format datetime to a string following rfc1123 pattern.
+    """ Formats datetime to a string following rfc1123 pattern.
 
         >>> now = datetime(2011, 9, 19, 10, 45, 30, 0, UTC)
         >>> format_http_datetime(now)
@@ -70,7 +70,8 @@ def format_http_datetime(stamp):
 
 
 def parse_http_datetime(stamp):
-    """
+    """ Parses a string in rfc1123 format to ``datetime``.
+
         >>> parse_http_datetime('Mon, 19 Sep 2011 10:45:30 GMT')
         datetime.datetime(2011, 9, 19, 10, 45, 30)
     """

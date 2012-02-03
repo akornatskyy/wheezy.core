@@ -7,7 +7,11 @@ from wheezy.core.comp import urlunsplit
 
 def urlparts(parts=None, scheme=None, netloc=None, path=None,
         query=None, fragment=None):
-    """ ``parts`` must be a 5-tuple:
+    """ Factory function for :py:class:`~wheezy.core.url.UrlParts` that
+        create an instance :py:class:`~wheezy.core.url.UrlParts` with
+        partial content.
+
+        ``parts`` must be a 5-tuple:
         (scheme, netloc, path, query, fragment)
 
         >>> from wheezy.core.comp import urlsplit
@@ -30,6 +34,8 @@ def urlparts(parts=None, scheme=None, netloc=None, path=None,
 
 
 class UrlParts(tuple):
+    """ Concrete class for :func:`urlparse.urlsplit` results.
+    """
 
     def __init__(self, parts):
         assert len(parts) == 5, '`parts` must be a tupple of length 6'
@@ -39,7 +45,8 @@ class UrlParts(tuple):
         return 'urlparts' + super(UrlParts, self).__repr__()
 
     def geturl(self):
-        """
+        """ Return the re-combined version of the original URL as a string.
+
             >>> from wheezy.core.comp import urlsplit
             >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
             >>> parts = urlparts(parts)
@@ -49,7 +56,10 @@ class UrlParts(tuple):
         return urlunsplit(self)
 
     def join(self, other):
-        """
+        """ Joins with another ``UrlParts`` instance by taking
+            none-empty values from ``other``. Returns new ``UrlParts``
+            instance.
+
             >>> from wheezy.core.comp import urlsplit
             >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
             >>> parts = urlparts(parts)

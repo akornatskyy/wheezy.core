@@ -1,5 +1,6 @@
-`wheezy.core`_ is a `python`_ package written in pure Python
-code. It provides core features.
+
+Getting Started
+===============
 
 Install
 -------
