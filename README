@@ -56,7 +56,7 @@ If you run into any issue or have comments, go ahead and add on
 `bitbucket`_.
 
 .. _`article`: http://mindref.blogspot.com/2011/09/compile-python-from-source.html
-.. _`bitbucket`: http://bitbucket.org/akorn/wheezy.core/issues
+.. _`bitbucket`: http://bitbucket.org/akorn/wheezy.core
 .. _`doctest`: http://docs.python.org/library/doctest.html
 .. _`documentation`: http://packages.python.org/wheezy.core
 .. _`eggs`: http://pypi.python.org/pypi/wheezy.core
@@ -72,4 +72,3 @@ If you run into any issue or have comments, go ahead and add on
 .. _`sphinx`: http://sphinx.pocoo.org/
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.core`: http://pypi.python.org/pypi/wheezy.core
-
