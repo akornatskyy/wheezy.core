@@ -50,8 +50,10 @@ else:  # pragma: nocover
 
 
 try:  # pragma: nocover
-    from collections import defaultdict
-except ImportError:  # pragma: nocover
+    #from collections import defaultdict
+    defaultdict = __import__('collections', None, None,
+            ['defaultdict']).defaultdict
+except AttributeError:  # pragma: nocover
 
     class defaultdict(dict):
 
