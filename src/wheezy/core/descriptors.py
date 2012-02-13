@@ -22,6 +22,7 @@ class attribute(object):
         >>> a.count
         1
     """
+
     def __init__(self, f):
         self.f = f
         self.__module__ = f.__module__

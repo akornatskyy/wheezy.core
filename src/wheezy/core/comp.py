@@ -113,3 +113,9 @@ if PY3:  # pragma: nocover
     ref_gettext = lambda t: t.gettext
 else:  # pragma: nocover
     ref_gettext = lambda t: t.ugettext
+
+if PY2 and PY_MINOR < 6:  # pragma: nocover
+    # TODO:
+    timeit = lambda f, number: 1.0
+else:  # pragma: nocover
+    from timeit import timeit
