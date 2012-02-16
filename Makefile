@@ -64,7 +64,7 @@ upload:
 	fi; \
 	$(PYTHON) setup.py -q egg_info --tag-build .$$REV \
 		bdist_egg --dist-dir=$(DIST_DIR) \
-		rotate --match=egg,gz --keep=1 --dist-dir=$(DIST_DIR) \
+		rotate --match=$(VERSION).egg --keep=1 --dist-dir=$(DIST_DIR) \
 		upload;
 
 test:
