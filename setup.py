@@ -17,7 +17,7 @@ except:
 
 setup(
     name='wheezy.core',
-    version='0.1.1',
+    version='0.1',
     description='A lightweight core library',
     long_description=README,
     url='https://bitbucket.org/akorn/wheezy.core',
