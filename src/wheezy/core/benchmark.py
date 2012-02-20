@@ -23,7 +23,7 @@ class Benchmark(object):
     def __init__(self, targets, number, warmup_number=None):
         self.targets = targets
         self.number = number
-        self.warmup_number = warmup_number or max(int(number / 1000), 5)
+        self.warmup_number = warmup_number or max(int(number / 100), 10)
 
     def bench(self, number):
         for target in self.targets:
@@ -45,7 +45,6 @@ class Benchmark(object):
         for (name, result) in self.run():
             if base is None:
                 base = result
-                base_rps = round(self.number / base, 1)
             base_relative = round(base / result, 3)
             rps = round(self.number / result, 1)
             previous_relative = baselines.get(name, base_relative)
