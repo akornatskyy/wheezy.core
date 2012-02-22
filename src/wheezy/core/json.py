@@ -4,9 +4,9 @@
 
 from decimal import Decimal
 
-from wheezy.core.comp import SimpleJSONEncoder
 from wheezy.core.comp import json_dumps
 from wheezy.core.comp import json_loads
+from wheezy.core.comp import SimpleJSONEncoder
 from wheezy.core.datetime import format_iso_datetime
 from wheezy.core.datetime import format_iso_time
 from wheezy.core.introspection import import_name

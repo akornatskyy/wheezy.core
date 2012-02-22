@@ -7,6 +7,12 @@ wheezy.core
 .. automodule:: wheezy.core
    :members:
 
+wheezy.core.benchmark
+-----------------------
+
+.. automodule:: wheezy.core.benchmark
+   :members:
+
 wheezy.core.collections
 -----------------------
 
@@ -41,6 +47,12 @@ wheezy.core.introspection
 -------------------------
 
 .. automodule:: wheezy.core.introspection
+   :members:
+   
+wheezy.core.json
+----------------
+
+.. automodule:: wheezy.core.json
    :members:
 
 wheezy.core.url
