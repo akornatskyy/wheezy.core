@@ -21,6 +21,14 @@ class Benchmark(object):
     """
 
     def __init__(self, targets, number, warmup_number=None):
+        """
+            ``targets`` - a list of targets (callables) to be tested.
+
+            ``number`` - how many times each target is executed.
+
+            ``warmup_number`` - how many times each target is warmed up
+            before the bechmark is measured.
+        """
         self.targets = targets
         self.number = number
         self.warmup_number = warmup_number or max(int(number / 100), 10)
