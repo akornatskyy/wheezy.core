@@ -6,6 +6,7 @@ import unittest
 
 from decimal import Decimal
 
+from wheezy.core.comp import str_type
 from wheezy.core.json import json_encode
 from wheezy.core.json import json_decode
 from wheezy.core.json import date
@@ -18,6 +19,9 @@ try:
     class JSONEncodeTestCase(unittest.TestCase):
         """ Test the ``json_encode`` function.
         """
+
+        def test_encode_return_unicode_string(self):
+            self.assertTrue(str_type, json_encode({}))
 
         def test_encode_date(self):
             self.assertEqual(
@@ -62,6 +66,11 @@ try:
     class JSONDecodeTestCase(unittest.TestCase):
         """ Test the ``json_encode`` function.
         """
+
+        def test_decode_returns_unicode_strings(self):
+            d = json_decode('{"d": "x"}')
+            self.assertTrue(str_type, list(d.keys())[0])
+            self.assertTrue(str_type, d['d'])
 
         def test_decode_date(self):
             from wheezy.core.comp import u

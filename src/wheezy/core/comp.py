@@ -12,6 +12,7 @@ PY3 = PY_MAJOR >= 3
 
 
 if PY3:  # pragma: nocover
+    str_type = str
 
     def ntob(n, encoding):
         """ Converts native string to bytes
@@ -26,6 +27,7 @@ if PY3:  # pragma: nocover
     u = lambda s: s
 
 else:  # pragma: nocover
+    str_type = unicode
 
     def ntob(n, encoding):
         """ Converts native string to bytes
