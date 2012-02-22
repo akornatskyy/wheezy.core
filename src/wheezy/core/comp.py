@@ -119,3 +119,27 @@ if PY2 and PY_MINOR < 6:  # pragma: nocover
     timeit = lambda f, number: 1.0
 else:  # pragma: nocover
     from timeit import timeit
+
+if PY3 or PY2 and PY_MINOR >= 6:  # pragma: nocover
+    m = __import__('json', None, None,
+            ['JSONEncoder', 'dumps', 'loads'])
+    SimpleJSONEncoder = m.JSONEncoder
+    json_dumps = m.dumps
+    json_loads = m.loads
+    del m
+else:  # pragma: nocover
+    try:
+        from simplejson import JSONEncoder as SimpleJSONEncoder
+        from simplejson import dumps
+        from simplejson import loads as json_loads
+
+        def json_dumps(obj, **kw):
+            return dumps(obj, use_decimal=False, **kw)
+    except ImportError:
+        SimpleJSONEncoder = object
+
+        def json_dumps(obj, **kw):
+            raise NotImplementedError('JSON encoder is required.')
+
+        def json_loads(s, **kw):
+            raise NotImplementedError('JSON decoder is required.')
