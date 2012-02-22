@@ -2,7 +2,6 @@
 """ ``datetime`` module.
 """
 
-from time import gmtime
 from time import localtime
 from time import mktime
 
@@ -16,6 +15,7 @@ from wheezy.core.introspection import import_name
 # absolute imports are available since python 2.5,
 # however we want keep compatibility with python 2.4
 datetime = import_name('datetime.datetime')
+time = import_name('datetime.time')
 timedelta = import_name('datetime.timedelta')
 tzinfo = import_name('datetime.tzinfo')
 
@@ -67,6 +67,67 @@ def format_http_datetime(stamp):
     return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
         WEEKDAYS[wd], day, MONTHS[month], year, hh, mm, ss
     )
+
+
+def format_iso_datetime(stamp):
+    """ Return a string representing the date and time in ISO 8601 format.
+        If the time is in UTC, adds a 'Z' directly after the time without
+        a space.
+
+        see http://en.wikipedia.org/wiki/ISO_8601.
+
+        >>> class EET(tzinfo):
+        ...     def utcoffset(self, dt):
+        ...         return timedelta(minutes=120)
+        ...     def dst(self, dt):
+        ...         return timedelta()
+        >>> format_iso_datetime(datetime(2012, 2, 22, 12, 52, 29, 300))
+        '2012-02-22T12:52:29'
+        >>> format_iso_datetime(datetime(2012, 2, 22, 12, 52, 29, 300,
+        ...     tzinfo=UTC))
+        '2012-02-22T12:52:29Z'
+        >>> format_iso_datetime(datetime(2012, 2, 22, 12, 52, 29, 300,
+        ...     tzinfo=EET()))
+        '2012-02-22T12:52:29+02:00'
+    """
+    if stamp.tzinfo:
+        if stamp.utcoffset() == ZERO:
+            return datetime(*stamp.timetuple()[:6]).isoformat() + 'Z'
+    if stamp.microsecond:
+        stamp = stamp.replace(microsecond=0)
+    return stamp.isoformat()
+
+
+def format_iso_time(stamp):
+    """ Return a string representing the time in ISO 8601 format.
+        If the time is in UTC, adds a 'Z' directly after the time without
+        a space.
+
+        see http://en.wikipedia.org/wiki/ISO_8601.
+
+        >>> class EET(tzinfo):
+        ...     def utcoffset(self, dt):
+        ...         return timedelta(minutes=120)
+        ...     def dst(self, dt):
+        ...         return timedelta()
+        >>> format_iso_time(time(12, 52, 29, 300))
+        '12:52:29'
+        >>> format_iso_time(time(12, 52, 29, 300,
+        ...     tzinfo=UTC))
+        '12:52:29Z'
+        >>> format_iso_time(time(12, 52, 29, 300,
+        ...     tzinfo=EET()))
+        '12:52:29+02:00'
+    """
+    if stamp.microsecond:
+        stamp = stamp.replace(microsecond=0)
+    if stamp.tzinfo:
+        if stamp.utcoffset() == ZERO:
+            return stamp.replace(tzinfo=None).isoformat() + 'Z'
+        else:
+            return stamp.isoformat()
+    else:
+        return stamp.isoformat()
 
 
 def parse_http_datetime(stamp):
