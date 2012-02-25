@@ -6,6 +6,7 @@ import os.path
 import gettext
 
 from wheezy.core.comp import defaultdict
+from wheezy.core.comp import ref_gettext #pyflakes:ignore
 from wheezy.core.collections import defaultattrdict
 
 
