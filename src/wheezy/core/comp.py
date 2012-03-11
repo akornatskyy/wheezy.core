@@ -116,12 +116,6 @@ if PY3:  # pragma: nocover
 else:  # pragma: nocover
     ref_gettext = lambda t: t.ugettext
 
-if PY2 and PY_MINOR < 6:  # pragma: nocover
-    # TODO:
-    timeit = lambda f, number: 1.0
-else:  # pragma: nocover
-    from timeit import timeit
-
 if PY3 or PY2 and PY_MINOR >= 6:  # pragma: nocover
     m = __import__('json', None, None,
             ['JSONEncoder', 'dumps', 'loads'])
