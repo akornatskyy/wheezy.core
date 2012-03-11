@@ -2,7 +2,15 @@
 """ ``bechmark`` module.
 """
 
-from wheezy.core.comp import timeit
+from wheezy.core.comp import PY2
+from wheezy.core.comp import PY_MINOR
+
+
+if PY2 and PY_MINOR < 6:  # pragma: nocover
+    # TODO:
+    timeit = lambda f, number: 1.0
+else:  # pragma: nocover
+    from timeit import timeit
 
 
 class Benchmark(object):
