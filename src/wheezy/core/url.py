@@ -59,6 +59,8 @@ class UrlParts(tuple):
             none-empty values from ``other``. Returns new ``UrlParts``
             instance.
 
+            Query and Fragment parts are taken unconditionally from ``other``.
+
             >>> from wheezy.core.comp import urlsplit
             >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
             >>> parts = urlparts(parts)
@@ -70,6 +72,6 @@ class UrlParts(tuple):
                 other[0] or self[0],
                 other[1] or self[1],
                 other[2] or self[2],
-                other[3] or self[3],
-                other[4] or self[4])
+                other[3],
+                other[4])
         return UrlParts(parts)
