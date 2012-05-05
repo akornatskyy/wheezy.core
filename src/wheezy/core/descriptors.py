@@ -22,14 +22,13 @@ class attribute(object):
         >>> a.count
         1
     """
+    __slots__ = ('f')
 
     def __init__(self, f):
         self.f = f
-        self.__module__ = f.__module__
-        self.__name__ = f.__name__
-        self.__doc__ = f.__doc__
 
     def __get__(self, obj, t=None):
-        val = self.f(obj)
-        setattr(obj, self.__name__, val)
+        f = self.f
+        val = f(obj)
+        setattr(obj, f.__name__, val)
         return val
