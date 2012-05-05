@@ -51,6 +51,7 @@ class ItemAdapter(object):
         return item at ``index`` from the list. If ``key`` is not
         found return None.
     """
+    __slots__ = ('adaptee', 'index')
 
     def __init__(self, adaptee, index):
         """ ``adaptee`` must be defaultdict(list).
@@ -116,7 +117,7 @@ class attrdict(dict):
             ...
         AttributeError: ...
     """
-    __slots__ = []
+    __slots__ = ()
 
     def __setattr__(self, key, value):
         return super(attrdict, self).__setitem__(key, value)
@@ -142,7 +143,7 @@ class defaultattrdict(defaultdict):
         >>> d.d
         ''
     """
-    #__slots__ = []
+    __slots__ = ()
 
     def __setattr__(self, key, value):
         return super(defaultattrdict, self).__setitem__(key, value)
