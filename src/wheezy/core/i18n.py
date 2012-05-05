@@ -7,7 +7,6 @@ import gettext
 
 from wheezy.core.comp import defaultdict
 from wheezy.core.comp import ref_gettext  # pyflakes:ignore
-from wheezy.core.collections import defaultattrdict
 
 
 null_translations = gettext.NullTranslations()
@@ -29,7 +28,7 @@ class TranslationsManager(object):
         self.default_lang = default_lang
         self.fallbacks = {}
         self.translations = defaultdict(
-                lambda: defaultattrdict(lambda: null_translations))
+                lambda: defaultdict(lambda: null_translations))
         if directories:
             for localedir in directories:
                 self.load(localedir)
@@ -63,20 +62,22 @@ class TranslationsManager(object):
             >>> tuple(tm.translations.keys())
             ('de', 'en')
             >>> lang = tm['en']
-            >>> lang.messages.gettext('hello')
+            >>> m = lang['messages']
+            >>> m.gettext('hello')
             'Hello'
             >>> lang = tm['de']
-            >>> lang.messages.gettext('hello')
+            >>> m = lang['messages']
+            >>> m.gettext('hello')
             'Hallo'
 
             Fallback to English:
 
-            >>> lang.messages.gettext('world')
+            >>> m.gettext('world')
             'World'
 
             If translation is unknown ``key`` returned
 
-            >>> lang.messages.gettext('test')
+            >>> m.gettext('test')
             'test'
         """
         for lang in os.listdir(localedir):
