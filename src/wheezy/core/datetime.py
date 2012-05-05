@@ -172,6 +172,7 @@ class utc(tzinfo):
     """ UTC timezone.
 
     """
+    __slots__ = ('name')
 
     def __init__(self, name):
         self.name = name
