@@ -5,7 +5,7 @@ from wheezy.core.comp import urlunsplit
 
 
 def urlparts(parts=None, scheme=None, netloc=None, path=None,
-        query=None, fragment=None):
+             query=None, fragment=None):
     """ Factory function for :py:class:`~wheezy.core.url.UrlParts` that
         create an instance :py:class:`~wheezy.core.url.UrlParts` with
         partial content.
@@ -69,9 +69,9 @@ class UrlParts(tuple):
             'https://www.python.org/test'
         """
         parts = (
-                other[0] or self[0],
-                other[1] or self[1],
-                other[2] or self[2],
-                other[3],
-                other[4])
+            other[0] or self[0],
+            other[1] or self[1],
+            other[2] or self[2],
+            other[3],
+            other[4])
         return UrlParts(parts)

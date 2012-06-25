@@ -22,7 +22,8 @@ tzinfo = import_name('datetime.tzinfo')
 
 ZERO = timedelta(0)
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-MONTHS = (None, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+MONTHS = (
+    None, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 
@@ -165,7 +166,7 @@ def total_seconds(delta):
         return delta.seconds + delta.days * 86400
     else:
         raise TypeError('Expecting type datetime.timedelta '
-            'or int for seconds')
+                        'or int for seconds')
 
 
 class utc(tzinfo):

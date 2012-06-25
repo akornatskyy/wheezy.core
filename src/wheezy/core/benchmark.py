@@ -53,10 +53,9 @@ class Benchmark(object):
 
     def report(self, name=None, baselines=None):
         baselines = baselines or {}
-        print("%s: %s x %s" % (
-                name or 'noname', len(self.targets), self.number))
-        print("%s %s %s %s" % (
-                "baseline", "throughput", "change", "target"))
+        print("%s: %s x %s" % (name or 'noname',
+                               len(self.targets), self.number))
+        print("%s %s %s %s" % ("baseline", "throughput", "change", "target"))
         base = None
         for (name, result) in self.run():
             if base is None:
@@ -66,4 +65,4 @@ class Benchmark(object):
             previous_relative = baselines.get(name, base_relative)
             delta = base_relative / previous_relative - 1.0
             print("%7.1f%% %7drps %+5.1f%% %s" % (
-                    base_relative * 100, rps, delta * 100, name))
+                base_relative * 100, rps, delta * 100, name))

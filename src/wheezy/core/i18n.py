@@ -28,7 +28,7 @@ class TranslationsManager(object):
         self.default_lang = default_lang
         self.fallbacks = {}
         self.translations = defaultdict(
-                lambda: defaultdict(lambda: null_translations))
+            lambda: defaultdict(lambda: null_translations))
         if directories:
             for localedir in directories:
                 self.load(localedir)
@@ -92,9 +92,9 @@ class TranslationsManager(object):
                     if lang not in self.fallbacks:
                         self.add_fallback((lang,))
                     self.translations[lang][domain] = gettext.translation(
-                            domain,
-                            localedir,
-                            languages=self.fallbacks[lang]
+                        domain,
+                        localedir,
+                        languages=self.fallbacks[lang]
                     )
 
     def __getitem__(self, lang):

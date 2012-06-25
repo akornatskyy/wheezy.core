@@ -47,21 +47,20 @@ if PY2 and PY_MINOR == 4:  # pragma: nocover
 else:  # pragma: nocover
     # perform absolute import
     __saved_import__ = __import__
-    __import__ = lambda n, g=None, l=None, f=None:\
-            __saved_import__(n, g, l, f, 0)
+    __import__ = lambda n, g=None, l=None, f=None: \
+        __saved_import__(n, g, l, f, 0)
 
 
 try:  # pragma: nocover
     #from collections import defaultdict
-    defaultdict = __import__('collections', None, None,
-            ['defaultdict']).defaultdict
+    defaultdict = __import__(
+        'collections', None, None, ['defaultdict']).defaultdict
 except AttributeError:  # pragma: nocover
 
     class defaultdict(dict):
 
         def __init__(self, default_factory=None, *args, **kwargs):
-            if default_factory and \
-                not hasattr(default_factory, '__call__'):
+            if default_factory and not hasattr(default_factory, '__call__'):
                 raise TypeError('first argument must be callable')
             super(defaultdict, self).__init__(*args, **kwargs)
             self.default_factory = default_factory
@@ -117,8 +116,7 @@ else:  # pragma: nocover
     ref_gettext = lambda t: t.ugettext
 
 if PY3 or PY2 and PY_MINOR >= 6:  # pragma: nocover
-    m = __import__('json', None, None,
-            ['JSONEncoder', 'dumps', 'loads'])
+    m = __import__('json', None, None, ['JSONEncoder', 'dumps', 'loads'])
     SimpleJSONEncoder = m.JSONEncoder
     json_dumps = m.dumps
     json_loads = m.loads

@@ -24,7 +24,7 @@ def json_encode(obj):
         embed javascript code.
     """
     return json_dumps(obj, cls=JSONEncoder, ensure_ascii=False,
-            separators=(',', ':')).replace('</', '<\\/')
+                      separators=(',', ':')).replace('</', '<\\/')
 
 
 def json_decode(s):

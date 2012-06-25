@@ -25,43 +25,43 @@ try:
 
         def test_encode_date(self):
             self.assertEqual(
-                    json_encode({'d': date(2012, 2, 22)}),
-                    '{"d":"2012-02-22"}')
+                json_encode({'d': date(2012, 2, 22)}),
+                '{"d":"2012-02-22"}')
             self.assertEqual(
-                    json_encode({'d': date.min}),
-                    '{"d":""}')
+                json_encode({'d': date.min}),
+                '{"d":""}')
 
         def test_encode_datetime(self):
             self.assertEqual(
-                    json_encode({'d': datetime(2012, 2, 22)}),
-                    '{"d":"2012-02-22T00:00:00"}')
+                json_encode({'d': datetime(2012, 2, 22)}),
+                '{"d":"2012-02-22T00:00:00"}')
             self.assertEqual(
-                    json_encode({'d': datetime(2012, 2, 22, 14, 17, 39)}),
-                    '{"d":"2012-02-22T14:17:39"}')
+                json_encode({'d': datetime(2012, 2, 22, 14, 17, 39)}),
+                '{"d":"2012-02-22T14:17:39"}')
             self.assertEqual(
-                    json_encode({'d': datetime.min}),
-                    '{"d":""}')
+                json_encode({'d': datetime.min}),
+                '{"d":""}')
 
         def test_encode_time(self):
             self.assertEqual(
-                    json_encode({'d': time(14, 17, 39, 422)}),
-                    '{"d":"14:17:39"}')
+                json_encode({'d': time(14, 17, 39, 422)}),
+                '{"d":"14:17:39"}')
 
         def test_encode_decimal(self):
             self.assertEqual(
-                    json_encode({'d': Decimal('14.79')}),
-                    '{"d":"14.79"}')
+                json_encode({'d': Decimal('14.79')}),
+                '{"d":"14.79"}')
 
         def test_encode_unicode(self):
             from wheezy.core.comp import u
             self.assertEqual(
-                    json_encode({'d': u('x')}),
-                    '{"d":"x"}')
+                json_encode({'d': u('x')}),
+                '{"d":"x"}')
 
         def test_forward_slashes_escaped(self):
             self.assertEqual(
-                    json_encode({'d': '</script>'}),
-                    '{"d":"<\\/script>"}')
+                json_encode({'d': '</script>'}),
+                '{"d":"<\\/script>"}')
 
     class JSONDecodeTestCase(unittest.TestCase):
         """ Test the ``json_encode`` function.
