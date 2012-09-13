@@ -98,6 +98,25 @@ class ItemAdapter(object):
             return l[self.index]
         return None
 
+    def get(self, key, default=None):
+        """ Return the value for key if key is in the adaptee,
+            else default. If default is not given, it defaults
+            to None, so that this method never raises a KeyError.
+
+            >>> d = defaultdict(list)
+            >>> d['a'].extend([1, 2, 3])
+            >>> a = ItemAdapter(d, 0)
+            >>> a.get('a')
+            1
+            >>> a.get('b', 100)
+            100
+        """
+        if key in self.adaptee:
+            l = self.adaptee[key]
+            if l:
+                return l[self.index]
+        return default
+
 
 class attrdict(dict):
     """ A dictionary with attribute-style access. Maps attribute
