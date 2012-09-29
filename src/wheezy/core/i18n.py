@@ -22,8 +22,8 @@ class TranslationsManager(object):
             >>> curdir = os.path.dirname(__file__)
             >>> localedir = os.path.join(curdir, 'tests', 'i18n')
             >>> tm = TranslationsManager(directories=[localedir])
-            >>> tuple(tm.translations.keys())
-            ('de', 'en')
+            >>> sorted(tm.translations.keys())
+            ['de', 'en']
         """
         self.default_lang = default_lang
         self.fallbacks = {}
@@ -59,8 +59,8 @@ class TranslationsManager(object):
             >>> localedir = os.path.join(curdir, 'tests', 'i18n')
             >>> tm = TranslationsManager()
             >>> tm.load(localedir)
-            >>> tuple(tm.translations.keys())
-            ('de', 'en')
+            >>> sorted(tm.translations.keys())
+            ['de', 'en']
             >>> lang = tm['en']
             >>> m = lang['messages']
             >>> m.gettext('hello')

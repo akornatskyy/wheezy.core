@@ -123,8 +123,8 @@ class attrdict(dict):
         access to dictionary.
 
         >>> d = attrdict(a=1, b=2)
-        >>> d
-        {'a': 1, 'b': 2}
+        >>> sorted(d.items())
+        [('a', 1), ('b', 2)]
         >>> d.a
         1
 
@@ -181,8 +181,8 @@ def distinct(seq):
         If the order is not important consider using ``set`` which is
         approximately eight times faster on large sequences.
 
-        >>> list(set('1234512345'))
-        ['1', '3', '2', '5', '4']
+        >>> sorted(list(set('1234512345')))
+        ['1', '2', '3', '4', '5']
     """
     unique = {}
     for item in seq:
