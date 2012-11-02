@@ -47,8 +47,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'wheezy.core'
-copyright = u'2011, Andriy Kornatskyy'
+project = 'wheezy.core'
+copyright = '2011, Andriy Kornatskyy'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -209,7 +209,7 @@ htmlhelp_basename = 'wheezy.coredoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'wheezy.core.tex', u'wheezy.core Documentation',
+    ('index', 'wheezy.core.tex', 'wheezy.core Documentation',
      'Andriy Kornatskyy', 'manual'),
 ]
 

@@ -37,6 +37,12 @@ wheezy.core.descriptors
 .. automodule:: wheezy.core.descriptors
    :members:
 
+wheezy.core.feistel
+-------------------
+
+.. automodule:: wheezy.core.feistel
+   :members:
+
 wheezy.core.i18n
 ----------------
 
@@ -48,11 +54,17 @@ wheezy.core.introspection
 
 .. automodule:: wheezy.core.introspection
    :members:
-   
+
 wheezy.core.json
 ----------------
 
 .. automodule:: wheezy.core.json
+   :members:
+
+wheezy.core.luhn
+----------------
+
+.. automodule:: wheezy.core.luhn
    :members:
 
 wheezy.core.url
