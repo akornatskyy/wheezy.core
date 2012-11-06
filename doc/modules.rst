@@ -7,6 +7,12 @@ wheezy.core
 .. automodule:: wheezy.core
    :members:
 
+wheezy.core.db
+--------------
+
+.. automodule:: wheezy.core.db
+   :members:
+
 wheezy.core.benchmark
 -----------------------
 
