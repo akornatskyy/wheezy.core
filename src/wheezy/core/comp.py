@@ -12,6 +12,8 @@ PY3 = PY_MAJOR >= 3
 
 
 if PY3:  # pragma: nocover
+    from queue import Queue
+    xrange = range
     str_type = str
 
     def ntob(n, encoding):
@@ -27,6 +29,8 @@ if PY3:  # pragma: nocover
     u = lambda s: s
 
 else:  # pragma: nocover
+    from Queue import Queue
+    xrange = xrange
     str_type = unicode
 
     def ntob(n, encoding):

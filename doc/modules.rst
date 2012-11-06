@@ -67,6 +67,12 @@ wheezy.core.luhn
 .. automodule:: wheezy.core.luhn
    :members:
 
+wheezy.core.pooling
+-------------------
+
+.. automodule:: wheezy.core.pooling
+   :members:
+
 wheezy.core.url
 ---------------
 
