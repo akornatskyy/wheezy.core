@@ -172,7 +172,7 @@ class NullSession(object):
     @property
     def connection(self):
         raise AssertionError('Not intended to be used directly. '
-            'Use cursor() method instead.')
+                             'Use cursor() method instead.')
 
     def cursor(self, *args, **kwargs):
         """ Ensure session is entered.

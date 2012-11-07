@@ -374,6 +374,7 @@ class NullTPCSessionTestCase(unittest.TestCase):
         """
         self.assertRaises(AssertionError,
                           lambda: self.session.__exit__(None, None, None))
+
     def test_exit(self):
         """ Noop if session is entered.
         """
