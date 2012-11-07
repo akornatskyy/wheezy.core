@@ -287,32 +287,95 @@ class TPCSessionTestCase(unittest.TestCase):
 
 class NullSessionTestCase(unittest.TestCase):
 
+    def setUp(self):
+        from wheezy.core.db import NullSession
+        self.session = NullSession()
+
     def test_enter(self):
         """ Enter returns session instance.
         """
-        from wheezy.core.db import NullSession
-        session = NullSession()
-        assert session == session.__enter__()
+        assert self.session == self.session.__enter__()
+
+    def test_connection_raise_error(self):
+        """ Not intended to be used directly.
+        """
+        self.assertRaises(AssertionError, lambda: self.session.connection)
+
+    def test_cursor_raise_error(self):
+        """ If session is not entered raise error.
+        """
+        self.assertRaises(AssertionError, lambda: self.session.cursor())
+
+    def test_cursor(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.cursor()
+
+    def test_commit_raise_error(self):
+        """ If session is not entered raise error.
+        """
+        self.assertRaises(AssertionError, lambda: self.session.commit())
 
     def test_commit(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.commit()
+
+    def test_exit_raise_error(self):
         """ If session is not entered raise error.
         """
-        from wheezy.core.db import NullSession
-        session = NullSession()
-        session.__enter__()
-        session.commit()
-
-        session = NullSession()
-        self.assertRaises(AssertionError, lambda: session.commit())
+        self.assertRaises(AssertionError,
+                          lambda: self.session.__exit__(None, None, None))
 
     def test_exit(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.__exit__(None, None, None)
+
+
+class NullTPCSessionTestCase(unittest.TestCase):
+
+    def setUp(self):
+        from wheezy.core.db import NullTPCSession
+        self.session = NullTPCSession()
+
+    def test_enter(self):
+        """ Enter returns session instance.
+        """
+        assert self.session == self.session.__enter__()
+
+    def test_enlist_raise_error(self):
         """ If session is not entered raise error.
         """
-        from wheezy.core.db import NullSession
-        session = NullSession()
-        session.__enter__()
-        session.__exit__(None, None, None)
+        self.assertRaises(AssertionError, lambda: self.session.enlist('x'))
 
-        session = NullSession()
+    def test_enlist(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.enlist('x')
+
+    def test_commit_raise_error(self):
+        """ If session is not entered raise error.
+        """
+        self.assertRaises(AssertionError, lambda: self.session.commit())
+
+    def test_commit(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.commit()
+
+    def test_exit_raise_error(self):
+        """ If session is not entered raise error.
+        """
         self.assertRaises(AssertionError,
-                          lambda: session.__exit__(None, None, None))
+                          lambda: self.session.__exit__(None, None, None))
+    def test_exit(self):
+        """ Noop if session is entered.
+        """
+        self.session.__enter__()
+        self.session.__exit__(None, None, None)

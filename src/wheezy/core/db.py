@@ -40,7 +40,8 @@ class Session(object):
 
     @property
     def connection(self):
-        """ Return the session connection.
+        """ Return the session connection. Not intended to be used
+            directly, use `cursor` method instead.
         """
         if self.__connection:
             return self.__connection
@@ -168,6 +169,16 @@ class NullSession(object):
         self.status = SESSION_STATUS_ENTERED
         return self
 
+    @property
+    def connection(self):
+        raise AssertionError('Not intended to be used directly. '
+            'Use cursor() method instead.')
+
+    def cursor(self, *args, **kwargs):
+        """ Ensure session is entered.
+        """
+        assert self.status == SESSION_STATUS_ENTERED
+
     def commit(self):
         """ Simulates commit. Asserts the session is used in scope.
         """
@@ -176,4 +187,34 @@ class NullSession(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         assert self.status == SESSION_STATUS_ENTERED
+        self.status = SESSION_STATUS_IDLE
+
+
+class NullTPCSession(object):
+    """ Null TPC session is supposed to be used in mock scenarios.
+    """
+
+    def __init__(self):
+        self.status = SESSION_STATUS_IDLE
+
+    def __enter__(self):
+        assert self.status == SESSION_STATUS_IDLE
+        self.status = SESSION_STATUS_ENTERED
+        return self
+
+    def enlist(self, session):
+        """ Ensure session is entered.
+        """
+        assert session
+        assert self.status == SESSION_STATUS_ENTERED
+        self.status = SESSION_STATUS_ACTIVE
+
+    def commit(self):
+        """ Simulates commit. Asserts the session is used in scope.
+        """
+        assert self.status != SESSION_STATUS_IDLE
+        self.status = SESSION_STATUS_ENTERED
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        assert self.status != SESSION_STATUS_IDLE
         self.status = SESSION_STATUS_IDLE
