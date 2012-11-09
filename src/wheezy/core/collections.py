@@ -6,6 +6,8 @@
 import struct
 import zlib
 
+from operator import itemgetter
+
 from wheezy.core.comp import defaultdict
 from wheezy.core.comp import ntob
 
@@ -215,3 +217,35 @@ def gzip_iterator(items, compress_level=6):
             yield chunk
     yield gzip.flush()
     yield struct.pack('<2L', crc, size & MAX_INT)
+
+
+def map_keys(function, dictionary):
+    """ Apply `function` to every key of `dictionary` and return
+        a dictionary of the results.
+
+        >>> d = {'1': 1, '2': 2}
+        >>> sorted_items(map_keys(lambda key: 'k' + key, d))
+        [('k1', 1), ('k2', 2)]
+    """
+    return dict([(function(key), value) for key, value in dictionary.items()])
+
+
+def map_values(function, dictionary):
+    """ Apply `function` to every value of `dictionary` and return
+        a dictionary of the results.
+
+        >>> d = {'1': 1, '2': 2}
+        >>> sorted_items(map_values(lambda value: 2 * value, d))
+        [('1', 2), ('2', 4)]
+    """
+    return dict([(key, function(value)) for key, value in dictionary.items()])
+
+
+def sorted_items(dictionary):
+    """ Returns `dictionary` items sorted by key.
+
+        >>> d = {'1': 1, '2': 2}
+        >>> sorted_items(d)
+        [('1', 1), ('2', 2)]
+    """
+    return sorted(dictionary.items(), key=itemgetter(1))
