@@ -29,6 +29,8 @@ class TranslationsManager(object):
         self.fallbacks = {}
         self.translations = defaultdict(
             lambda: defaultdict(lambda: null_translations))
+        self.domains = defaultdict(
+            lambda: defaultdict(lambda: null_translations))
         if directories:
             for localedir in directories:
                 self.load(localedir)
@@ -61,6 +63,9 @@ class TranslationsManager(object):
             >>> tm.load(localedir)
             >>> sorted(tm.translations.keys())
             ['de', 'en']
+
+            Assess by language:
+
             >>> lang = tm['en']
             >>> m = lang['messages']
             >>> m.gettext('hello')
@@ -69,6 +74,13 @@ class TranslationsManager(object):
             >>> m = lang['messages']
             >>> m.gettext('hello')
             'Hallo'
+
+            Assess by translation domain:
+
+            >>> messages = tm.domains['messages']
+            >>> m = messages['en']
+            >>> m.gettext('hello')
+            'Hello'
 
             Fallback to English:
 
@@ -84,20 +96,23 @@ class TranslationsManager(object):
             if lang.startswith('.'):  # pragma: nocover
                 continue
             domaindir = os.path.join(localedir, lang, 'LC_MESSAGES')
-            if os.path.isdir(domaindir):
-                for domain in os.listdir(domaindir):
-                    if not domain.endswith('.mo'):
-                        continue
-                    domain = domain[:-3]
-                    if lang not in self.fallbacks:
-                        self.add_fallback((lang,))
-                    self.translations[lang][domain] = gettext.translation(
-                        domain,
-                        localedir,
-                        languages=self.fallbacks[lang]
-                    )
+            if not os.path.isdir(domaindir):  # pragma: nocover
+                continue
+            for domain in os.listdir(domaindir):
+                if not domain.endswith('.mo'):
+                    continue
+                domain = domain[:-3]
+                if lang not in self.fallbacks:
+                    self.add_fallback((lang,))
+                translation = gettext.translation(
+                    domain,
+                    localedir,
+                    languages=self.fallbacks[lang]
+                )
+                self.translations[lang][domain] = translation
+                self.domains[domain][lang] = translation
 
     def __getitem__(self, lang):
-        """ Returns ``attrdict`` with available translation domains.
+        """ Returns language ``defaultdict`` with translation domains.
         """
         return self.translations[lang]
