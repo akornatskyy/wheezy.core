@@ -32,35 +32,37 @@ class looks(object):
             assert looks(IFoo, ignore_argspec=['pex']).like(Foo)
     """
 
-    def __init__(self, cls, ignore_funcs=None, ignore_argspec=None):
+    def __init__(self, cls):
         """
             *cls* - a class to be checked
-            *ignore_funcs* - a list of functions to ignore
-            *ignore_argspec* - a list of functions to ignore arguments spec.
         """
-        self.declarations = declarations(cls)
-        self.ignore_funcs = ignore_funcs or []
-        self.ignore_argspec = ignore_argspec or []
+        self.cls = cls
 
-    def like(self, cls):
+    def like(self, cls, notice=None, ignore_funcs=None, ignore_argspec=None):
         """ Check if `self.cls` can be used as duck typing for `cls`.
 
             *cls* - class to be checked for duck typing.
+            *ignore_funcs* - a list of functions to ignore
+            *ignore_argspec* - a list of functions to ignore arguments spec.
         """
-        for n, t in declarations(cls).items():
-            if n in self.ignore_funcs:
+        notice = notice or []
+        ignore_funcs = ignore_funcs or []
+        ignore_argspec = ignore_argspec or []
+        contestee = declarations(self.cls, notice=notice)
+        for name, t in declarations(cls, notice=notice).items():
+            if name in ignore_funcs:
                 continue
-            if n not in self.declarations:
-                warn("'%s': is missing." % n)
+            if name not in contestee:
+                warn("'%s': is missing." % name)
                 return False
             else:
-                t2 = self.declarations[n]
+                t2 = contestee[name]
                 if isfunction(t) and isfunction(t2):
-                    if n in self.ignore_argspec:
+                    if name in ignore_argspec:
                         continue
                     if getargspec(t) != getargspec(t2):
                         warn("'%s': argument names or defaults "
-                             "have no match." % n)
+                             "have no match." % name)
                         return False
                 elif t2.__class__ is not t.__class__:
                     warn("'%s': is not %s." % (n, t.__class__.__name__))
@@ -70,9 +72,9 @@ class looks(object):
 
 # region: internal details
 
-def declarations(cls):
-    return dict((n, v) for n, v in cls.__dict__.items()
-                if not n.startswith('_'))
+def declarations(cls, notice):
+    return dict((name, t) for name, t in cls.__dict__.items()
+                if name in notice or not name.startswith('_'))
 
 
 def warn(message):
