@@ -65,7 +65,7 @@ class looks(object):
                              "have no match." % name)
                         return False
                 elif t2.__class__ is not t.__class__:
-                    warn("'%s': is not %s." % (n, t.__class__.__name__))
+                    warn("'%s': is not %s." % (name, t.__class__.__name__))
                     return False
         return True
 

@@ -150,7 +150,7 @@ else:
             assert looks(Foo).like(IFoo, notice=['__len__'])
 
         def test_decorator(self):
-            """
+            """ Decorator argspec doesn't match.
             """
             from wheezy.core.introspection import looks
 
@@ -173,6 +173,25 @@ else:
             assert not looks(Foo).like(IFoo)
             self.assert_warning("'foo': argument names or defaults "
                                 "have no match.")
+
+        def test_type(self):
+            """ Test if decorator types do not match.
+            """
+            from wheezy.core.descriptors import attribute
+            from wheezy.core.introspection import looks
+
+            class IFoo(object):
+                @attribute
+                def foo(self):
+                    pass
+
+            class Foo(IFoo):
+                @property
+                def foo(self):
+                    pass
+
+            assert not looks(Foo).like(IFoo)
+            self.assert_warning("'foo': is not attribute.")
 
         def test_various(self):
             """ Tests if there are no errors.
