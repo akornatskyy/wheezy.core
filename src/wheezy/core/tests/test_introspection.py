@@ -86,8 +86,8 @@ else:
 
             assert looks(Foo).like(IFoo, ignore_argspec='foo')
 
-        def test_decorator(self):
-            """ Tests if there any method decorators corresponds.
+        def test_property(self):
+            """ Tests if there any @property corresponds.
             """
             from wheezy.core.introspection import looks
 

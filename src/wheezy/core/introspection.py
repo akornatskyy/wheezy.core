@@ -5,11 +5,9 @@
 import warnings
 
 from inspect import getargspec
-from inspect import isclass
 from inspect import isfunction
 
 from wheezy.core.comp import __import__
-from wheezy.core.descriptors import attribute
 
 
 def import_name(fullname):

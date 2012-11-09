@@ -29,16 +29,16 @@ if PY3:  # pragma: nocover
     u = lambda s: s
 
 else:  # pragma: nocover
-    from Queue import Queue
+    from Queue import Queue  # noqa
     xrange = xrange
     str_type = unicode
 
-    def ntob(n, encoding):
+    def ntob(n, encoding):  # noqa
         """ Converts native string to bytes
         """
         return n
 
-    def bton(b, encoding):
+    def bton(b, encoding):  # noqa
         """ Converts bytes to native string
         """
         return b
@@ -92,32 +92,23 @@ except AttributeError:  # pragma: nocover
             return 'defaultdict(%s, %s)' % (self.default_factory,
                                             dict.__repr__(self))
 
-
-if PY3:  # pragma: nocover
-    from urllib.parse import quote_plus
-    url_escape = quote_plus
-else:  # pragma: nocover
-    from urllib import quote_plus
-    url_escape = lambda s: quote_plus(b(s, 'utf-8'))
-
-
 try:  # pragma: nocover
     from email.utils import parsedate
 except ImportError:  # pragma: nocover
     import time
-    parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")
+    parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")  # noqa
 
 if PY3:  # pragma: nocover
     from urllib.parse import urlsplit
     from urllib.parse import urlunsplit
 else:  # pragma: nocover
-    from urlparse import urlsplit
-    from urlparse import urlunsplit
+    from urlparse import urlsplit  # noqa
+    from urlparse import urlunsplit  # noqa
 
 if PY3:  # pragma: nocover
     ref_gettext = lambda t: t.gettext
 else:  # pragma: nocover
-    ref_gettext = lambda t: t.ugettext
+    ref_gettext = lambda t: t.ugettext  # noqa
 
 if PY3 or PY2 and PY_MINOR >= 6:  # pragma: nocover
     m = __import__('json', None, None, ['JSONEncoder', 'dumps', 'loads'])
@@ -129,15 +120,15 @@ else:  # pragma: nocover
     try:
         from simplejson import JSONEncoder as SimpleJSONEncoder
         from simplejson import dumps
-        from simplejson import loads as json_loads
+        from simplejson import loads as json_loads  # noqa
 
-        def json_dumps(obj, **kw):
+        def json_dumps(obj, **kw):  # noqa
             return dumps(obj, use_decimal=False, **kw)
     except ImportError:
-        SimpleJSONEncoder = object
+        SimpleJSONEncoder = object  # noqa
 
-        def json_dumps(obj, **kw):
+        def json_dumps(obj, **kw):  # noqa
             raise NotImplementedError('JSON encoder is required.')
 
-        def json_loads(s, **kw):
+        def json_loads(s, **kw):  # noqa
             raise NotImplementedError('JSON decoder is required.')

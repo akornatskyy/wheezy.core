@@ -1,14 +1,15 @@
 """ ``i18n`` module.
 """
 
+import gettext
 import os
 import os.path
-import gettext
 
 from wheezy.core.comp import defaultdict
-from wheezy.core.comp import ref_gettext  # pyflakes:ignore
+from wheezy.core.comp import ref_gettext
 
 
+assert ref_gettext
 null_translations = gettext.NullTranslations()
 
 
