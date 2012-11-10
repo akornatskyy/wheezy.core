@@ -241,6 +241,16 @@ def map_values(function, dictionary):
     return dict([(key, function(value)) for key, value in dictionary.items()])
 
 
+def list_values(keys, dictionary):
+    """ Returns `dictionary` values orderd by `keys`.
+
+        >>> d = {'1': 1, '2': 2}
+        >>> list_values(['1', '2', '3'], d)
+        [1, 2, None]
+    """
+    return [key in dictionary and dictionary[key] or None for key in keys]
+
+
 def sorted_items(dictionary):
     """ Returns `dictionary` items sorted by key.
 
