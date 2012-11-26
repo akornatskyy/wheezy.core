@@ -1,5 +1,5 @@
 
-""" Unit tests for ``wheezy.core.db.session``.
+""" Unit tests for ``wheezy.core.db``.
 """
 
 import unittest
