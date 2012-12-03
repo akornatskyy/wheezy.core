@@ -19,11 +19,8 @@ else:
 class MiscTestCase(unittest.TestCase):
 
     def setUp(self):
-        from mock import mock_open
-        self.mock_open = mock_open()
-        self.patcher = patch('wheezy.core.mail.open', self.mock_open,
-                             create=True)
-        self.patcher.start()
+        self.patcher = patch('wheezy.core.mail.open', create=True)
+        self.mock_open = self.patcher.start()
 
     def tearDown(self):
         self.patcher.stop()
