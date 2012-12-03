@@ -72,7 +72,7 @@ upload:
 
 qa:
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
-		flake8 --max-complexity 10 doc src setup.py && \
+		flake8 --max-complexity 9 demos doc src setup.py && \
 		pep8 doc src setup.py ; \
 	fi
 

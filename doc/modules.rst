@@ -7,12 +7,6 @@ wheezy.core
 .. automodule:: wheezy.core
    :members:
 
-wheezy.core.db
---------------
-
-.. automodule:: wheezy.core.db
-   :members:
-
 wheezy.core.benchmark
 -----------------------
 
@@ -35,6 +29,12 @@ wheezy.core.datetime
 --------------------
 
 .. automodule:: wheezy.core.datetime
+   :members:
+
+wheezy.core.db
+--------------
+
+.. automodule:: wheezy.core.db
    :members:
 
 wheezy.core.descriptors
@@ -71,6 +71,12 @@ wheezy.core.luhn
 ----------------
 
 .. automodule:: wheezy.core.luhn
+   :members:
+
+wheezy.core.mail
+----------------
+
+.. automodule:: wheezy.core.mail
    :members:
 
 wheezy.core.pooling

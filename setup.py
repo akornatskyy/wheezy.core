@@ -48,8 +48,8 @@ setup(
         'Topic :: Software Development :: Localization',
         'Topic :: System :: Benchmark'
     ],
-    keywords='core collections config datetime descriptor i18n '
-             'introspection url uuid',
+    keywords='core benchmark collections config datetime db descriptor '
+             'feistel i18n introspection json luhn mail pooling url uuid',
     packages=['wheezy', 'wheezy.core'],
     package_dir={'': 'src'},
     namespace_packages=['wheezy'],
