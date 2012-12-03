@@ -52,7 +52,23 @@ else:
                 def bar(self):
                     pass
 
-            assert looks(Foo).like(IFoo, ignore_funcs='foo')
+            assert looks(Foo).like(IFoo, ignore_funcs=['foo'])
+
+        def test_redundant_ignore(self):
+            """ Tests function is set to be ignored but it is not found.
+            """
+            from wheezy.core.introspection import looks
+
+            class IFoo(object):
+                def bar(self):
+                    pass
+
+            class Foo(object):
+                def bar(self):
+                    pass
+
+            assert not looks(Foo).like(IFoo, ignore_funcs=['foo'])
+            self.assert_warning("'foo': redundant ignore.")
 
         def test_args(self):
             """ Tests if there any function args corresponds.

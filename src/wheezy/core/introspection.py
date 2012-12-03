@@ -46,8 +46,13 @@ class looks(object):
         notice = notice or []
         ignore_funcs = ignore_funcs or []
         ignore_argspec = ignore_argspec or []
+        basis = declarations(cls, notice=notice)
         contestee = declarations(self.cls, notice=notice)
-        for name, t in declarations(cls, notice=notice).items():
+        for name in ignore_funcs:
+            if name not in basis:
+                warn("'%s': redundant ignore." % name)
+                return False
+        for name, t in basis.items():
             if name in ignore_funcs:
                 continue
             if name not in contestee:
