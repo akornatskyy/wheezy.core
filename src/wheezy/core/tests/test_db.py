@@ -357,6 +357,7 @@ class NullTPCSessionTestCase(unittest.TestCase):
         """
         self.session.__enter__()
         self.session.enlist('x')
+        self.session.enlist('y')
 
     def test_commit_raise_error(self):
         """ If session is not entered raise error.

@@ -115,6 +115,7 @@ class TPCSession(object):
     def enlist(self, session):
         """ Begins a TPC transaction with the given session.
         """
+        assert session
         assert self.status != SESSION_STATUS_IDLE
         self.enlised_sessions.append(session)
         session.__enter__()
@@ -206,7 +207,7 @@ class NullTPCSession(object):
         """ Ensure session is entered.
         """
         assert session
-        assert self.status == SESSION_STATUS_ENTERED
+        assert self.status != SESSION_STATUS_IDLE
         self.status = SESSION_STATUS_ACTIVE
 
     def commit(self):
