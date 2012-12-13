@@ -12,19 +12,34 @@ from wheezy.core.comp import ntob
 try:
     from email.charset import CHARSETS
     from email.encoders import encode_base64
+    from email.header import Header
     from email.message import Message
+    from email.utils import formataddr
     from email.utils import formatdate
     from email.utils import make_msgid
 except ImportError:  # pragma: nocover, python2.4
     from email.Charset import CHARSETS  # noqa
     from email.Encoders import encode_base64  # noqa
+    from email.Header import Header
     from email.Message import Message  # noqa
+    from email.Utils import formataddr  # noqa
     from email.Utils import formatdate  # noqa
     from email.Utils import make_msgid  # noqa
 
 
 # Do not apply Base64 encoding to utf-8 messages
 CHARSETS['utf-8'] = (3, None, 'utf-8')
+
+
+def mail_address(addr, name=None, charset='utf8'):
+    """ Returns mail address formatted string.
+    """
+    try:
+        addr.encode('us-ascii')
+    except UnicodeEncodeError:
+        addr = '@'.join([p.encode('idna').decode('us-ascii')
+                         for p in addr.split('@', 1)])
+    return name and formataddr((mime_header(name, charset), addr)) or addr
 
 
 class MailMessage(object):
@@ -70,7 +85,6 @@ class Attachment(object):
         """ Creates an attachment from file.
         """
         ignore, name = path_split(path)
-        print(open.__module__)
         f = open(path, 'rb')
         try:
             return cls(name, f.read())
@@ -161,7 +175,8 @@ class SMTPClient(object):
 # region: internal details
 
 def mime(message):
-    m = mime_part(message.content, message.content_type, message.charset)
+    charset = message.charset
+    m = mime_part(message.content, message.content_type, charset)
     subparts = message.content and [m] or []
     if message.alternatives:
         subparts += [mime_alternative(a) for a in message.alternatives]
@@ -185,6 +200,15 @@ def mime(message):
     if message.reply_to_addrs:
         m['Reply-To'] = ', '.join(message.reply_to_addrs)
     return m
+
+
+def mime_header(value, charset):
+    try:
+        value.encode('us-ascii')
+    except UnicodeEncodeError:
+        return Header(value, charset).encode()
+    else:
+        return value
 
 
 def mime_part(content, content_type, content_charset=None):

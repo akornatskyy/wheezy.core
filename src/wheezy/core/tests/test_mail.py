@@ -81,6 +81,41 @@ class MiscTestCase(unittest.TestCase):
         assert 'application/octet-stream' == r.content_type
 
 
+class MailAddressTestCase(unittest.TestCase):
+
+    def test_mail_and_name(self):
+        """ Name or mail are ascii valid.
+        """
+        from wheezy.core.mail import mail_address
+        assert 'someone@dev.local' == mail_address('someone@dev.local')
+        assert 'Someone <someone@dev.local>' == mail_address(
+            'someone@dev.local', 'Someone')
+        assert '=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>' == mail_address(
+            'x@dev.local',
+            '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
+                'unicode_escape'))
+
+    def test_idna(self):
+        """ IDNA mail
+        """
+        from wheezy.core.mail import mail_address
+        mail = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@dev.local'.decode(
+            'unicode_escape')
+        assert 'xn--b1agh1afp@dev.local' == mail_address(mail)
+        assert '=?utf-8?b?0L/RgNC40LLQtdGC?= <xn--b1agh1afp@dev.local>' == \
+            mail_address(
+                mail,
+                '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
+                    'unicode_escape'))
+        mail = 'x@\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443'.decode(
+            'unicode_escape')
+        assert 'x@xn--80a1acny.xn--p1ag' == mail_address(mail)
+        mail = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@' \
+               '\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443'.decode(
+                   'unicode_escape')
+        assert 'xn--b1agh1afp@xn--80a1acny.xn--p1ag' == mail_address(mail)
+
+
 class SMTPClientTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -253,6 +288,23 @@ class MIMETestCase(unittest.TestCase):
         subparts = subparts[0].get_payload()
         assert 'c' == subparts[0].get_payload()
         assert 'al' == subparts[1].get_payload()
+
+
+class MimeHeaderTestCase(unittest.TestCase):
+
+    def test_ascii(self):
+        """ Value is ascii valid.
+        """
+        from wheezy.core.mail import mime_header
+        assert 'x' == mime_header('x', 'ascii')
+
+    def test_encode(self):
+        """ Value is not ascii valid.
+        """
+        from wheezy.core.mail import mime_header
+        value = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
+            'unicode_escape')
+        assert '=?utf-8?b?0L/RgNC40LLQtdGC?=' == mime_header(value, 'utf-8')
 
 
 class MIMEPartsTestCase(unittest.TestCase):
