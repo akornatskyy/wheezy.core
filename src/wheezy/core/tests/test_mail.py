@@ -92,27 +92,27 @@ class MailAddressTestCase(unittest.TestCase):
             'someone@dev.local', 'Someone')
         assert '=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>' == mail_address(
             'x@dev.local',
-            '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
-                'unicode_escape'))
+            b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442').decode(
+                'unicode_escape')).replace('utf8', 'utf-8')
 
     def test_idna(self):
         """ IDNA mail
         """
         from wheezy.core.mail import mail_address
-        mail = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@dev.local'.decode(
-            'unicode_escape')
+        mail = b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@dev.local'
+                 ).decode('unicode_escape')
         assert 'xn--b1agh1afp@dev.local' == mail_address(mail)
         assert '=?utf-8?b?0L/RgNC40LLQtdGC?= <xn--b1agh1afp@dev.local>' == \
             mail_address(
                 mail,
-                '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
-                    'unicode_escape'))
-        mail = 'x@\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443'.decode(
-            'unicode_escape')
+                b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442').decode(
+                    'unicode_escape')).replace('utf8', 'utf-8')
+        mail = b('x@\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443'
+                 ).decode('unicode_escape')
         assert 'x@xn--80a1acny.xn--p1ag' == mail_address(mail)
-        mail = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@' \
-               '\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443'.decode(
-                   'unicode_escape')
+        mail = b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@'
+                 '\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443').decode(
+                     'unicode_escape')
         assert 'xn--b1agh1afp@xn--80a1acny.xn--p1ag' == mail_address(mail)
 
 
@@ -302,7 +302,7 @@ class MimeHeaderTestCase(unittest.TestCase):
         """ Value is not ascii valid.
         """
         from wheezy.core.mail import mime_header
-        value = '\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442'.decode(
+        value = b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442').decode(
             'unicode_escape')
         assert '=?utf-8?b?0L/RgNC40LLQtdGC?=' == mime_header(value, 'utf-8')
 
