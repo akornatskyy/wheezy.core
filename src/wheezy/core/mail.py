@@ -146,8 +146,10 @@ class SMTPClient(object):
         content = ntob(mime(message).as_string(), message.charset)
         # keep connection scope minimal
         client = self.connect()
-        client.sendmail(message.from_addr, recepients, content)
-        client.quit()
+        try:
+            client.sendmail(message.from_addr, recepients, content)
+        finally:
+            client.quit()
 
     def send_multi(self, messages):
         """ Sends multiple mail messages.
@@ -157,9 +159,11 @@ class SMTPClient(object):
                 for message in messages]
         # keep connection scope minimal
         client = self.connect()
-        for arg in args:
-            client.sendmail(*arg)
-        client.quit()
+        try:
+            for arg in args:
+                client.sendmail(*arg)
+        finally:
+            client.quit()
 
     def connect(self):
         smtp = SMTP()
