@@ -13,6 +13,7 @@ PY3 = PY_MAJOR >= 3
 
 if PY3:  # pragma: nocover
     from queue import Queue
+    from queue import LifoQueue
     xrange = range
     str_type = str
 
@@ -30,6 +31,23 @@ if PY3:  # pragma: nocover
 
 else:  # pragma: nocover
     from Queue import Queue  # noqa
+    try:
+        from Queue import LifoQueue  # noqa
+    except ImportError:
+        class LifoQueue(Queue):  # noqa
+            def _init(self, maxsize):
+                self.queue = []
+                self.maxsize = maxsize
+
+            def _qsize(self, len=len):
+                return len(self.queue)
+
+            def _put(self, item):
+                self.queue.append(item)
+
+            def _get(self):
+                return self.queue.pop()
+    xrange = range
     xrange = xrange
     str_type = unicode
 

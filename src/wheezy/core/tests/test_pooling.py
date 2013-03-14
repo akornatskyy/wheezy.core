@@ -42,6 +42,20 @@ class EagerPoolTestCase(unittest.TestCase):
         assert pool.size == 10
         assert pool.count == 10
 
+    def test_fifo(self):
+        """ Pool items are FIFO cycled.
+        """
+        from wheezy.core.pooling import EagerPool
+        items = [3, 2, 1]
+
+        def create_factory():
+            return items.pop()
+        pool = EagerPool(create_factory, 3)
+
+        assert 1 == pool.acquire()
+        pool.get_back(1)
+        assert 2 == pool.acquire()
+
 
 class LazyPoolTestCase(unittest.TestCase):
 
@@ -77,6 +91,20 @@ class LazyPoolTestCase(unittest.TestCase):
 
         assert pool.size == 10
         assert pool.count == 10
+
+    def test_lifo(self):
+        """ Pool items are LIFO cycled.
+        """
+        from wheezy.core.pooling import LazyPool
+        items = [3, 2, 1]
+
+        def create_factory(i):
+            return i or items.pop()
+        pool = LazyPool(create_factory, 3)
+
+        assert 1 == pool.acquire()
+        pool.get_back(1)
+        assert 1 == pool.acquire()
 
 
 class PooledTestCase(unittest.TestCase):

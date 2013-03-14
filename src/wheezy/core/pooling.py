@@ -2,6 +2,7 @@
 """ ``pooling`` module.
 """
 
+from wheezy.core.comp import LifoQueue
 from wheezy.core.comp import Queue
 from wheezy.core.comp import xrange
 
@@ -40,7 +41,7 @@ class LazyPool(object):
             this allows control `item` status before returning.
         """
         self.size = size
-        items = Queue(size)
+        items = LifoQueue(size)
         for i in xrange(size):
             items.put(None)
         self.__items = items
