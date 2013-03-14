@@ -20,7 +20,7 @@ try:
 except ImportError:  # pragma: nocover, python2.4
     from email.Charset import CHARSETS  # noqa
     from email.Encoders import encode_base64  # noqa
-    from email.Header import Header
+    from email.Header import Header  # noqa
     from email.Message import Message  # noqa
     from email.Utils import formataddr  # noqa
     from email.Utils import formatdate  # noqa
