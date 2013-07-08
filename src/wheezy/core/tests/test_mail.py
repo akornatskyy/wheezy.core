@@ -111,8 +111,8 @@ class MailAddressTestCase(unittest.TestCase):
                  ).decode('unicode_escape')
         assert 'x@xn--80a1acny.xn--p1ag' == mail_address(mail)
         mail = b('\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442@'
-                 '\\u043f\\u043e\\u0447\\u0442\\u0430.\\u0440\\u0443').decode(
-                     'unicode_escape')
+                 '\\u043f\\u043e\\u0447\\u0442\\u0430.'
+                 '\\u0440\\u0443').decode('unicode_escape')
         assert 'xn--b1agh1afp@xn--80a1acny.xn--p1ag' == mail_address(mail)
 
 
