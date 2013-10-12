@@ -43,12 +43,12 @@ Sample output::
       100.0%     839rps  +0.0% test_home
        96.2%     807rps  +3.9% test_about
 
-Each of test cases has been run 1000 times. It shows productivity gain
-from first test case (it serves baseline purpose for others), throughput
+Each of the test cases has been run 1000 times. The shows productivity 
+relative to the first test case (which serves as a baseline for other tests), throughput
 in requests per second, change from ``baselines`` argument passed to
 ``report`` method and target being benchmarked.
 
-Report is being printed as results are available.
+Reports are being printed as soon as results are available.
 
 collections
 -----------
@@ -86,8 +86,8 @@ config
 
 :py:class:`~wheezy.core.config.Config` -  promotes ``options`` dict to
 attributes. If an option can not be found in ``options``, tries to get it
-from ``master``. ``master`` must have a requested option otherwise raises
-error::
+from ``master``. ``master`` must have a requested option otherwise an
+error is raised::
 
     m = {'DEBUG': False}
     c = Config(options={'DEBUG': True}, master=m)
@@ -130,9 +130,9 @@ Functions:
 i18n
 ----
 
-Internationalisation is a process of adapting application to different
+Internationalisation is the process of adapting an application to different
 languages, regional differences and technical requirements.
-Internationalization is the process of designing a software application so
+Internationalization of software is  designing an application so
 that it can be adapted to various languages and regions without engineering
 changes.
 
@@ -146,11 +146,11 @@ languages and domains from the given directory (typically it is ``i18n``
 directory within our application root directory).
 
 Translations directory structure must follow ``gettext`` requirements (this
-this how it looks below ``i18n`` directory)::
+is how it looks up data  below  the ``i18n`` directory)::
 
     {localedir}/{lang}/LC_MESSAGES/{domain}.mo
 
-In order to generate .mo file from .po file::
+In order to generate a .mo file from a .po file::
 
     $ msgfmt domain.po
 
@@ -160,9 +160,9 @@ arguments in initialization:
 * ``directories`` - a list of directories that holds translations.
 * ``default_lang`` - a default language in translations. Defaults to ``en``.
 
-:py:class:`~wheezy.core.i18n.TranslationsManager` supports fallback mechanism.
+:py:class:`~wheezy.core.i18n.TranslationsManager` supports a fallback mechanism.
 You can use :py:meth:`~wheezy.core.i18n.TranslationsManager.add_fallback`
-to adds fallback languages.
+to add fallback languages.
 
     >>> from wheezy.core.i18n import TranslationsManager
     >>> tm = TranslationsManager(['i18n'], default_lang='en')
@@ -170,7 +170,7 @@ to adds fallback languages.
     >>> tm.fallbacks
     {'uk': ('uk', 'ru', 'en')}
 
-Default language is always appended to the fallback list.
+The default language is always appended to the fallback list.
 
 :py:class:`~wheezy.core.i18n.TranslationsManager` supports dictionary access
 that accepts a language code as a key. So the following represents all
@@ -181,7 +181,7 @@ translations related to ``en`` language code::
 ``lang`` is an instance of
 :py:class:`~wheezy.core.collections.defaultattrdict` where attributes
 correspond to translation file (translation domain), if it is not available
-fallback to an instance of ``gettext.NullTranslations``::
+there is fallback to an instance of ``gettext.NullTranslations``::
 
     assert 'Hello' == lang.messages.gettext('hello')
 
@@ -195,23 +195,23 @@ Type introspection is a capability to determine the type of an object at
 runtime.
 
 :py:meth:`~wheezy.core.introspection.import_name` - dynamically imports
-object by its full name. The following two imports are equivalent::
+an object by its full name. The following two imports are equivalent::
 
     from datetime import timedelta
     import_name('datetime.timedelta')
 
-:py:meth:`~wheezy.core.introspection.import_name` let you introduce lazy
+:py:meth:`~wheezy.core.introspection.import_name` lets you introduce lazy
 imports into your application.
 
 json
 ----
 
-Extends standard ``json`` module from Python2.6 and ``simplejson`` for
+Extends the standard ``json`` module from Python2.6  and ``simplejson`` for
 Python2.5 with support for ``date``, ``datetime``, ``time`` and ``Decimal``
 types.
 
 * :py:meth:`~wheezy.core.json.json_encode` encodes ``obj`` as a JSON formatted
-  string. correctly escapes forward slash to be able embed javascript code.
+  string. Correctly escapes forward slashes to be able to embed javascript code.
   Decimal objects are converted to string (same applies when used with 
   ``simplejson``).
 * :py:meth:`~wheezy.core.json.json_decode` decodes a JSON document to a Python
@@ -239,8 +239,8 @@ length 6. There are the following methods:
 * ``join(other)`` - joins with another ``UrlParts`` instance by taking
   none-empty values from ``other``. Returns new ``UrlParts`` instance.
 
-There is factory function :py:meth:`~wheezy.core.url.urlparts` for
-:py:class:`~wheezy.core.url.UrlParts` that let you create an instance of
+There is a factory function :py:meth:`~wheezy.core.url.urlparts` for
+:py:class:`~wheezy.core.url.UrlParts`, that let you create an instance of
 :py:class:`~wheezy.core.url.UrlParts` with partial content.
 
 uuid
@@ -250,20 +250,20 @@ A universally unique identifier (UUID) is an identifier that enable
 distributed systems to uniquely identify information without significant
 central coordination. A UUID is a 16-byte (128-bit) number.
 
-There are the following functions available:
+The following functions available:
 
 * :py:meth:`~wheezy.core.uuid.shrink_uuid` - returns base64 representation
-  of ``uuid``::
+  of a ``uuid``::
 
     >>> shrink_uuid(UUID('a4af2f54-e988-4f5c-bfd6-351c79299b74'))
     'pK8vVOmIT1y_1jUceSmbdA'
 
-* :py:meth:`~wheezy.core.uuid.parse_uuid` - decodes base64 string to ``uuid``::
+* :py:meth:`~wheezy.core.uuid.parse_uuid` - decodes a base64 string to ``uuid``::
 
     >>> parse_uuid('pK8vVOmIT1y_1jUceSmbdA')
     UUID('a4af2f54-e988-4f5c-bfd6-351c79299b74')
 
-There is also defined module attribute ``UUID_EMPTY`` that is just an
+There is also a module attribute ``UUID_EMPTY`` defined, that is just an
 instance of UUID ``'00000000-0000-0000-0000-000000000000'``.
 
 
