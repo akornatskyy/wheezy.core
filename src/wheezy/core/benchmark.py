@@ -37,9 +37,9 @@ class Benchmark(object):
         ...     pass
         >>> def test_2():
         ...     pass
-        >>> b = Benchmark((test_1, test_2), 1000)
+        >>> b = Benchmark((test_1, test_2), 10)
         >>> b.report() # doctest: +ELLIPSIS
-        noname: 2 x 1000
+        noname: 2 x 10
         baseline throughput change target
           100.0% ...rps  +0.0% test_1
         ...% ...rps ...% test_2
@@ -85,6 +85,9 @@ class Benchmark(object):
         print("%s %s %s %s" % ("baseline", "throughput", "change", "target"))
         base = None
         for (name, result) in self.run():
+            if not result:
+                print('     - %      - rps    - % ' + name)
+                continue
             if base is None:
                 base = result
             base_relative = round(base / result, 3)
@@ -98,18 +101,6 @@ class Benchmark(object):
 class Timer(object):
     """ Intercept a call to given method in order to compute
         timing.
-
-        >>> class A(object):
-        ...     def test(self):
-        ...         pass
-        >>> a = A()
-        >>> def test():
-        ...     a.test()
-        >>> b = Benchmark((test, ), 1000, timer=Timer(a, 'test'))
-        >>> b.report() # doctest: +ELLIPSIS
-        noname: 1 x 1000
-        baseline throughput change target
-          100.0% ...rps  +0.0% test
     """
 
     def __init__(self, target, name):
