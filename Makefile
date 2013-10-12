@@ -9,7 +9,7 @@ PYTHON=env/bin/python$(VERSION)
 EASY_INSTALL=env/bin/easy_install-$(VERSION)
 PYTEST=env/bin/py.test-$(VERSION)
 NOSE=env/bin/nosetests-$(VERSION)
-SPHINX=/usr/bin/python /usr/bin/sphinx-build
+SPHINX=env/bin/python$(VERSION) env/bin/sphinx-build
 
 all: clean po doctest-cover test release
 
@@ -23,10 +23,13 @@ debian:
 		python-sphinx mercurial gettext
 
 env:
-	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
+	PYTHON_EXE=/usr/local/bin/python$(VERSION) ; \
 	if [ ! -x $$PYTHON_EXE ]; then \
-		PYTHON_EXE=/usr/bin/python$(VERSION); \
-	fi;\
+		PYTHON_EXE=/opt/local/bin/python$(VERSION) ; \
+		if [ ! -x $$PYTHON_EXE ]; then \
+			PYTHON_EXE=/usr/bin/python$(VERSION) ; \
+		fi ; \
+	fi ; \
 	VIRTUALENV_USE_SETUPTOOLS=1; \
     export VIRTUALENV_USE_SETUPTOOLS; \
 	virtualenv --python=$$PYTHON_EXE \
@@ -48,7 +51,7 @@ env:
 clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
-	find src/ -name '*.mo' -delete
+	find src/wheezy/core/tests/i18n/ -name '*.mo' -delete
 	rm -rf dist/ build/ MANIFEST src/*.egg-info .cache .coverage
 
 release:
@@ -72,8 +75,8 @@ upload:
 
 qa:
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
-		flake8 --max-complexity 9 demos doc src setup.py && \
-		pep8 doc src setup.py ; \
+		env/bin/flake8 --max-complexity 9 demos doc src setup.py && \
+		env/bin/pep8 doc src setup.py ; \
 	fi
 
 test:
@@ -96,8 +99,9 @@ test-demos:
 	$(PYTEST) -q -x --pep8 demos/
 
 po:
-	for l in `ls --hide *.po src/wheezy/core/tests/i18n`; do \
-		echo -n "$$l => "; \
-		msgfmt -v src/wheezy/core/tests/i18n/$$l/LC_MESSAGES/messages.po \
-			-o src/wheezy/core/tests/i18n/$$l/LC_MESSAGES/messages.mo; \
+	cd src/wheezy/core/tests ; \
+	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
+		/bin/echo -n "$$l => "; \
+		msgfmt -v i18n/$$l/LC_MESSAGES/messages.po \
+			-o i18n/$$l/LC_MESSAGES/messages.mo; \
 	done
