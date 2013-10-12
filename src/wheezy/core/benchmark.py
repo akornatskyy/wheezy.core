@@ -32,17 +32,6 @@ else:  # pragma: nocover
 
 class Benchmark(object):
     """ Measure execution time of your code.
-
-        >>> def test_1():
-        ...     pass
-        >>> def test_2():
-        ...     pass
-        >>> b = Benchmark((test_1, test_2), 10)
-        >>> b.report() # doctest: +ELLIPSIS
-        noname: 2 x 10
-        baseline throughput change target
-          100.0% ...rps  +0.0% test_1
-        ...% ...rps ...% test_2
     """
 
     def __init__(self, targets, number, warmup_number=None, timer=None):
