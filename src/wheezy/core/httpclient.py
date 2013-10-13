@@ -22,7 +22,7 @@ class HTTPClient(object):
         r = urlparse(url)
         self.connection = HTTPConnection(r[1])  # netloc
         self.default_headers = headers and headers or {}
-        self.path = r.path
+        self.path = r[2]  # path
         self.method = None
         self.headers = None
         self.cookies = {}
