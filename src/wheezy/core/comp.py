@@ -117,9 +117,20 @@ except ImportError:  # pragma: nocover
     parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")  # noqa
 
 if PY3:  # pragma: nocover
+    from http.cookies import SimpleCookie
+else:  # pragma: nocover
+    from Cookie import SimpleCookie  # noqa
+
+if PY3:  # pragma: nocover
+    from urllib.parse import urlencode
+    from urllib.parse import urljoin
+    from urllib.parse import urlparse
     from urllib.parse import urlsplit
     from urllib.parse import urlunsplit
 else:  # pragma: nocover
+    from urllib import urlencode  # noqa
+    from urlparse import urljoin  # noqa
+    from urlparse import urlparse  # noqa
     from urlparse import urlsplit  # noqa
     from urlparse import urlunsplit  # noqa
 
@@ -150,3 +161,12 @@ else:  # pragma: nocover
 
         def json_loads(s, **kw):  # noqa
             raise NotImplementedError('JSON decoder is required.')
+
+
+if PY3 and PY_MINOR >= 3:  # pragma: nocover
+    from decimal import Decimal
+else:  # pragma: nocover
+    try:
+        from cdecimal import Decimal  # noqa
+    except ImportError:
+        from decimal import Decimal  # noqa
