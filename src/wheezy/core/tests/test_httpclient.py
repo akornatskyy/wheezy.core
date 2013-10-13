@@ -115,9 +115,14 @@ class HTTPClientTestCase(unittest.TestCase):
     def test_json(self):
         """ json response.
         """
+        from wheezy.core import httpclient
         from wheezy.core.comp import ntob
+        patcher = patch.object(httpclient, 'json_loads')
+        mock_json_loads = patcher.start()
+        mock_json_loads.return_value = {}
         self.headers.append(('content-type',
                              'application/json; charset=UTF-8'))
         self.mock_response.read.return_value = ntob('{}', 'utf-8')
         self.client.get('auth/token')
         assert {} == self.client.json
+        patcher.stop()

@@ -1,11 +1,10 @@
 """
 """
 
-from httplib import HTTPConnection
-
 from wheezy.core.collections import attrdict
 from wheezy.core.collections import defaultdict
 from wheezy.core.comp import Decimal
+from wheezy.core.comp import HTTPConnection
 from wheezy.core.comp import SimpleCookie
 from wheezy.core.comp import json_loads
 from wheezy.core.comp import urlencode
@@ -21,7 +20,7 @@ class HTTPClient(object):
             application specific use cases, e.g. remote web server API, etc.
         """
         r = urlparse(url)
-        self.connection = HTTPConnection(r.netloc)
+        self.connection = HTTPConnection(r[1])  # netloc
         self.default_headers = headers and headers or {}
         self.path = r.path
         self.method = None
