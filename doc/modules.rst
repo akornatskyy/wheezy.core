@@ -49,6 +49,12 @@ wheezy.core.feistel
 .. automodule:: wheezy.core.feistel
    :members:
 
+wheezy.core.httpclient
+----------------------
+
+.. automodule:: wheezy.core.httpclient
+   :members:
+
 wheezy.core.i18n
 ----------------
 
