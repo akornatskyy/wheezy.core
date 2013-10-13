@@ -70,12 +70,11 @@ class HTTPClientTestCase(unittest.TestCase):
     def test_post(self):
         self.client.post('auth/token', params={
             'a': ['1'],
-            'b': ['2']
         })
         method, path, body, headers = self.mock_c.request.call_args[0]
         assert 'POST' == method
         assert '/api/v1/auth/token' == path
-        assert 'a=1&b=2' == body
+        assert 'a=1' == body
         assert 'application/x-www-form-urlencoded' == headers['Content-Type']
 
     def test_ajax_post(self):
