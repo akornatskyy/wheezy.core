@@ -35,7 +35,7 @@ env:
 	virtualenv --python=$$PYTHON_EXE \
 		--no-site-packages env
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -ge 30 ]; then \
-		echo -n 'Upgrading distribute...'; \
+		/bin/echo -n 'Upgrading distribute...'; \
 		$(EASY_INSTALL) -i $(PYPI) -U -O2 distribute \
 			> /dev/null 2>/dev/null; \
 		echo 'done.'; \
