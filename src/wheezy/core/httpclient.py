@@ -14,10 +14,14 @@ from wheezy.core.comp import urlsplit
 
 
 class HTTPClient(object):
+    """ HTTP client sends HTTP requests to server in order to accomplish
+        an application specific use cases, e.g. remote web server API, etc.
+    """
 
     def __init__(self, url, headers=None):
-        """ HTTP client sends HTTP requests to server in order to accomplish
-            application specific use cases, e.g. remote web server API, etc.
+        """
+            `url` - a base url for interaction with remote server.
+            `headers` - a dictionary of headers.
         """
         r = urlparse(url)
         self.connection = HTTPConnection(r[1])  # netloc

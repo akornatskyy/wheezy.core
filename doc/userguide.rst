@@ -43,7 +43,7 @@ Sample output::
       100.0%     839rps  +0.0% test_home
        96.2%     807rps  +3.9% test_about
 
-Each of the test cases has been run 1000 times. The shows productivity 
+Each of the test cases has been run 1000 times. The shows productivity
 relative to the first test case (which serves as a baseline for other tests), throughput
 in requests per second, change from ``baselines`` argument passed to
 ``report`` method and target being benchmarked.
@@ -126,6 +126,21 @@ Functions:
 
     >>> total_seconds(timedelta(hours=2))
     7200
+
+httpclient
+----------
+
+:py:class:`~wheezy.core.httpclient.HTTPClient` sends HTTP requests to a
+server in order to accomplish an application specific use cases,
+e.g. remote web server API, etc::
+
+    >>> from wheezy.core.httpclient import HTTPClient
+    >>> client = HTTPClient('http://buildbot.buildbot.net/json/')
+    >>> client.get('project')
+    200
+    >>> project = client.json
+    >>>> str(project.title)
+    Buildbot
 
 i18n
 ----
@@ -212,7 +227,7 @@ types.
 
 * :py:meth:`~wheezy.core.json.json_encode` encodes ``obj`` as a JSON formatted
   string. Correctly escapes forward slashes to be able to embed javascript code.
-  Decimal objects are converted to string (same applies when used with 
+  Decimal objects are converted to string (same applies when used with
   ``simplejson``).
 * :py:meth:`~wheezy.core.json.json_decode` decodes a JSON document to a Python
   object. Float is parsed as Decimal.
