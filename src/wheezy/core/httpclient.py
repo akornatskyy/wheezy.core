@@ -109,6 +109,7 @@ class HTTPClient(object):
         self.content = None
         self.__json = None
 
+        self.connection.connect()
         self.connection.request(method, path, body, headers)
         r = self.connection.getresponse()
         self.content = r.read().decode('utf-8')

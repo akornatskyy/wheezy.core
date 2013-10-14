@@ -43,6 +43,7 @@ class HTTPClientTestCase(unittest.TestCase):
     def test_get(self):
         self.mock_response.status = 200
         assert 200 == self.client.get('auth/token')
+        assert self.mock_c.connect.called
         assert self.mock_c.request.called
         method, path, body, headers = self.mock_c.request.call_args[0]
         assert 'GET' == method
