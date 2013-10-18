@@ -52,7 +52,12 @@ class LazyPool(object):
         """ Return an item from pool. Blocks until an item
             is available.
         """
-        return self.create_factory(self.__items.get())
+        item = self.__items.get()
+        try:
+            return self.create_factory(item)
+        except:
+            self.get_back(item)
+            raise
 
     @property
     def count(self):

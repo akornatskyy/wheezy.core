@@ -80,6 +80,18 @@ class LazyPoolTestCase(unittest.TestCase):
         assert pool.size == 10
         assert pool.count == 9
 
+    def test_acquire_error(self):
+        """ If an error has occurred during acquire then get back
+            an item to pool and re-raise error.
+        """
+        from wheezy.core.pooling import LazyPool
+        mock_create_factory = Mock(side_effect=Exception())
+        pool = LazyPool(mock_create_factory, 2)
+
+        self.assertRaises(Exception, pool.acquire)
+        assert pool.size == 2
+        assert pool.count == 2
+
     def test_get_back(self):
         """ An item is returned back to pool.
         """
