@@ -177,7 +177,7 @@ else:  # pragma: nocover
 
 GzipFile = __import__('gzip', None, None, ['GzipFile']).GzipFile
 
-if PY2 and PY_MINOR < 7:
+if PY2 and PY_MINOR < 7:  # pragma: nocover
     __saved_GzipFile__ = GzipFile
 
     def GzipFile(filename=None, mode=None, compresslevel=9,
