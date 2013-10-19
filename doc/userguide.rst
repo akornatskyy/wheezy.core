@@ -142,15 +142,27 @@ server in order to accomplish an application specific use cases,
 e.g. remote web server API, etc::
 
     >>> from wheezy.core.httpclient import HTTPClient
-    >>> client = HTTPClient('http://buildbot.buildbot.net/json/')
-    >>> client.get('project')
+    >>> c = HTTPClient('http://buildbot.buildbot.net/json/')
+    >>> c.get('project')
     200
-    >>> project = client.json
+    >>> project = c.json
     >>>> str(project.title)
     Buildbot
 
-Supports: HTTP(S) GET/HEAD/POST verbs, follows redirects, handles cookies
-between requests, gzip content encoding.
+Here is another example that demonstarates etag handling (the
+second time we request events the server responds with HTTP
+status code 304, not modified)::
+
+    >>> c = HTTPClient('https://api.github.com/repos/python/cpython/')
+    >>> c.get('events')
+    200
+    >>> c.headers['content-encoding']
+    ['gzip']
+    >>> c.get('events')
+    304
+
+Supports: HTTP(S) GET/HEAD/POST verbs, follows redirects, handles cookies and
+etags between requests, gzip content encoding.
 
 i18n
 ----

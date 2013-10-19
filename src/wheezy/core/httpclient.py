@@ -33,6 +33,7 @@ class HTTPClient(object):
         self.method = None
         self.headers = None
         self.cookies = {}
+        self.etags = {}
         self.status_code = 0
         self.body = None
         self.__content = None
@@ -109,6 +110,8 @@ class HTTPClient(object):
             headers['Cookie'] = '; '.join(
                 '%s=%s' % cookie for cookie in self.cookies.items())
         path = urljoin(self.path, path)
+        if path in self.etags:
+            headers['If-None-Match'] = self.etags[path]
         body = ''
         if params:
             if method == 'GET':
@@ -132,14 +135,30 @@ class HTTPClient(object):
         self.headers = defaultdict(list)
         for name, value in r.getheaders():
             self.headers[name].append(value)
-        if 'gzip' in self.headers['content-encoding']:
-            self.body = decompress(self.body)
-        for cookie_string in self.headers['set-cookie']:
-            cookies = SimpleCookie(cookie_string)
-            for name in cookies:
-                value = cookies[name].value
-                if value:
-                    self.cookies[name] = value
-                elif name in self.cookies:
-                    del self.cookies[name]
+
+        self.process_content_encoding()
+        self.process_etag(path)
+        self.process_cookies()
         return self.status_code
+
+    # region: internal details
+
+    def process_content_encoding(self):
+        if 'content-encoding' in self.headers \
+                and 'gzip' in self.headers['content-encoding']:
+            self.body = decompress(self.body)
+
+    def process_etag(self, path):
+        if 'etag' in self.headers:
+            self.etags[path] = self.headers['etag'][-1]
+
+    def process_cookies(self):
+        if 'set-cookie' in self.headers:
+            for cookie_string in self.headers['set-cookie']:
+                cookies = SimpleCookie(cookie_string)
+                for name in cookies:
+                    value = cookies[name].value
+                    if value:
+                        self.cookies[name] = value
+                    elif name in self.cookies:
+                        del self.cookies[name]

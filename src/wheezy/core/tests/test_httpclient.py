@@ -51,6 +51,7 @@ class HTTPClientTestCase(unittest.TestCase):
         assert '' == body
         assert self.client.default_headers == headers
         assert 'Accept-Encoding' in headers
+        assert 2 == len(headers)
 
     def test_ajax_get(self):
         self.client.ajax_get('auth/token')
@@ -137,3 +138,15 @@ class HTTPClientTestCase(unittest.TestCase):
         self.mock_response.read.return_value = compress(ntob('test', 'utf-8'))
         self.client.get('auth/token')
         assert 'test' == self.client.content
+
+    def test_etag(self):
+        """ ETag processing.
+        """
+        self.headers.append(('etag', '"ca231fbc"'))
+        self.client.get('auth/token')
+        method, path, body, headers = self.mock_c.request.call_args[0]
+        assert 'If-None-Match' not in headers
+        assert '"ca231fbc"' == self.client.etags['/api/v1/auth/token']
+        self.client.get('auth/token')
+        method, path, body, headers = self.mock_c.request.call_args[0]
+        assert '"ca231fbc"' == headers['If-None-Match']
