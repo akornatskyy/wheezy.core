@@ -149,8 +149,8 @@ e.g. remote web server API, etc::
     >>>> str(project.title)
     Buildbot
 
-Supports: HTTP GET/HEAD/POST verbs, follows redirects, handles cookies between
-requests, gzip content encoding.
+Supports: HTTP(S) GET/HEAD/POST verbs, follows redirects, handles cookies
+between requests, gzip content encoding.
 
 i18n
 ----

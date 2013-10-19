@@ -125,16 +125,16 @@ else:  # pragma: nocover
 
 if PY3:  # pragma: nocover
     from http.client import HTTPConnection
+    from http.client import HTTPSConnection
     from urllib.parse import urlencode
     from urllib.parse import urljoin
-    from urllib.parse import urlparse
     from urllib.parse import urlsplit
     from urllib.parse import urlunsplit
 else:  # pragma: nocover
     from httplib import HTTPConnection  # noqa
+    from httplib import HTTPSConnection  # noqa
     from urllib import urlencode  # noqa
     from urlparse import urljoin  # noqa
-    from urlparse import urlparse  # noqa
     from urlparse import urlsplit  # noqa
     from urlparse import urlunsplit  # noqa
 

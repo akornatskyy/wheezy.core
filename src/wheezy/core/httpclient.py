@@ -5,11 +5,11 @@ from wheezy.core.collections import attrdict
 from wheezy.core.collections import defaultdict
 from wheezy.core.comp import Decimal
 from wheezy.core.comp import HTTPConnection
+from wheezy.core.comp import HTTPSConnection
 from wheezy.core.comp import SimpleCookie
 from wheezy.core.comp import json_loads
 from wheezy.core.comp import urlencode
 from wheezy.core.comp import urljoin
-from wheezy.core.comp import urlparse
 from wheezy.core.comp import urlsplit
 from wheezy.core.gzip import decompress
 
@@ -24,11 +24,12 @@ class HTTPClient(object):
             `url` - a base url for interaction with remote server.
             `headers` - a dictionary of headers.
         """
-        r = urlparse(url)
-        self.connection = HTTPConnection(r[1])  # netloc
+        scheme, netloc, path, query, fragment = urlsplit(url)
+        http_class = scheme == 'http' and HTTPConnection or HTTPSConnection
+        self.connection = http_class(netloc)
         self.default_headers = headers and headers or {}
         self.default_headers['Accept-Encoding'] = 'gzip'
-        self.path = r[2]  # path
+        self.path = path
         self.method = None
         self.headers = None
         self.cookies = {}
