@@ -11,6 +11,7 @@ from wheezy.core.comp import urlencode
 from wheezy.core.comp import urljoin
 from wheezy.core.comp import urlparse
 from wheezy.core.comp import urlsplit
+from wheezy.core.gzip import decompress
 
 
 class HTTPClient(object):
@@ -26,13 +27,23 @@ class HTTPClient(object):
         r = urlparse(url)
         self.connection = HTTPConnection(r[1])  # netloc
         self.default_headers = headers and headers or {}
+        self.default_headers['Accept-Encoding'] = 'gzip'
         self.path = r[2]  # path
         self.method = None
         self.headers = None
         self.cookies = {}
         self.status_code = 0
-        self.content = None
+        self.body = None
+        self.__content = None
         self.__json = None
+
+    @property
+    def content(self):
+        """ Returns a content of the response.
+        """
+        if self.__content is None:
+            self.__content = self.body.decode('utf-8')
+        return self.__content
 
     @property
     def json(self):
@@ -106,19 +117,22 @@ class HTTPClient(object):
                 headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
         self.status_code = 0
-        self.content = None
+        self.body = None
+        self.__content = None
         self.__json = None
 
         self.connection.connect()
         self.connection.request(method, path, body, headers)
         r = self.connection.getresponse()
-        self.content = r.read().decode('utf-8')
+        self.body = r.read()
         self.connection.close()
 
         self.status_code = r.status
         self.headers = defaultdict(list)
         for name, value in r.getheaders():
             self.headers[name].append(value)
+        if 'gzip' in self.headers['content-encoding']:
+            self.body = decompress(self.body)
         for cookie_string in self.headers['set-cookie']:
             cookies = SimpleCookie(cookie_string)
             for name in cookies:

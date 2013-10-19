@@ -50,6 +50,7 @@ class HTTPClientTestCase(unittest.TestCase):
         assert '/api/v1/auth/token' == path
         assert '' == body
         assert self.client.default_headers == headers
+        assert 'Accept-Encoding' in headers
 
     def test_ajax_get(self):
         self.client.ajax_get('auth/token')
@@ -126,3 +127,13 @@ class HTTPClientTestCase(unittest.TestCase):
         self.client.get('auth/token')
         assert {} == self.client.json
         patcher.stop()
+
+    def test_gzip(self):
+        """ Ensure gzip decompression.
+        """
+        from wheezy.core.comp import ntob
+        from wheezy.core.gzip import compress
+        self.headers.append(('content-encoding', 'gzip'))
+        self.mock_response.read.return_value = compress(ntob('test', 'utf-8'))
+        self.client.get('auth/token')
+        assert 'test' == self.client.content
