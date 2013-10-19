@@ -2,10 +2,7 @@
 """
 
 from wheezy.core.comp import BytesIO
-from wheezy.core.introspection import import_name
-
-
-GzipFile = import_name('gzip.GzipFile')
+from wheezy.core.comp import GzipFile
 
 
 def compress(data, compresslevel=9):

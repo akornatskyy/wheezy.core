@@ -174,3 +174,13 @@ else:  # pragma: nocover
         from cdecimal import Decimal  # noqa
     except ImportError:
         from decimal import Decimal  # noqa
+
+GzipFile = __import__('gzip', None, None, ['GzipFile']).GzipFile
+
+if PY2 and PY_MINOR < 7:
+    __saved_GzipFile__ = GzipFile
+
+    def GzipFile(filename=None, mode=None, compresslevel=9,
+                 fileobj=None, mtime=None):
+        return __saved_GzipFile__(filename, mode, compresslevel,
+                                  fileobj)
