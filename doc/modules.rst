@@ -49,6 +49,12 @@ wheezy.core.feistel
 .. automodule:: wheezy.core.feistel
    :members:
 
+wheezy.core.gzip
+----------------
+
+.. automodule:: wheezy.core.gzip
+   :members:
+
 wheezy.core.httpclient
 ----------------------
 

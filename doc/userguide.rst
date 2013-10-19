@@ -127,6 +127,13 @@ Functions:
     >>> total_seconds(timedelta(hours=2))
     7200
 
+gzip
+----
+
+One-shot compression and decompression is provided through the
+:py:meth:`~wheezy.core.gzip.compress` and
+:py:meth:`~wheezy.core.gzip.decompress` functions.
+
 httpclient
 ----------
 

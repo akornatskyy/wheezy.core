@@ -12,6 +12,7 @@ PY3 = PY_MAJOR >= 3
 
 
 if PY3:  # pragma: nocover
+    from io import BytesIO
     from queue import Queue
     from queue import LifoQueue
     xrange = range
@@ -30,6 +31,7 @@ if PY3:  # pragma: nocover
     u = lambda s: s
 
 else:  # pragma: nocover
+    from cStringIO import StringIO as BytesIO  # noqa
     from Queue import Queue  # noqa
     try:
         from Queue import LifoQueue  # noqa
@@ -129,7 +131,7 @@ if PY3:  # pragma: nocover
     from urllib.parse import urlsplit
     from urllib.parse import urlunsplit
 else:  # pragma: nocover
-    from httplib import HTTPConnection
+    from httplib import HTTPConnection  # noqa
     from urllib import urlencode  # noqa
     from urlparse import urljoin  # noqa
     from urlparse import urlparse  # noqa
