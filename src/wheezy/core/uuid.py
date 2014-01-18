@@ -44,7 +44,7 @@ def parse_uuid(s):
         >>> parse_uuid('AAAAAAAAAAAAAAAAAAAAAA')
         UUID('00000000-0000-0000-0000-000000000000')
 
-        Return an empty uuid in case the string is empty of length
+        Return an empty uuid in case the string is empty or length
         not equal to 22.
 
         >>> parse_uuid('')
