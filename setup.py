@@ -7,13 +7,22 @@ try:
 except:
     from distutils.core import setup  # noqa
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+extra = {}
+try:
+    from Cython.Build import cythonize
+    p = os.path.join('src', 'wheezy', 'core')
+    extra['ext_modules'] = cythonize(
+        [os.path.join(p, '*.py')],
+        quiet=True)
+except ImportError:
+    pass
 
-install_requires = []
 try:
     import uuid  # noqa
 except ImportError:
-    install_requires.append('uuid')
+    extra['install_requires'] = ['uuid']
+
+README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 setup(
     name='wheezy.core',
@@ -55,7 +64,6 @@ setup(
     namespace_packages=['wheezy'],
 
     zip_safe=False,
-    install_requires=install_requires,
     extras_require={
         'dev': [
             'uuid',
@@ -68,5 +76,6 @@ setup(
         ]
     },
 
-    platforms='any'
+    platforms='any',
+    **extra
 )
