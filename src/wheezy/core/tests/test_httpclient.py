@@ -50,8 +50,9 @@ class HTTPClientTestCase(unittest.TestCase):
         assert '/api/v1/auth/token' == path
         assert '' == body
         assert self.client.default_headers == headers
-        assert 'Accept-Encoding' in headers
-        assert 2 == len(headers)
+        assert 'gzip' == headers['Accept-Encoding']
+        assert 'close' == headers['Connection']
+        assert 3 == len(headers)
 
     def test_ajax_get(self):
         self.client.ajax_get('auth/token')
