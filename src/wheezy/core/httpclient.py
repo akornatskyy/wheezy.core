@@ -27,8 +27,12 @@ class HTTPClient(object):
         scheme, netloc, path, query, fragment = urlsplit(url)
         http_class = scheme == 'http' and HTTPConnection or HTTPSConnection
         self.connection = http_class(netloc)
-        self.default_headers = headers and headers or {}
-        self.default_headers['Accept-Encoding'] = 'gzip'
+        self.default_headers = {
+            'Accept-Encoding': 'gzip',
+            'Connection': 'close'
+        }
+        if headers:
+            self.default_headers.update(headers)
         self.path = path
         self.method = None
         self.headers = None
