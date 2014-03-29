@@ -76,7 +76,7 @@ else:  # pragma: nocover
 
 
 try:  # pragma: nocover
-    #from collections import defaultdict
+    # from collections import defaultdict
     defaultdict = __import__(
         'collections', None, None, ['defaultdict']).defaultdict
 except AttributeError:  # pragma: nocover

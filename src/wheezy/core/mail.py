@@ -167,7 +167,7 @@ class SMTPClient(object):
 
     def connect(self):
         smtp = SMTP()
-        #smtp.set_debuglevel(1)
+        # smtp.set_debuglevel(1)
         smtp.connect(self.host, self.port)
         if self.use_tls:
             smtp.starttls()
