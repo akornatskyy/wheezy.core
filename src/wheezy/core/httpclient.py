@@ -3,7 +3,6 @@
 
 from wheezy.core.collections import attrdict
 from wheezy.core.collections import defaultdict
-from wheezy.core.comp import Decimal
 from wheezy.core.comp import HTTPConnection
 from wheezy.core.comp import HTTPSConnection
 from wheezy.core.comp import SimpleCookie
@@ -57,9 +56,7 @@ class HTTPClient(object):
         """
         if self.__json is None:
             assert 'application/json' in self.headers['content-type'][0]
-            self.__json = json_loads(self.content,
-                                     object_hook=attrdict,
-                                     parse_float=Decimal)
+            self.__json = json_loads(self.content, object_hook=attrdict)
         return self.__json
 
     def get(self, path, **kwargs):
