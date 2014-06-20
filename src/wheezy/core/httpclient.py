@@ -94,15 +94,20 @@ class HTTPClient(object):
         method = sc == 307 and self.method or 'GET'
         return self.go(path, method)
 
-    def ajax_go(self, path=None, method='GET', params=None, headers=None):
+    def ajax_go(self, path=None, method='GET', params=None, headers=None,
+                content_type='', body=''):
         """ Sends HTTP AJAX request to web server.
         """
         headers = headers or {}
         headers['X-Requested-With'] = 'XMLHttpRequest'
-        return self.go(path, method, params, headers)
+        return self.go(path, method, params, headers, content_type, body)
 
-    def go(self, path=None, method='GET', params=None, headers=None):
+    def go(self, path=None, method='GET', params=None, headers=None,
+           content_type='', body=''):
         """ Sends HTTP request to web server.
+
+            The ``content_type`` takes priority over ``params`` to use
+            ``body``. The ``body`` can be a string or file like object.
         """
         self.method = method
         headers = headers and dict(self.default_headers,
@@ -113,8 +118,9 @@ class HTTPClient(object):
         path = urljoin(self.path, path)
         if path in self.etags:
             headers['If-None-Match'] = self.etags[path]
-        body = ''
-        if params:
+        if content_type:
+            headers['Content-Type'] = content_type
+        elif params:
             if method == 'GET':
                 path += '?' + urlencode(params, doseq=True)
             else:

@@ -89,6 +89,17 @@ class HTTPClientTestCase(unittest.TestCase):
         method, path, body, headers = self.mock_c.request.call_args[0]
         assert 'XMLHttpRequest' == headers['X-Requested-With']
 
+    def test_post_content(self):
+        self.client.ajax_post(
+            'auth/token',
+            content_type='application/json',
+            body='{"a":1}'
+        )
+        assert self.mock_c.request.called
+        method, path, body, headers = self.mock_c.request.call_args[0]
+        assert 'application/json' == headers['Content-Type']
+        assert '{"a":1}' == body
+
     def test_follow(self):
         self.mock_response.status = 303
         self.headers.append(('location', 'http://localhost:8080/error/401'))
