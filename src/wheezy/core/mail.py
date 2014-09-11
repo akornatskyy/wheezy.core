@@ -11,6 +11,8 @@ from wheezy.core.comp import ntob
 
 try:
     from email.charset import CHARSETS
+    from email.charset import QP
+    from email.charset import SHORTEST
     from email.encoders import encode_base64
     from email.header import Header
     from email.message import Message
@@ -19,6 +21,8 @@ try:
     from email.utils import make_msgid
 except ImportError:  # pragma: nocover, python2.4
     from email.Charset import CHARSETS  # noqa
+    from email.Charset import QP
+    from email.Charset import SHORTEST
     from email.Encoders import encode_base64  # noqa
     from email.Header import Header  # noqa
     from email.Message import Message  # noqa
@@ -27,8 +31,10 @@ except ImportError:  # pragma: nocover, python2.4
     from email.Utils import make_msgid  # noqa
 
 
-# Do not apply Base64 encoding to utf-8 messages
-CHARSETS['utf-8'] = (3, None, 'utf-8')
+# Do not apply Base64 encoding to utf-8 messages, use quoted-printable
+# since it is less verbose
+CHARSETS['utf-8'] = (SHORTEST, QP, 'utf-8')
+del CHARSETS, SHORTEST, QP
 
 
 def mail_address(addr, name=None, charset='utf8'):
