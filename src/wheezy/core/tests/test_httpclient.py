@@ -38,7 +38,7 @@ class HTTPClientTestCase(unittest.TestCase):
         self.mock_c_class.assert_called_once_with('localhost:8080')
         assert '/api/v1/' == self.client.path
         assert {} == self.client.cookies
-        assert None == self.client.headers
+        assert self.client.headers is None
 
     def test_get(self):
         self.mock_response.status = 200

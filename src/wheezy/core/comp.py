@@ -17,19 +17,6 @@ if PY3:  # pragma: nocover
     from queue import LifoQueue
     xrange = range
     str_type = str
-
-    def ntob(n, encoding):
-        """ Converts native string to bytes
-        """
-        return n.encode(encoding)
-
-    def bton(b, encoding):
-        """ Converts bytes to native string
-        """
-        return b.decode(encoding)
-
-    u = lambda s: s
-
 else:  # pragma: nocover
     from cStringIO import StringIO as BytesIO  # noqa
     from Queue import Queue  # noqa
@@ -53,6 +40,21 @@ else:  # pragma: nocover
     xrange = xrange
     str_type = unicode
 
+
+if PY3:  # pragma: nocover
+    def ntob(n, encoding):
+        """ Converts native string to bytes
+        """
+        return n.encode(encoding)
+
+    def bton(b, encoding):
+        """ Converts bytes to native string
+        """
+        return b.decode(encoding)
+
+    def u(s):
+        return s
+else:
     def ntob(n, encoding):  # noqa
         """ Converts native string to bytes
         """
@@ -63,7 +65,8 @@ else:  # pragma: nocover
         """
         return b
 
-    u = lambda s: unicode(s, "unicode_escape")
+    def u(s):
+        return unicode(s, "unicode_escape")
 
 
 if PY2 and PY_MINOR == 4:  # pragma: nocover
@@ -71,11 +74,12 @@ if PY2 and PY_MINOR == 4:  # pragma: nocover
 else:  # pragma: nocover
     # perform absolute import
     __saved_import__ = __import__
-    __import__ = lambda n, g=None, l=None, f=None: \
-        __saved_import__(n, g, l, f, 0)
+
+    def __import__(n, g=None, l=None, f=None):
+        return __saved_import__(n, g, l, f, 0)
 
 
-try:  # pragma: nocover
+try:  # noqa pragma: nocover
     # from collections import defaultdict
     defaultdict = __import__(
         'collections', None, None, ['defaultdict']).defaultdict
@@ -116,7 +120,9 @@ try:  # pragma: nocover
     from email.utils import parsedate
 except ImportError:  # pragma: nocover
     import time
-    parsedate = lambda s: time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")  # noqa
+
+    def parsedate(s):  # noqa
+        return time.strptime(s, "%a, %d %b %Y %H:%M:%S GMT")
 
 if PY3:  # pragma: nocover
     from http.cookies import SimpleCookie
@@ -139,9 +145,11 @@ else:  # pragma: nocover
     from urlparse import urlunsplit  # noqa
 
 if PY3:  # pragma: nocover
-    ref_gettext = lambda t: t.gettext
+    def ref_gettext(t):
+        return t.gettext
 else:  # pragma: nocover
-    ref_gettext = lambda t: t.ugettext  # noqa
+    def ref_gettext(t):  # noqa
+        return t.ugettext
 
 if PY3 or PY2 and PY_MINOR >= 6:  # pragma: nocover
     m = __import__('json', None, None, ['JSONEncoder', 'dumps', 'loads'])

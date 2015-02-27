@@ -11,9 +11,11 @@ from wheezy.core.comp import PY3
 
 
 if PY3:
-    b = lambda s: s.encode('ascii')
+    def b(s):
+        return s.encode('ascii')
 else:
-    b = lambda s: s
+    def b(s):  # noqa
+        return s
 
 
 class MiscTestCase(unittest.TestCase):
