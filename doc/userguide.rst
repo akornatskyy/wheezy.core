@@ -8,10 +8,17 @@ User Guide
 * collections
 * config
 * datetime
+* db
 * descriptors
+* feistel
+* gzip
 * i18n
 * introspection
 * json
+* luhn
+* mail
+* pooling
+* retry
 * url
 * uuid
 
@@ -126,6 +133,21 @@ Functions:
 
     >>> total_seconds(timedelta(hours=2))
     7200
+
+db
+--
+
+TODO
+
+descriptors
+-----------
+
+TODO
+
+feistel
+-------
+
+TODO
 
 gzip
 ----
@@ -253,6 +275,26 @@ types.
   ``simplejson``).
 * :py:meth:`~wheezy.core.json.json_decode` decodes a JSON document to a Python
   object. Float is parsed as Decimal.
+
+luhn
+----
+
+TODO
+
+mail
+----
+
+TODO
+
+pooling
+-------
+
+TODO
+
+retry
+-----
+
+TODO
 
 url
 ---

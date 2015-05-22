@@ -97,6 +97,12 @@ wheezy.core.pooling
 .. automodule:: wheezy.core.pooling
    :members:
 
+wheezy.core.retry
+-----------------
+
+.. automodule:: wheezy.core.retry
+   :members:
+
 wheezy.core.url
 ---------------
 
