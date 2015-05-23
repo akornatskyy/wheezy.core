@@ -28,46 +28,59 @@ class RetryTestCase(unittest.TestCase):
         # timeout > 0.0
         self.assertRaises(
             AssertionError,
-            lambda: make_retry(timeout=0, min_delay=0, slope=0,
-                               delta=0, max_delay=0))
-        # min_delay > 0.0
+            lambda: make_retry(timeout=0, start=0))
+        # start >= 0.0
         self.assertRaises(
             AssertionError,
-            lambda: make_retry(timeout=10, min_delay=0, slope=0,
-                               delta=0, max_delay=0))
-        # max_delay > 0.0
+            lambda: make_retry(timeout=10, start=-1))
+        # end >= 0.0
         self.assertRaises(
             AssertionError,
-            lambda: make_retry(timeout=10, min_delay=1, slope=0,
-                               delta=0, max_delay=0))
-        # timeout > min_delay
+            lambda: make_retry(timeout=10, start=1, end=-1))
+        # start <= end
         self.assertRaises(
             AssertionError,
-            lambda: make_retry(timeout=1, min_delay=2, slope=0,
-                               delta=0, max_delay=0))
-        # timeout > max_delay
+            lambda: make_retry(timeout=10, start=2, end=1))
+        # timeout > end
         self.assertRaises(
             AssertionError,
-            lambda: make_retry(timeout=10, min_delay=1, slope=0,
-                               delta=0, max_delay=11))
+            lambda: make_retry(timeout=10, start=1, end=11))
+        # slope >= 1.0
+        self.assertRaises(
+            AssertionError,
+            lambda: make_retry(timeout=10, start=2, slope=0.9))
+        # step >= 0.0
+        self.assertRaises(
+            AssertionError,
+            lambda: make_retry(timeout=10, start=2, step=-1))
 
     def test_immediately(self):
         """ Ensure first succeed attempt does not require calls to
             time and sleep.
         """
         from wheezy.core.retry import make_retry
-        retry = make_retry(timeout=10, min_delay=1, slope=0, delta=0,
-                           max_delay=2)
+        retry = make_retry(timeout=10, start=1)
         assert retry(lambda: True)
         assert not self.mock_time.called
         assert not self.mock_sleep.called
+
+    def test_default(self):
+        """ Ensure sleep sequence when defaults are in use.
+        """
+        from wheezy.core.retry import make_retry
+        retry = make_retry(timeout=10.0, start=0.5)
+        self.mock_time.return_value = 0.0
+        mock_acquire = Mock(side_effect=[False, False, False, False, True])
+        assert retry(mock_acquire)
+        assert 4 == self.mock_time.call_count
+        assert [call(0.5), call(0.5), call(0.5), call(0.5)
+                ] == self.mock_sleep.call_args_list
 
     def test_slope(self):
         """ Ensure sleep sequence when slope argument is used.
         """
         from wheezy.core.retry import make_retry
-        retry = make_retry(timeout=10.0, min_delay=0.5, slope=2.0, delta=0.0,
-                           max_delay=2.5)
+        retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.return_value = 0.0
         mock_acquire = Mock(side_effect=[False, False, False, False, True])
         assert retry(mock_acquire)
@@ -75,12 +88,11 @@ class RetryTestCase(unittest.TestCase):
         assert [call(0.5), call(1.0), call(2.0), call(2.5)
                 ] == self.mock_sleep.call_args_list
 
-    def test_delta(self):
-        """ Ensure sleep sequence when delta argument is used.
+    def test_step(self):
+        """ Ensure sleep sequence when step argument is used.
         """
         from wheezy.core.retry import make_retry
-        retry = make_retry(timeout=10.0, min_delay=0.5, slope=1.0, delta=0.5,
-                           max_delay=2.0)
+        retry = make_retry(timeout=10.0, start=0.5, end=2.0, step=0.5)
         self.mock_time.return_value = 0.0
         mock_acquire = Mock(side_effect=[False, False, False, False, True])
         assert retry(mock_acquire)
@@ -93,8 +105,7 @@ class RetryTestCase(unittest.TestCase):
             remaining time left.
         """
         from wheezy.core.retry import make_retry
-        retry = make_retry(timeout=10.0, min_delay=0.5, slope=2.0, delta=0.0,
-                           max_delay=2.5)
+        retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.side_effect = [0.0, 10.25]
         assert not retry(lambda: False)
         assert 2 == self.mock_time.call_count
@@ -104,8 +115,7 @@ class RetryTestCase(unittest.TestCase):
         """ Ensure the function sleeps for remaining time left.
         """
         from wheezy.core.retry import make_retry
-        retry = make_retry(timeout=10.0, min_delay=0.5, slope=2.0, delta=0.0,
-                           max_delay=2.5)
+        retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.side_effect = [0.0, 1.0, 9.25]
         assert not retry(lambda: False)
         assert 3 == self.mock_time.call_count
