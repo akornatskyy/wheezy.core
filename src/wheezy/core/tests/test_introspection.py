@@ -8,6 +8,7 @@ import unittest
 class LooksLike(object):
 
     def assert_warning(self, msg):
+        print([str(w.message) for w in self.w])
         assert len(self.w) == 1
         self.assertEquals(msg, str(self.w[-1].message))
 
@@ -18,11 +19,11 @@ class LooksLike(object):
 
         class IFoo(object):
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
         self.assert_warning("'foo': is missing.")
@@ -34,11 +35,11 @@ class LooksLike(object):
 
         class IFoo(object):
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo, ignore_funcs=['foo'])
 
@@ -49,11 +50,11 @@ class LooksLike(object):
 
         class IFoo(object):
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo, ignore_funcs=['foo'])
         self.assert_warning("'foo': redundant ignore.")
@@ -65,11 +66,11 @@ class LooksLike(object):
 
         class IFoo(object):
             def foo(self, a, b=1):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def foo(self, a, b):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
         self.assert_warning("'foo': argument names or defaults "
@@ -82,11 +83,11 @@ class LooksLike(object):
 
         class IFoo(object):
             def foo(self, a, b=1):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def foo(self, a, b):
-                pass
+                pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo, ignore_argspec='foo')
 
@@ -98,11 +99,11 @@ class LooksLike(object):
         class IFoo(object):
             @property
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
         self.assert_warning("'foo': is not property.")
@@ -114,18 +115,18 @@ class LooksLike(object):
 
         class IFoo(object):
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         class IBar(IFoo):
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         class Bar(IBar):
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         assert looks(Bar).like(IBar)
         assert looks(Bar).like(IFoo)
@@ -137,10 +138,10 @@ class LooksLike(object):
 
         class IFoo(object):
             def __len__(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(IFoo):
-            pass
+            pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo)
         assert not looks(Foo).like(IFoo, notice=['__len__'])
@@ -148,7 +149,7 @@ class LooksLike(object):
 
         class Foo(IFoo):
             def __len__(self):
-                pass
+                pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo)
         assert looks(Foo).like(IFoo, notice=['__len__'])
@@ -161,18 +162,18 @@ class LooksLike(object):
         def bar():
             def decorate(m):
                 def x(*args, **kwargs):
-                    pass
+                    pass  # pragma: nocover
                 return x
             return decorate
 
         class IFoo(object):
             def foo(self, a):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             @bar()
             def foo(self, a):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
         self.assert_warning("'foo': argument names or defaults "
@@ -187,12 +188,12 @@ class LooksLike(object):
         class IFoo(object):
             @attribute
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(IFoo):
             @property
             def foo(self):
-                pass
+                pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
         self.assert_warning("'foo': is not attribute.")
@@ -205,33 +206,34 @@ class LooksLike(object):
         class IFoo(object):
 
             def foo(self, a, b=1):
-                pass
+                pass  # pragma: nocover
 
             @property
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         class Foo(object):
             def foo(self, a, b=1):
-                pass
+                pass  # pragma: nocover
 
             @property
             def bar(self):
-                pass
+                pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo)
         assert len(self.w) == 0
 
 
 try:
-    from warnings import catch_warnings
-except ImportError:
+    import warnings
+except ImportError:  # pragma: nocover
     pass
 else:
     class LooksLikeTestCase(unittest.TestCase, LooksLike):
 
         def setUp(self):
-            self.ctx = catch_warnings(record=True)
+            warnings.resetwarnings()
+            self.ctx = warnings.catch_warnings(record=True)
             self.w = self.ctx.__enter__()
 
         def tearDown(self):

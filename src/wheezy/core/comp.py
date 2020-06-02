@@ -54,7 +54,7 @@ if PY3:  # pragma: nocover
 
     def u(s):
         return s
-else:
+else:  # pragma: nocover
     def ntob(n, encoding):  # noqa
         """ Converts native string to bytes
         """

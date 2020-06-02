@@ -4,10 +4,14 @@
 
 import warnings
 
-from inspect import getargspec
-from inspect import isfunction
-
+from wheezy.core.comp import PY2
 from wheezy.core.comp import __import__
+
+from inspect import isfunction
+if PY2:
+    from inspect import getargspec as signature  # pragma: nocover
+else:
+    from inspect import signature  # pragma: nocover
 
 
 def import_name(fullname):
@@ -63,7 +67,7 @@ class looks(object):
                 if isfunction(t) and isfunction(t2):
                     if name in ignore_argspec:
                         continue
-                    if getargspec(t) != getargspec(t2):
+                    if signature(t) != signature(t2):
                         warn("'%s': argument names or defaults "
                              "have no match." % name)
                         return False

@@ -23,14 +23,15 @@ try:
 except ImportError:
     extra['install_requires'] = ['uuid']
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
     name='wheezy.core',
     version='0.1',
     description='A lightweight core library',
     long_description=README,
-    url='https://bitbucket.org/akorn/wheezy.core',
+    long_description_content_type='text/markdown',
+    url='https://github.com/akornatskyy/wheezy.core',
 
     author='Andriy Kornatskyy',
     author_email='andriy.kornatskyy at live.com',
@@ -67,10 +68,7 @@ setup(
     zip_safe=False,
     extras_require={
         'dev': [
-            'uuid',
-            'wsgiref',
-            'coverage',
-            'nose',
+            'mock',
             'pytest',
             'pytest-pep8',
             'pytest-cov'

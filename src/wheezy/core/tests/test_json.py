@@ -93,5 +93,5 @@ try:
         """ Test the ``json_encode`` function.
         """
         pass
-except NotImplementedError:
+except NotImplementedError:  # pragma: nocover
     pass
