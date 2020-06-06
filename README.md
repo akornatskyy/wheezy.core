@@ -15,15 +15,15 @@ Resources:
   [examples](https://github.com/akornatskyy/wheezy.core/tree/master/demos)
   and [issues](https://github.com/akornatskyy/wheezy.core/issues)
   tracker are available on
-  [github](https://github.com/akornatskyy/wheezy.template)
-- [documentation](http://readthedocs.org/builds/wheezycore)
+  [github](https://github.com/akornatskyy/wheezy.core)
+- [documentation](https://wheezycore.readthedocs.io/en/latest/)
 
 ## Install
 
 [wheezy.core](https://pypi.org/project/wheezy.core) requires
 [python](http://www.python.org) version 2.4 to 2.7 or 3.2+. It is
 independent of operating system. You can install it from
-[pypi](http://pypi.python.org) site:
+[pypi](https://pypi.org/project/wheezy.core) site:
 
 ```sh
 pip install wheezy.core

@@ -2,10 +2,7 @@
 
 import os
 
-try:
-    from setuptools import setup
-except:
-    from distutils.core import setup  # noqa
+from setuptools import setup
 
 extra = {}
 try:

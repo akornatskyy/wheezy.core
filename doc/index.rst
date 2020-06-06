@@ -1,12 +1,12 @@
 .. _`wheezy.core`:
 
-Wheezy Core
+wheezy.core
 ===========
 
 Introduction
 ------------
 
-:ref:`wheezy.core` is a `python`_ package written in pure Python code. 
+:ref:`wheezy.core` is a `python`_ package written in pure Python code.
 It is a lightweight core library.
 
 It is optimized for performance, well tested and documented.
@@ -14,9 +14,8 @@ It is optimized for performance, well tested and documented.
 Resources:
 
 * `source code`_, `examples`_ and `issues`_ tracker are available
-  on `bitbucket`_
-* `documentation`_, `readthedocs`_
-* `eggs`_ on `pypi`_
+  on `github`_
+* `documentation`_
 
 Contents
 --------
@@ -29,12 +28,9 @@ Contents
    userguide
    modules
 
-.. _`bitbucket`: http://bitbucket.org/akorn/wheezy.core
-.. _`documentation`: http://packages.python.org/wheezy.core
-.. _`eggs`: http://pypi.python.org/pypi/wheezy.core
-.. _`examples`: http://bitbucket.org/akorn/wheezy.core/src/tip/demos
-.. _`issues`: http://bitbucket.org/akorn/wheezy.core/issues
-.. _`pypi`: http://pypi.python.org
-.. _`python`: http://www.python.org
-.. _`readthedocs`: http://readthedocs.org/builds/wheezycore/
-.. _`source code`: http://bitbucket.org/akorn/wheezy.core/src
+.. _`github`: https://github.com/akornatskyy/wheezy.core
+.. _`documentation`: https://wheezycore.readthedocs.io/en/latest/
+.. _`examples`: https://github.com/akornatskyy/wheezy.core/tree/master/demos
+.. _`issues`: https://github.com/akornatskyy/wheezy.core/issues
+.. _`python`: https://www.python.org
+.. _`source code`: https://github.com/akornatskyy/wheezy.core
