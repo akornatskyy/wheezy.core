@@ -17,8 +17,9 @@ def luhn_checksum(n):
         7
     """
     digits = digits_of(n)
-    checksum = (sum(digits[-2::-2]) +
-                sum(sum2digits(d << 1) for d in digits[-1::-2])) % 10
+    checksum = (
+        sum(digits[-2::-2]) + sum(
+            sum2digits(d << 1) for d in digits[-1::-2])) % 10
     return checksum and 10 - checksum or 0
 
 

@@ -169,7 +169,7 @@ def total_seconds(delta):
                         'or int for seconds')
 
 
-class utc(tzinfo):
+class utc(tzinfo):  # noqa: N801
     """ UTC timezone.
 
     """

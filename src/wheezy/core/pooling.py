@@ -16,7 +16,7 @@ class EagerPool(object):
     def __init__(self, create_factory, size):
         self.size = size
         items = Queue(size)
-        for i in xrange(size):
+        for _ in xrange(size):
             items.put(create_factory())
         self.__items = items
         self.acquire = items.get
@@ -42,7 +42,7 @@ class LazyPool(object):
         """
         self.size = size
         items = LifoQueue(size)
-        for i in xrange(size):
+        for _ in xrange(size):
             items.put(None)
         self.__items = items
         self.get_back = items.put
@@ -55,7 +55,7 @@ class LazyPool(object):
         item = self.__items.get()
         try:
             return self.create_factory(item)
-        except:
+        except Exception:
             self.get_back(item)
             raise
 

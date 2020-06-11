@@ -2,8 +2,8 @@
 """ ``retry`` module.
 """
 
-from time import time
 from time import sleep
+from time import time
 
 
 def make_retry(timeout, start, end=None, slope=1.0, step=0.0):

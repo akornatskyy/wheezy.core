@@ -17,6 +17,17 @@ else:  # pragma: nocover
     def b(s):  # noqa
         return s
 
+try:
+    import sys
+
+    # [email.utils.formatdate] TypeError: unsupported operand type(s)
+    # for +: 'NoneType' and 'int'
+    # https://foss.heptapod.net/pypy/pypy/-/issues/3279
+    sys.pypy_version_info
+    PYPY = True  # pragma: nocover
+except AttributeError:  # pragma: nocover
+    PYPY = False
+
 
 class MiscTestCase(unittest.TestCase):
 
@@ -127,6 +138,7 @@ class SMTPClientTestCase(unittest.TestCase):
     def tearDown(self):
         self.patcher.stop()
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_connect(self):
         """ Ensure connected to right host and port
         """
@@ -139,6 +151,7 @@ class SMTPClientTestCase(unittest.TestCase):
         assert not self.mock_smtp.login.called
         self.mock_smtp.quit.assert_called_once_with()
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_use_tls(self):
         """ Ensure start tls command is issued.
         """
@@ -149,6 +162,7 @@ class SMTPClientTestCase(unittest.TestCase):
         self.mock_smtp.starttls.assert_called_once_with()
         assert not self.mock_smtp.login.called
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_login(self):
         """ Ensure credentials are used.
         """
@@ -158,6 +172,7 @@ class SMTPClientTestCase(unittest.TestCase):
         client.send(MailMessage())
         self.mock_smtp.login.assert_called_once_with('user', 'pass')
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_send(self):
         """ Ensure from and to lists are valid in sending a single message.
         """
@@ -173,6 +188,7 @@ class SMTPClientTestCase(unittest.TestCase):
             message.recipients(),
             ANY)
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_send_multi(self):
         """ Ensure from and to lists are valid in sending multiple messages.
         """
@@ -224,6 +240,7 @@ class MIMETestCase(unittest.TestCase):
         assert 'e, f' == m['Bcc']
         assert 'x, y' == m['Reply-To']
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_alternative(self):
         """ Ensure alternative includes both plain and html.
         """
@@ -240,6 +257,7 @@ class MIMETestCase(unittest.TestCase):
         assert 'c' == subparts[0].get_payload()
         assert 'a' == subparts[1].get_payload()
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_alternative_no_plain(self):
         """ Ensure if alternative available by plain is empty
             only one included.
@@ -254,6 +272,7 @@ class MIMETestCase(unittest.TestCase):
         assert 'text/html' == m['Content-Type']
         assert 'a' == m.get_payload()
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_attachment(self):
         """ Ensure attachments added.
         """
@@ -270,6 +289,7 @@ class MIMETestCase(unittest.TestCase):
         assert 'c' == subparts[0].get_payload()
         assert 'a' == subparts[1].get_payload()
 
+    @unittest.skipIf(PYPY, "issue #3279")
     def test_everything(self):
         """ Add plain, alternate and attachment.
         """

@@ -27,11 +27,11 @@ def make_feistel_number(f):
         1
     """
     def feistel_number(n):
-        l = (n >> 16) & 65535
+        m = (n >> 16) & 65535
         r = n & 65535
-        for i in (1, 2, 3):
-            l, r = r, l ^ f(r)
-        return ((r & 65535) << 16) + l
+        for _ in (1, 2, 3):
+            m, r = r, m ^ f(r)
+        return ((r & 65535) << 16) + m
     return feistel_number
 
 

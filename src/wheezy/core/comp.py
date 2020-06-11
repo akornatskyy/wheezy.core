@@ -38,7 +38,7 @@ else:  # pragma: nocover
                 return self.queue.pop()
     xrange = range
     xrange = xrange
-    str_type = unicode
+    str_type = unicode  # noqa: F821
 
 
 if PY3:  # pragma: nocover
@@ -66,7 +66,7 @@ else:  # pragma: nocover
         return b
 
     def u(s):
-        return unicode(s, "unicode_escape")
+        return unicode(s, "unicode_escape")  # noqa: F821
 
 
 if PY2 and PY_MINOR == 4:  # pragma: nocover
@@ -75,8 +75,8 @@ else:  # pragma: nocover
     # perform absolute import
     __saved_import__ = __import__
 
-    def __import__(n, g=None, l=None, f=None):
-        return __saved_import__(n, g, l, f, 0)
+    def __import__(name, globals=None, locals=None, f=None):  # noqa: N807
+        return __saved_import__(name, globals, locals, f, 0)
 
 
 try:  # noqa pragma: nocover
@@ -85,10 +85,10 @@ try:  # noqa pragma: nocover
         'collections', None, None, ['defaultdict']).defaultdict
 except AttributeError:  # pragma: nocover
 
-    class defaultdict(dict):
+    class defaultdict(dict):  # noqa: N801
 
         def __init__(self, default_factory=None, *args, **kwargs):
-            if default_factory and not hasattr(default_factory, '__call__'):
+            if default_factory and not callable(default_factory):
                 raise TypeError('first argument must be callable')
             super(defaultdict, self).__init__(*args, **kwargs)
             self.default_factory = default_factory
@@ -186,9 +186,9 @@ else:  # pragma: nocover
 GzipFile = __import__('gzip', None, None, ['GzipFile']).GzipFile
 
 if PY2 and PY_MINOR < 7:  # pragma: nocover
-    __saved_GzipFile__ = GzipFile
+    __saved_gzipfile__ = GzipFile
 
-    def GzipFile(filename=None, mode=None, compresslevel=9,
+    def GzipFile(filename=None, mode=None, compresslevel=9,  # noqa: N802
                  fileobj=None, mtime=None):
-        return __saved_GzipFile__(filename, mode, compresslevel,
+        return __saved_gzipfile__(filename, mode, compresslevel,
                                   fileobj)

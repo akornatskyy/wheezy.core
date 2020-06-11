@@ -17,7 +17,7 @@ if PY2 and PY_MINOR < 6:  # pragma: nocover
         gc.disable()
         try:
             t0 = default_timer()
-            for i in it:
+            for _ in it:
                 f()
             t1 = default_timer()
             return t1 - t0

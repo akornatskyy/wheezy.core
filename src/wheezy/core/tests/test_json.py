@@ -3,14 +3,13 @@
 """
 
 import unittest
-
 from decimal import Decimal
 
 from wheezy.core.comp import str_type
-from wheezy.core.json import json_encode
-from wheezy.core.json import json_decode
 from wheezy.core.json import date
 from wheezy.core.json import datetime
+from wheezy.core.json import json_decode
+from wheezy.core.json import json_encode
 from wheezy.core.json import time
 
 

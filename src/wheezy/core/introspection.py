@@ -3,15 +3,15 @@
 """
 
 import warnings
+from inspect import isfunction
 
 from wheezy.core.comp import PY2
-from wheezy.core.comp import __import__
-
-from inspect import isfunction
 if PY2:
     from inspect import getargspec as signature  # pragma: nocover
 else:
     from inspect import signature  # pragma: nocover
+
+from wheezy.core.comp import __import__  # noqa: I202
 
 
 def import_name(fullname):
@@ -26,7 +26,7 @@ def import_name(fullname):
     return getattr(obj, name)
 
 
-class looks(object):
+class looks(object):  # noqa: N801
     """ Performs duck typing checks for two classes.
 
         Typical use::

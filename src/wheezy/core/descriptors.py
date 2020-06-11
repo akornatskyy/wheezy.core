@@ -3,7 +3,7 @@
 """
 
 
-class attribute(object):
+class attribute(object):  # noqa: N801
     """ ``attribute`` decorator is intended to promote a
         function call to object attribute. This means the
         function is called once and replaced with

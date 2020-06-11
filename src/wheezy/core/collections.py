@@ -5,7 +5,6 @@
 
 import struct
 import zlib
-
 from operator import itemgetter
 
 from wheezy.core.comp import defaultdict
@@ -95,9 +94,9 @@ class ItemAdapter(object):
 
             >>> a['x']
         """
-        l = self.adaptee[key]
-        if l:
-            return l[self.index]
+        items = self.adaptee[key]
+        if items:
+            return items[self.index]
         return None
 
     def get(self, key, default=None):
@@ -114,13 +113,13 @@ class ItemAdapter(object):
             100
         """
         if key in self.adaptee:
-            l = self.adaptee[key]
-            if l:
-                return l[self.index]
+            items = self.adaptee[key]
+            if items:
+                return items[self.index]
         return default
 
 
-class attrdict(dict):
+class attrdict(dict):  # noqa: N801
     """ A dictionary with attribute-style access. Maps attribute
         access to dictionary.
 
@@ -150,7 +149,7 @@ class attrdict(dict):
             raise AttributeError(name)
 
 
-class defaultattrdict(defaultdict):
+class defaultattrdict(defaultdict):  # noqa: N801
     """ A dictionary with attribute-style access. Maps attribute
         access to dictionary.
 
