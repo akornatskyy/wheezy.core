@@ -4,8 +4,9 @@
 from wheezy.core.comp import urlunsplit
 
 
-def urlparts(parts=None, scheme=None, netloc=None, path=None,
-             query=None, fragment=None):
+def urlparts(
+    parts=None, scheme=None, netloc=None, path=None, query=None, fragment=None
+):
     """ Factory function for :py:class:`~wheezy.core.url.UrlParts` that
         create an instance :py:class:`~wheezy.core.url.UrlParts` with
         partial content.
@@ -37,11 +38,11 @@ class UrlParts(tuple):
     """
 
     def __init__(self, parts):
-        assert len(parts) == 5, '`parts` must be a tupple of length 6'
+        assert len(parts) == 5, "`parts` must be a tupple of length 6"
         super(UrlParts, self).__init__()
 
     def __repr__(self):
-        return 'urlparts' + super(UrlParts, self).__repr__()
+        return "urlparts" + super(UrlParts, self).__repr__()
 
     def geturl(self):
         """ Return the re-combined version of the original URL as a string.
@@ -73,5 +74,6 @@ class UrlParts(tuple):
             other[1] or self[1],
             other[2] or self[2],
             other[3],
-            other[4])
+            other[4],
+        )
         return UrlParts(parts)

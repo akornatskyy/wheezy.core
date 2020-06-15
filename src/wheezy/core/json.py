@@ -1,20 +1,20 @@
-
 """ ``json`` module.
 """
 
 from decimal import Decimal
 
-from wheezy.core.comp import SimpleJSONEncoder
-from wheezy.core.comp import json_dumps
-from wheezy.core.comp import json_loads
-from wheezy.core.comp import str_type
-from wheezy.core.datetime import format_iso_datetime
-from wheezy.core.datetime import format_iso_time
+from wheezy.core.comp import (
+    SimpleJSONEncoder,
+    json_dumps,
+    json_loads,
+    str_type,
+)
+from wheezy.core.datetime import format_iso_datetime, format_iso_time
 from wheezy.core.introspection import import_name
 
-date = import_name('datetime.date')
-datetime = import_name('datetime.datetime')
-time = import_name('datetime.time')
+date = import_name("datetime.date")
+datetime = import_name("datetime.datetime")
+time = import_name("datetime.time")
 
 
 def json_encode(obj):
@@ -23,8 +23,9 @@ def json_encode(obj):
         Correctly escapes forward slash to be able
         embed javascript code.
     """
-    return json_dumps(obj, cls=JSONEncoder, ensure_ascii=False,
-                      separators=(',', ':')).replace('</', '<\\/')
+    return json_dumps(
+        obj, cls=JSONEncoder, ensure_ascii=False, separators=(",", ":")
+    ).replace("</", "<\\/")
 
 
 def json_decode(s):
@@ -35,15 +36,14 @@ def json_decode(s):
 
 
 class JSONEncoder(SimpleJSONEncoder):
-
     def default(self, obj):
         if isinstance(obj, datetime):
             if obj == datetime.min:
-                return str_type('')
+                return str_type("")
             return format_iso_datetime(obj)
         elif isinstance(obj, date):
             if obj == date.min:
-                return str_type('')
+                return str_type("")
             return obj.isoformat()
         elif isinstance(obj, time):
             return format_iso_time(obj)

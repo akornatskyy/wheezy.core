@@ -1,9 +1,7 @@
-
 """ ``datetime`` module.
 """
 
-from time import localtime
-from time import mktime
+from time import localtime, mktime
 
 from wheezy.core.comp import parsedate
 from wheezy.core.introspection import import_name
@@ -14,17 +12,29 @@ from wheezy.core.introspection import import_name
 # since the use of relative imports by default.
 # absolute imports are available since python 2.5,
 # however we want keep compatibility with python 2.4
-datetime = import_name('datetime.datetime')
-time = import_name('datetime.time')
-timedelta = import_name('datetime.timedelta')
-tzinfo = import_name('datetime.tzinfo')
+datetime = import_name("datetime.datetime")
+time = import_name("datetime.time")
+timedelta = import_name("datetime.timedelta")
+tzinfo = import_name("datetime.tzinfo")
 
 
 ZERO = timedelta(0)
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 MONTHS = (
-    None, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    None,
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+)
 
 
 def format_http_datetime(stamp):
@@ -62,11 +72,17 @@ def format_http_datetime(stamp):
     elif isinstance(stamp, str):
         return stamp
     else:
-        raise TypeError('Expecting type ``datetime.datetime``.')
+        raise TypeError("Expecting type ``datetime.datetime``.")
 
     year, month, day, hh, mm, ss, wd, y, z = stamp
     return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
-        WEEKDAYS[wd], day, MONTHS[month], year, hh, mm, ss
+        WEEKDAYS[wd],
+        day,
+        MONTHS[month],
+        year,
+        hh,
+        mm,
+        ss,
     )
 
 
@@ -93,7 +109,7 @@ def format_iso_datetime(stamp):
     """
     if stamp.tzinfo:
         if stamp.utcoffset() == ZERO:
-            return datetime(*stamp.timetuple()[:6]).isoformat() + 'Z'
+            return datetime(*stamp.timetuple()[:6]).isoformat() + "Z"
     if stamp.microsecond:
         stamp = stamp.replace(microsecond=0)
     return stamp.isoformat()
@@ -124,7 +140,7 @@ def format_iso_time(stamp):
         stamp = stamp.replace(microsecond=0)
     if stamp.tzinfo:
         if stamp.utcoffset() == ZERO:
-            return stamp.replace(tzinfo=None).isoformat() + 'Z'
+            return stamp.replace(tzinfo=None).isoformat() + "Z"
         else:
             return stamp.isoformat()
     else:
@@ -165,15 +181,17 @@ def total_seconds(delta):
     elif isinstance(delta, timedelta):
         return delta.seconds + delta.days * 86400
     else:
-        raise TypeError('Expecting type datetime.timedelta '
-                        'or int for seconds')
+        raise TypeError(
+            "Expecting type datetime.timedelta " "or int for seconds"
+        )
 
 
 class utc(tzinfo):  # noqa: N801
     """ UTC timezone.
 
     """
-    __slots__ = ('name')
+
+    __slots__ = "name"
 
     def __init__(self, name):
         self.name = name
@@ -205,5 +223,5 @@ class utc(tzinfo):  # noqa: N801
         return ZERO
 
 
-GMT = utc('GMT')
-UTC = utc('UTC')
+GMT = utc("GMT")
+UTC = utc("UTC")

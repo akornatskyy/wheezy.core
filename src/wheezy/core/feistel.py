@@ -1,4 +1,3 @@
-
 """ ``feistel`` module.
 """
 
@@ -26,12 +25,14 @@ def make_feistel_number(f):
         >>> feistel_number(573852158)
         1
     """
+
     def feistel_number(n):
         m = (n >> 16) & 65535
         r = n & 65535
         for _ in (1, 2, 3):
             m, r = r, m ^ f(r)
         return ((r & 65535) << 16) + m
+
     return feistel_number
 
 

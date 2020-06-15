@@ -1,4 +1,3 @@
-
 """ ``descriptors`` module.
 """
 
@@ -22,7 +21,8 @@ class attribute(object):  # noqa: N801
         >>> a.count
         1
     """
-    __slots__ = ('f')
+
+    __slots__ = "f"
 
     def __init__(self, f):
         self.f = f

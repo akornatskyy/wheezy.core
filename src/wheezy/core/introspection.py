@@ -1,4 +1,3 @@
-
 """ ``introspection`` module.
 """
 
@@ -6,6 +5,7 @@ import warnings
 from inspect import isfunction
 
 from wheezy.core.comp import PY2
+
 if PY2:
     from inspect import getargspec as signature  # pragma: nocover
 else:
@@ -21,7 +21,7 @@ def import_name(fullname):
         >>> import_name('datetime.timedelta') is timedelta
         True
     """
-    namespace, name = fullname.rsplit('.', 1)
+    namespace, name = fullname.rsplit(".", 1)
     obj = __import__(namespace, None, None, [name])
     return getattr(obj, name)
 
@@ -68,8 +68,10 @@ class looks(object):  # noqa: N801
                     if name in ignore_argspec:
                         continue
                     if signature(t) != signature(t2):
-                        warn("'%s': argument names or defaults "
-                             "have no match." % name)
+                        warn(
+                            "'%s': argument names or defaults "
+                            "have no match." % name
+                        )
                         return False
                 elif t2.__class__ is not t.__class__:
                     warn("'%s': is not %s." % (name, t.__class__.__name__))
@@ -79,9 +81,13 @@ class looks(object):  # noqa: N801
 
 # region: internal details
 
+
 def declarations(cls, notice):
-    return dict((name, t) for name, t in cls.__dict__.items()
-                if name in notice or not name.startswith('_'))
+    return dict(
+        (name, t)
+        for name, t in cls.__dict__.items()
+        if name in notice or not name.startswith("_")
+    )
 
 
 def warn(message):

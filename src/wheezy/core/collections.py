@@ -1,4 +1,3 @@
-
 """ The ``collections`` module  contains types and functions that define
     various collections and algorithms.
 """
@@ -7,12 +6,10 @@ import struct
 import zlib
 from operator import itemgetter
 
-from wheezy.core.comp import defaultdict
-from wheezy.core.comp import ntob
+from wheezy.core.comp import defaultdict, ntob
 
-
-GZIP_HEADER = ntob('\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF', 'latin1')
-MAX_INT = int('FFFFFFFF', 16)
+GZIP_HEADER = ntob("\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF", "latin1")
+MAX_INT = int("FFFFFFFF", 16)
 
 
 def first_item_adapter(adaptee):
@@ -52,7 +49,8 @@ class ItemAdapter(object):
         return item at ``index`` from the list. If ``key`` is not
         found return None.
     """
-    __slots__ = ('adaptee', 'index')
+
+    __slots__ = ("adaptee", "index")
 
     def __init__(self, adaptee, index):
         """ ``adaptee`` must be defaultdict(list).
@@ -68,7 +66,7 @@ class ItemAdapter(object):
             TypeError: ...
          """
         if adaptee is None or not isinstance(adaptee, dict):
-            raise TypeError('first argument must be defaultdict(list)')
+            raise TypeError("first argument must be defaultdict(list)")
         self.adaptee = adaptee
         self.index = index
 
@@ -137,6 +135,7 @@ class attrdict(dict):  # noqa: N801
             ...
         AttributeError: ...
     """
+
     __slots__ = ()
 
     def __setattr__(self, key, value):
@@ -163,6 +162,7 @@ class defaultattrdict(defaultdict):  # noqa: N801
         >>> d.d
         ''
     """
+
     __slots__ = ()
 
     def __setattr__(self, key, value):
@@ -205,8 +205,8 @@ def gzip_iterator(items, compress_level=6):
     size = 0
     crc = 0
     gzip = zlib.compressobj(
-        compress_level, zlib.DEFLATED, -zlib.MAX_WBITS,
-        zlib.DEF_MEM_LEVEL, 0)
+        compress_level, zlib.DEFLATED, -zlib.MAX_WBITS, zlib.DEF_MEM_LEVEL, 0
+    )
     yield GZIP_HEADER
     for item in items:
         size += len(item)
@@ -215,7 +215,7 @@ def gzip_iterator(items, compress_level=6):
         if chunk:  # pragma: nocover
             yield chunk
     yield gzip.flush()
-    yield struct.pack('<2L', crc, size & MAX_INT)
+    yield struct.pack("<2L", crc, size & MAX_INT)
 
 
 def map_keys(function, dictionary):

@@ -1,4 +1,3 @@
-
 """ ``mail`` module.
 """
 
@@ -10,19 +9,14 @@ from time import time
 from wheezy.core.comp import ntob
 
 try:
-    from email.charset import CHARSETS
-    from email.charset import QP
-    from email.charset import SHORTEST
+    from email.charset import CHARSETS, QP, SHORTEST
     from email.encoders import encode_base64
     from email.header import Header
     from email.message import Message
-    from email.utils import formataddr
-    from email.utils import formatdate
-    from email.utils import make_msgid
+    from email.utils import formataddr, formatdate, make_msgid
 except ImportError:  # pragma: nocover, python2.4
     from email.Charset import CHARSETS  # noqa
-    from email.Charset import QP
-    from email.Charset import SHORTEST
+    from email.Charset import QP, SHORTEST
     from email.Encoders import encode_base64  # noqa
     from email.Header import Header  # noqa
     from email.Message import Message  # noqa
@@ -33,18 +27,19 @@ except ImportError:  # pragma: nocover, python2.4
 
 # Do not apply Base64 encoding to utf-8 messages, use quoted-printable
 # since it is less verbose
-CHARSETS['utf-8'] = (SHORTEST, QP, 'utf-8')
+CHARSETS["utf-8"] = (SHORTEST, QP, "utf-8")
 del CHARSETS, SHORTEST, QP
 
 
-def mail_address(addr, name=None, charset='utf8'):
+def mail_address(addr, name=None, charset="utf8"):
     """ Returns mail address formatted string.
     """
     try:
-        addr.encode('us-ascii')
+        addr.encode("us-ascii")
     except UnicodeEncodeError:
-        addr = '@'.join([p.encode('idna').decode('us-ascii')
-                         for p in addr.split('@', 1)])
+        addr = "@".join(
+            [p.encode("idna").decode("us-ascii") for p in addr.split("@", 1)]
+        )
     return name and formataddr((mime_header(name, charset), addr)) or addr
 
 
@@ -52,10 +47,18 @@ class MailMessage(object):
     """ Mail message.
     """
 
-    def __init__(self, subject='', content='',
-                 from_addr=None, to_addrs=None,
-                 cc_addrs=None, bcc_addrs=None, reply_to_addrs=None,
-                 content_type='text/plain', charset='us-ascii'):
+    def __init__(
+        self,
+        subject="",
+        content="",
+        from_addr=None,
+        to_addrs=None,
+        cc_addrs=None,
+        bcc_addrs=None,
+        reply_to_addrs=None,
+        content_type="text/plain",
+        charset="us-ascii",
+    ):
         self.subject = subject
         self.content = content
         self.from_addr = from_addr
@@ -77,8 +80,15 @@ class Attachment(object):
     """ An attachment to mail message.
     """
 
-    def __init__(self, name, content, content_type=None, disposition=None,
-                 name_charset=None, content_charset=None):
+    def __init__(
+        self,
+        name,
+        content,
+        content_type=None,
+        disposition=None,
+        name_charset=None,
+        content_charset=None,
+    ):
         self.name = name
         self.content = content
         self.content_type = content_type
@@ -91,7 +101,7 @@ class Attachment(object):
         """ Creates an attachment from file.
         """
         ignore, name = path_split(path)
-        f = open(path, 'rb')
+        f = open(path, "rb")
         try:
             return cls(name, f.read())
         finally:
@@ -102,7 +112,7 @@ class Alternative(object):
     """ Represents alternative mail message.
     """
 
-    def __init__(self, content, content_type='text/html', charset=None):
+    def __init__(self, content, content_type="text/html", charset=None):
         self.content = content
         self.content_type = content_type
         self.charset = charset
@@ -125,8 +135,8 @@ class Related(object):
         ignore, name = path_split(path)
         content_type, ignore = guess_type(name)
         if content_type is None:
-            content_type = 'application/octet-stream'
-        f = open(path, 'rb')
+            content_type = "application/octet-stream"
+        f = open(path, "rb")
         try:
             return cls(name, f.read(), content_type)
         finally:
@@ -137,8 +147,14 @@ class SMTPClient(object):
     """ SMTP client that can be used to send mail.
     """
 
-    def __init__(self, host='127.0.0.1', port=25, use_tls=False,
-                 username=None, password=None):
+    def __init__(
+        self,
+        host="127.0.0.1",
+        port=25,
+        use_tls=False,
+        username=None,
+        password=None,
+    ):
         self.host = host
         self.port = port
         self.use_tls = use_tls
@@ -160,9 +176,14 @@ class SMTPClient(object):
     def send_multi(self, messages):
         """ Sends multiple mail messages.
         """
-        args = [(message.from_addr, message.recipients(),
-                 ntob(mime(message).as_string(), message.charset))
-                for message in messages]
+        args = [
+            (
+                message.from_addr,
+                message.recipients(),
+                ntob(mime(message).as_string(), message.charset),
+            )
+            for message in messages
+        ]
         # keep connection scope minimal
         client = self.connect()
         try:
@@ -184,6 +205,7 @@ class SMTPClient(object):
 
 # region: internal details
 
+
 def mime(message):
     charset = message.charset
     m = mime_part(message.content, message.content_type, charset)
@@ -191,30 +213,30 @@ def mime(message):
     if message.alternatives:
         subparts += [mime_alternative(a) for a in message.alternatives]
         if len(subparts) > 1:
-            m = mime_multipart('multipart/alternative', subparts)
+            m = mime_multipart("multipart/alternative", subparts)
             subparts = [m]
         else:
             m = subparts[0]
     if message.attachments:
         subparts += [mime_attachment(a) for a in message.attachments]
-        m = mime_multipart('multipart/mixed', subparts)
-    m['Message-ID'] = make_msgid()
-    m['Subject'] = message.subject
-    m['Date'] = formatdate(message.date, localtime=True)
-    m['From'] = message.from_addr
-    m['To'] = ', '.join(message.to_addrs)
+        m = mime_multipart("multipart/mixed", subparts)
+    m["Message-ID"] = make_msgid()
+    m["Subject"] = message.subject
+    m["Date"] = formatdate(message.date, localtime=True)
+    m["From"] = message.from_addr
+    m["To"] = ", ".join(message.to_addrs)
     if message.cc_addrs:
-        m['Cc'] = ', '.join(message.cc_addrs)
+        m["Cc"] = ", ".join(message.cc_addrs)
     if message.bcc_addrs:
-        m['Bcc'] = ', '.join(message.bcc_addrs)
+        m["Bcc"] = ", ".join(message.bcc_addrs)
     if message.reply_to_addrs:
-        m['Reply-To'] = ', '.join(message.reply_to_addrs)
+        m["Reply-To"] = ", ".join(message.reply_to_addrs)
     return m
 
 
 def mime_header(value, charset):
     try:
-        value.encode('us-ascii')
+        value.encode("us-ascii")
     except UnicodeEncodeError:
         return Header(value, charset).encode()
     else:
@@ -223,16 +245,16 @@ def mime_header(value, charset):
 
 def mime_part(content, content_type, content_charset=None):
     m = Message()
-    m.add_header('Content-Type', content_type)
+    m.add_header("Content-Type", content_type)
     m.set_payload(content, content_charset)
-    if not content_type.startswith('text'):
+    if not content_type.startswith("text"):
         encode_base64(m)
     return m
 
 
 def mime_multipart(content_type, subparts):
     m = Message()
-    m.add_header('Content-Type', content_type)
+    m.add_header("Content-Type", content_type)
     m.set_payload(subparts)
     return m
 
@@ -243,9 +265,9 @@ def mime_alternative(a):
         subparts = [m]
         for r in a.related:
             m = mime_part(r.content, r.content_type)
-            m.add_header('Content-ID', r.content_id)
+            m.add_header("Content-ID", r.content_id)
             subparts.append(m)
-        m = mime_multipart('multipart/related', subparts)
+        m = mime_multipart("multipart/related", subparts)
     return m
 
 
@@ -254,14 +276,15 @@ def mime_attachment(attachment):
     if not content_type:
         content_type, ignore = guess_type(attachment.name)
         if content_type is None:
-            content_type = 'application/octet-stream'
-    m = mime_part(attachment.content, content_type,
-                  attachment.content_charset)
+            content_type = "application/octet-stream"
+    m = mime_part(attachment.content, content_type, attachment.content_charset)
     name = attachment.name
     if attachment.name_charset:
-        name = (attachment.name_charset, '', name)
+        name = (attachment.name_charset, "", name)
     # see http://www.ietf.org/rfc/rfc2183.txt
-    m.add_header('Content-Disposition',
-                 attachment.disposition or 'attachment',
-                 filename=name)
+    m.add_header(
+        "Content-Disposition",
+        attachment.disposition or "attachment",
+        filename=name,
+    )
     return m

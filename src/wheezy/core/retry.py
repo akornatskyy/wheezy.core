@@ -1,9 +1,7 @@
-
 """ ``retry`` module.
 """
 
-from time import sleep
-from time import time
+from time import sleep, time
 
 
 def make_retry(timeout, start, end=None, slope=1.0, step=0.0):
@@ -77,4 +75,5 @@ def make_retry(timeout, start, end=None, slope=1.0, step=0.0):
             return False
         sleep(remains)
         return acquire()
+
     return retry

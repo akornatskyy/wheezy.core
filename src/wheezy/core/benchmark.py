@@ -1,10 +1,7 @@
-
 """ ``bechmark`` module.
 """
 
-from wheezy.core.comp import PY2
-from wheezy.core.comp import PY_MINOR
-
+from wheezy.core.comp import PY2, PY_MINOR
 
 if PY2 and PY_MINOR < 6:  # pragma: nocover
     import gc
@@ -25,9 +22,10 @@ if PY2 and PY_MINOR < 6:  # pragma: nocover
             if e:
                 gc.enable()
 
+
 else:  # pragma: nocover
-    from timeit import timeit
     from timeit import default_timer  # noqa
+    from timeit import timeit
 
 
 class Benchmark(object):
@@ -69,13 +67,14 @@ class Benchmark(object):
 
     def report(self, name=None, baselines=None):
         baselines = baselines or {}
-        print("%s: %s x %s" % (name or 'noname',
-                               len(self.targets), self.number))
+        print(
+            "%s: %s x %s" % (name or "noname", len(self.targets), self.number)
+        )
         print("%s %s %s %s" % ("baseline", "throughput", "change", "target"))
         base = None
         for (name, result) in self.run():
             if not result:
-                print('     - %      - rps    - % ' + name)
+                print("     - %      - rps    - % " + name)
                 continue
             if base is None:
                 base = result
@@ -83,8 +82,10 @@ class Benchmark(object):
             rps = round(self.number / result, 1)
             previous_relative = baselines.get(name, base_relative)
             delta = base_relative / previous_relative - 1.0
-            print("%7.1f%% %7drps %+5.1f%% %s" % (
-                base_relative * 100, rps, delta * 100, name))
+            print(
+                "%7.1f%% %7drps %+5.1f%% %s"
+                % (base_relative * 100, rps, delta * 100, name)
+            )
 
 
 class Timer(object):
@@ -108,6 +109,7 @@ class Timer(object):
             t1 = default_timer()
             self.timing += t1 - t0
             return result
+
         setattr(self.target, self.name, timing_wrapper)
 
     def stop(self):

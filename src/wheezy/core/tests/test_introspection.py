@@ -1,4 +1,3 @@
-
 """ Unit tests for ``wheezy.core.introspection``.
 """
 
@@ -6,7 +5,6 @@ import unittest
 
 
 class LooksLike(object):
-
     def assert_warning(self, msg):
         print([str(w.message) for w in self.w])
         assert len(self.w) == 1
@@ -41,7 +39,7 @@ class LooksLike(object):
             def bar(self):
                 pass  # pragma: nocover
 
-        assert looks(Foo).like(IFoo, ignore_funcs=['foo'])
+        assert looks(Foo).like(IFoo, ignore_funcs=["foo"])
 
     def test_redundant_ignore(self):
         """ Tests function is set to be ignored but it is not found.
@@ -56,7 +54,7 @@ class LooksLike(object):
             def bar(self):
                 pass  # pragma: nocover
 
-        assert not looks(Foo).like(IFoo, ignore_funcs=['foo'])
+        assert not looks(Foo).like(IFoo, ignore_funcs=["foo"])
         self.assert_warning("'foo': redundant ignore.")
 
     def test_args(self):
@@ -73,8 +71,9 @@ class LooksLike(object):
                 pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
-        self.assert_warning("'foo': argument names or defaults "
-                            "have no match.")
+        self.assert_warning(
+            "'foo': argument names or defaults " "have no match."
+        )
 
     def test_ignore_args(self):
         """ Tests if function args ignored.
@@ -89,7 +88,7 @@ class LooksLike(object):
             def foo(self, a, b):
                 pass  # pragma: nocover
 
-        assert looks(Foo).like(IFoo, ignore_argspec='foo')
+        assert looks(Foo).like(IFoo, ignore_argspec="foo")
 
     def test_property(self):
         """ Tests if there any @property corresponds.
@@ -144,7 +143,7 @@ class LooksLike(object):
             pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo)
-        assert not looks(Foo).like(IFoo, notice=['__len__'])
+        assert not looks(Foo).like(IFoo, notice=["__len__"])
         self.assert_warning("'__len__': is missing.")
 
         class Foo(IFoo):
@@ -152,7 +151,7 @@ class LooksLike(object):
                 pass  # pragma: nocover
 
         assert looks(Foo).like(IFoo)
-        assert looks(Foo).like(IFoo, notice=['__len__'])
+        assert looks(Foo).like(IFoo, notice=["__len__"])
 
     def test_decorator(self):
         """ Decorator argspec doesn't match.
@@ -163,7 +162,9 @@ class LooksLike(object):
             def decorate(m):
                 def x(*args, **kwargs):
                     pass  # pragma: nocover
+
                 return x
+
             return decorate
 
         class IFoo(object):
@@ -176,8 +177,9 @@ class LooksLike(object):
                 pass  # pragma: nocover
 
         assert not looks(Foo).like(IFoo)
-        self.assert_warning("'foo': argument names or defaults "
-                            "have no match.")
+        self.assert_warning(
+            "'foo': argument names or defaults " "have no match."
+        )
 
     def test_type(self):
         """ Test if decorator types do not match.
@@ -204,7 +206,6 @@ class LooksLike(object):
         from wheezy.core.introspection import looks
 
         class IFoo(object):
-
             def foo(self, a, b=1):
                 pass  # pragma: nocover
 
@@ -229,8 +230,8 @@ try:
 except ImportError:  # pragma: nocover
     pass
 else:
-    class LooksLikeTestCase(unittest.TestCase, LooksLike):
 
+    class LooksLikeTestCase(unittest.TestCase, LooksLike):
         def setUp(self):
             warnings.resetwarnings()
             self.ctx = warnings.catch_warnings(record=True)

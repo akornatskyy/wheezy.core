@@ -5,9 +5,7 @@ import gettext
 import os
 import os.path
 
-from wheezy.core.comp import defaultdict
-from wheezy.core.comp import ref_gettext
-
+from wheezy.core.comp import defaultdict, ref_gettext
 
 assert ref_gettext
 null_translations = gettext.NullTranslations()
@@ -17,7 +15,7 @@ class TranslationsManager(object):
     """ Manages several languages and translation domains.
     """
 
-    def __init__(self, directories=None, default_lang='en'):
+    def __init__(self, directories=None, default_lang="en"):
         """
 
             >>> curdir = os.path.dirname(__file__)
@@ -29,9 +27,11 @@ class TranslationsManager(object):
         self.default_lang = default_lang
         self.fallbacks = {}
         self.translations = defaultdict(
-            lambda: defaultdict(lambda: null_translations))
+            lambda: defaultdict(lambda: null_translations)
+        )
         self.domains = defaultdict(
-            lambda: defaultdict(lambda: null_translations))
+            lambda: defaultdict(lambda: null_translations)
+        )
         if directories:
             for localedir in directories:
                 self.load(localedir)
@@ -94,21 +94,19 @@ class TranslationsManager(object):
             'test'
         """
         for lang in os.listdir(localedir):
-            if lang.startswith('.'):  # pragma: nocover
+            if lang.startswith("."):  # pragma: nocover
                 continue
-            domaindir = os.path.join(localedir, lang, 'LC_MESSAGES')
+            domaindir = os.path.join(localedir, lang, "LC_MESSAGES")
             if not os.path.isdir(domaindir):  # pragma: nocover
                 continue
             for domain in os.listdir(domaindir):
-                if not domain.endswith('.mo'):
+                if not domain.endswith(".mo"):
                     continue
                 domain = domain[:-3]
                 if lang not in self.fallbacks:
                     self.add_fallback((lang,))
                 translation = gettext.translation(
-                    domain,
-                    localedir,
-                    languages=self.fallbacks[lang]
+                    domain, localedir, languages=self.fallbacks[lang]
                 )
                 self.translations[lang][domain] = translation
                 self.domains[domain][lang] = translation

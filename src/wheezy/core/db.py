@@ -1,4 +1,3 @@
-
 """ ``session`` module.
 """
 
@@ -7,7 +6,7 @@ import warnings
 from wheezy.core.introspection import import_name
 from wheezy.core.uuid import shrink_uuid
 
-uuid4 = import_name('uuid.uuid4')
+uuid4 = import_name("uuid.uuid4")
 
 SESSION_STATUS_IDLE = 0
 SESSION_STATUS_ENTERED = 1
@@ -21,7 +20,7 @@ class Session(object):
         (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
     """
 
-    __slots__ = ('pool', 'status', '__connection')
+    __slots__ = ("pool", "status", "__connection")
 
     def __init__(self, pool):
         """ Initialize a new instance of database session.
@@ -92,11 +91,17 @@ class TPCSession(object):
         (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
     """
 
-    __slots__ = ('format_id', 'global_transaction_id', 'branch_qualifier',
-                 'enlised_sessions', 'status')
+    __slots__ = (
+        "format_id",
+        "global_transaction_id",
+        "branch_qualifier",
+        "enlised_sessions",
+        "status",
+    )
 
-    def __init__(self, format_id=7, global_transaction_id=None,
-                 branch_qualifier=''):
+    def __init__(
+        self, format_id=7, global_transaction_id=None, branch_qualifier=""
+    ):
         """ Initialize a new instance of Two-Phase Commit protocol database
         session.
         """
@@ -120,9 +125,11 @@ class TPCSession(object):
         self.enlised_sessions.append(session)
         session.__enter__()
         c = session.connection
-        xid = c.xid(self.format_id,
-                    self.global_transaction_id or shrink_uuid(uuid4()),
-                    self.branch_qualifier)
+        xid = c.xid(
+            self.format_id,
+            self.global_transaction_id or shrink_uuid(uuid4()),
+            self.branch_qualifier,
+        )
         c.tpc_begin(xid)
         self.status = SESSION_STATUS_ACTIVE
 
@@ -133,8 +140,9 @@ class TPCSession(object):
         if self.status != SESSION_STATUS_ACTIVE:
             return
         sessions = self.enlised_sessions
-        connections = [s.connection for s in sessions
-                       if s.status == SESSION_STATUS_ACTIVE]
+        connections = [
+            s.connection for s in sessions if s.status == SESSION_STATUS_ACTIVE
+        ]
         for c in connections:
             c.tpc_prepare()
         for c in connections:
@@ -153,8 +161,10 @@ class TPCSession(object):
                 try:
                     s.connection.tpc_rollback()
                 except Exception:
-                    warnings.warn('An error occured while rolling back '
-                                  'two phase transaction.')
+                    warnings.warn(
+                        "An error occured while rolling back "
+                        "two phase transaction."
+                    )
             s.__exit__(exc_type, exc_value, traceback)
 
 
@@ -172,8 +182,9 @@ class NullSession(object):
 
     @property
     def connection(self):
-        raise AssertionError('Not intended to be used directly. '
-                             'Use cursor() method instead.')
+        raise AssertionError(
+            "Not intended to be used directly. " "Use cursor() method instead."
+        )
 
     def cursor(self, *args, **kwargs):
         """ Ensure session is entered.

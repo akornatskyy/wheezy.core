@@ -1,10 +1,7 @@
-
 """ ``pooling`` module.
 """
 
-from wheezy.core.comp import LifoQueue
-from wheezy.core.comp import Queue
-from wheezy.core.comp import xrange
+from wheezy.core.comp import LifoQueue, Queue, xrange
 
 
 class EagerPool(object):
@@ -75,7 +72,8 @@ class Pooled(object):
             with Pooled(pool) as item:
                 # do something with item
     """
-    __slots__ = ('pool', 'item')
+
+    __slots__ = ("pool", "item")
 
     def __init__(self, pool):
         self.pool = pool

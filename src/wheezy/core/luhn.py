@@ -1,4 +1,3 @@
-
 """ ``luhn`` module.
 """
 
@@ -18,8 +17,8 @@ def luhn_checksum(n):
     """
     digits = digits_of(n)
     checksum = (
-        sum(digits[-2::-2]) + sum(
-            sum2digits(d << 1) for d in digits[-1::-2])) % 10
+        sum(digits[-2::-2]) + sum(sum2digits(d << 1) for d in digits[-1::-2])
+    ) % 10
     return checksum and 10 - checksum or 0
 
 
@@ -46,8 +45,9 @@ def is_luhn_valid(n):
         False
     """
     digits = digits_of(n)
-    checksum = sum(digits[-1::-2]) + sum(sum2digits(d << 1)
-                                         for d in digits[-2::-2])
+    checksum = sum(digits[-1::-2]) + sum(
+        sum2digits(d << 1) for d in digits[-2::-2]
+    )
     return checksum % 10 == 0
 
 
