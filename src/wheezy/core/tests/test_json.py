@@ -9,8 +9,7 @@ from wheezy.core.json import date, datetime, json_decode, json_encode, time
 
 
 class JSONEncode(object):
-    """ Test the ``json_encode`` function.
-    """
+    """Test the ``json_encode`` function."""
 
     def test_encode_return_unicode_string(self):
         self.assertTrue(str_type, json_encode({}))
@@ -52,8 +51,7 @@ class JSONEncode(object):
 
 
 class JSONDecode(object):
-    """ Test the ``json_encode`` function.
-    """
+    """Test the ``json_encode`` function."""
 
     def test_decode_returns_unicode_strings(self):
         d = json_decode('{"d": "x"}')
@@ -75,12 +73,10 @@ try:
     json_encode({})
 
     class JSONEncodeTestCase(unittest.TestCase, JSONEncode):
-        """ Test the ``json_encode`` function.
-        """
+        """Test the ``json_encode`` function."""
 
     class JSONDecodeTestCase(unittest.TestCase, JSONDecode):
-        """ Test the ``json_encode`` function.
-        """
+        """Test the ``json_encode`` function."""
 
 
 except NotImplementedError:  # pragma: nocover

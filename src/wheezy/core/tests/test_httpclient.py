@@ -64,7 +64,12 @@ class HTTPClientTestCase(unittest.TestCase):
         assert "HEAD" == method
 
     def test_post(self):
-        self.client.post("auth/token", params={"a": ["1"],})
+        self.client.post(
+            "auth/token",
+            params={
+                "a": ["1"],
+            },
+        )
         method, path, body, headers = self.mock_c.request.call_args[0]
         assert "POST" == method
         assert "/api/v1/auth/token" == path
@@ -106,15 +111,13 @@ class HTTPClientTestCase(unittest.TestCase):
         assert not self.client.cookies
 
     def test_assert_json(self):
-        """ Expecting json response but content type is not valid.
-        """
+        """Expecting json response but content type is not valid."""
         self.headers.append(("content-type", "text/html; charset=UTF-8"))
         self.client.get("auth/token")
         self.assertRaises(AssertionError, lambda: self.client.json)
 
     def test_json(self):
-        """ json response.
-        """
+        """json response."""
         from wheezy.core import httpclient
         from wheezy.core.comp import ntob
 
@@ -130,8 +133,7 @@ class HTTPClientTestCase(unittest.TestCase):
         patcher.stop()
 
     def test_gzip(self):
-        """ Ensure gzip decompression.
-        """
+        """Ensure gzip decompression."""
         from wheezy.core.comp import ntob
         from wheezy.core.gzip import compress
 
@@ -141,8 +143,7 @@ class HTTPClientTestCase(unittest.TestCase):
         assert "test" == self.client.content
 
     def test_etag(self):
-        """ ETag processing.
-        """
+        """ETag processing."""
         self.headers.append(("etag", '"ca231fbc"'))
         self.client.get("auth/token")
         method, path, body, headers = self.mock_c.request.call_args[0]

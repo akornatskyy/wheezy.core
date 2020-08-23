@@ -14,18 +14,15 @@ class SessionTestCase(unittest.TestCase):
         self.session = Session(self.mock_pool)
 
     def test_enter(self):
-        """ Enter returns session instance.
-        """
+        """Enter returns session instance."""
         assert self.session == self.session.__enter__()
 
     def test_connection_raise_error(self):
-        """ If not entered raise error.
-        """
+        """If not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.connection)
 
     def test_connection(self):
-        """ Ensure same connection is returned each time.
-        """
+        """Ensure same connection is returned each time."""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -34,8 +31,7 @@ class SessionTestCase(unittest.TestCase):
         self.mock_pool.acquire.assert_called_once_with()
 
     def test_on_active(self):
-        """ Ensure on_active is called once.
-        """
+        """Ensure on_active is called once."""
         from wheezy.core.db import Session
 
         class MockSession(Session):
@@ -51,8 +47,7 @@ class SessionTestCase(unittest.TestCase):
         mock_session.on_active.assert_called_once_with(mock_connection)
 
     def test_cursor(self):
-        """ Ensure cursor is called with all args.
-        """
+        """Ensure cursor is called with all args."""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -63,21 +58,18 @@ class SessionTestCase(unittest.TestCase):
         mock_connection.cursor.assert_called_once_with()
 
     def test_commit_raise_error(self):
-        """ If not entered raise error.
-        """
+        """If not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.commit())
 
     def test_commit_on_unused(self):
-        """ no connection commit is called.
-        """
+        """no connection commit is called."""
         self.session.__enter__()
         self.session.commit()
         assert not self.mock_pool.acquire.called
         assert not self.mock_pool.get_back.called
 
     def test_commit_connection_error(self):
-        """ An error is raised on connection commit.
-        """
+        """An error is raised on connection commit."""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -86,8 +78,7 @@ class SessionTestCase(unittest.TestCase):
         self.assertRaises(KeyError, lambda: self.session.commit())
 
     def test_commit_cursor(self):
-        """ Cursor is aquires new connection after commit.
-        """
+        """Cursor is aquires new connection after commit."""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -97,16 +88,14 @@ class SessionTestCase(unittest.TestCase):
         assert self.mock_pool.acquire.call_count == 2
 
     def test_exit_on_unused(self):
-        """ Exit when connection was not used.
-        """
+        """Exit when connection was not used."""
         self.session.__enter__()
         assert not self.mock_pool.acquire.called
         self.session.__exit__(None, None, None)
         assert not self.mock_pool.get_back.called
 
     def test_exit_rollback(self):
-        """ Exit when no commit called.
-        """
+        """Exit when no commit called."""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -117,8 +106,7 @@ class SessionTestCase(unittest.TestCase):
         self.mock_pool.get_back.assert_called_once_with(mock_connection)
 
     def test_exit_connection_error(self):
-        """ Exit when an error raised during rollback
-        """
+        """Exit when an error raised during rollback"""
         mock_connection = Mock()
         self.mock_pool.acquire.return_value = mock_connection
         self.session.__enter__()
@@ -139,18 +127,15 @@ class TPCSessionTestCase(unittest.TestCase):
         self.session = TPCSession(self.mock_pool)
 
     def test_enter(self):
-        """ Enter returns session instance.
-        """
+        """Enter returns session instance."""
         assert self.session == self.session.__enter__()
 
     def test_enlist_raise_error(self):
-        """ If not entered raise error.
-        """
+        """If not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.enlist(None))
 
     def test_enlist(self):
-        """ Starts TPC transaction on connection.
-        """
+        """Starts TPC transaction on connection."""
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -161,8 +146,7 @@ class TPCSessionTestCase(unittest.TestCase):
         session.connection.tpc_begin.assert_called_once_with("xid")
 
     def test_enlist_twice(self):
-        """ Starts TPC transaction on connection.
-        """
+        """Starts TPC transaction on connection."""
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -176,19 +160,16 @@ class TPCSessionTestCase(unittest.TestCase):
         session.connection.tpc_begin.assert_called_once_with("xid")
 
     def test_commit_raise_error(self):
-        """ If not entered raise error.
-        """
+        """If not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.commit())
 
     def test_commit_no_enlisted(self):
-        """ If nothing enlisted commit does nothing.
-        """
+        """If nothing enlisted commit does nothing."""
         self.session.__enter__()
         self.session.commit()
 
     def test_commit_prepare_error(self):
-        """ An error is raised while working with connection.
-        """
+        """An error is raised while working with connection."""
         from wheezy.core.db import SESSION_STATUS_ACTIVE
 
         self.session.__enter__()
@@ -204,8 +185,7 @@ class TPCSessionTestCase(unittest.TestCase):
         assert not session.__exit__.called
 
     def test_commit_error(self):
-        """ An error is raised while working with connection.
-        """
+        """An error is raised while working with connection."""
         from wheezy.core.db import SESSION_STATUS_ACTIVE
 
         self.session.__enter__()
@@ -221,8 +201,7 @@ class TPCSessionTestCase(unittest.TestCase):
         assert not session.__exit__.called
 
     def test_commit(self):
-        """ Enlisted sessions are exited.
-        """
+        """Enlisted sessions are exited."""
         from wheezy.core.db import SESSION_STATUS_ACTIVE
 
         self.session.__enter__()
@@ -238,14 +217,12 @@ class TPCSessionTestCase(unittest.TestCase):
         session.__exit__.assert_called_once_with(None, None, None)
 
     def test_exit_on_unused(self):
-        """ No sessions enlisted.
-        """
+        """No sessions enlisted."""
         self.session.__enter__()
         self.session.__exit__(None, None, None)
 
     def test_exit_no_active(self):
-        """ There are sessions enlisted but they are not active.
-        """
+        """There are sessions enlisted but they are not active."""
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -256,8 +233,7 @@ class TPCSessionTestCase(unittest.TestCase):
         session.__exit__.assert_called_once_with(None, None, None)
 
     def test_exit_active(self):
-        """ There are active sessions enlisted.
-        """
+        """There are active sessions enlisted."""
         from wheezy.core.db import SESSION_STATUS_ACTIVE
 
         self.session.__enter__()
@@ -271,8 +247,8 @@ class TPCSessionTestCase(unittest.TestCase):
         session.__exit__.assert_called_once_with(None, None, None)
 
     def test_exit_active_on_error(self):
-        """ There are active sessions enlisted and error is raised
-            while working with connection.
+        """There are active sessions enlisted and error is raised
+        while working with connection.
         """
         import warnings
 
@@ -299,47 +275,39 @@ class NullSessionTestCase(unittest.TestCase):
         self.session = NullSession()
 
     def test_enter(self):
-        """ Enter returns session instance.
-        """
+        """Enter returns session instance."""
         assert self.session == self.session.__enter__()
 
     def test_connection_raise_error(self):
-        """ Not intended to be used directly.
-        """
+        """Not intended to be used directly."""
         self.assertRaises(AssertionError, lambda: self.session.connection)
 
     def test_cursor_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.cursor())
 
     def test_cursor(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.cursor()
 
     def test_commit_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.commit())
 
     def test_commit(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.commit()
 
     def test_exit_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(
             AssertionError, lambda: self.session.__exit__(None, None, None)
         )
 
     def test_exit(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.__exit__(None, None, None)
 
@@ -351,42 +319,35 @@ class NullTPCSessionTestCase(unittest.TestCase):
         self.session = NullTPCSession()
 
     def test_enter(self):
-        """ Enter returns session instance.
-        """
+        """Enter returns session instance."""
         assert self.session == self.session.__enter__()
 
     def test_enlist_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.enlist("x"))
 
     def test_enlist(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.enlist("x")
         self.session.enlist("y")
 
     def test_commit_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(AssertionError, lambda: self.session.commit())
 
     def test_commit(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.commit()
 
     def test_exit_raise_error(self):
-        """ If session is not entered raise error.
-        """
+        """If session is not entered raise error."""
         self.assertRaises(
             AssertionError, lambda: self.session.__exit__(None, None, None)
         )
 
     def test_exit(self):
-        """ Noop if session is entered.
-        """
+        """Noop if session is entered."""
         self.session.__enter__()
         self.session.__exit__(None, None, None)

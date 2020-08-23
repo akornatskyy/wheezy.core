@@ -15,11 +15,11 @@ from wheezy.core.comp import __import__  # noqa: I202
 
 
 def import_name(fullname):
-    """ Dynamically imports object by its full name.
+    """Dynamically imports object by its full name.
 
-        >>> from datetime import timedelta
-        >>> import_name('datetime.timedelta') is timedelta
-        True
+    >>> from datetime import timedelta
+    >>> import_name('datetime.timedelta') is timedelta
+    True
     """
     namespace, name = fullname.rsplit(".", 1)
     obj = __import__(namespace, None, None, [name])
@@ -27,25 +27,25 @@ def import_name(fullname):
 
 
 class looks(object):  # noqa: N801
-    """ Performs duck typing checks for two classes.
+    """Performs duck typing checks for two classes.
 
-        Typical use::
+    Typical use::
 
-            assert looks(IFoo, ignore_argspec=['pex']).like(Foo)
+        assert looks(IFoo, ignore_argspec=['pex']).like(Foo)
     """
 
     def __init__(self, cls):
         """
-            *cls* - a class to be checked
+        *cls* - a class to be checked
         """
         self.cls = cls
 
     def like(self, cls, notice=None, ignore_funcs=None, ignore_argspec=None):
-        """ Check if `self.cls` can be used as duck typing for `cls`.
+        """Check if `self.cls` can be used as duck typing for `cls`.
 
-            *cls* - class to be checked for duck typing.
-            *ignore_funcs* - a list of functions to ignore
-            *ignore_argspec* - a list of functions to ignore arguments spec.
+        *cls* - class to be checked for duck typing.
+        *ignore_funcs* - a list of functions to ignore
+        *ignore_argspec* - a list of functions to ignore arguments spec.
         """
         notice = notice or []
         ignore_funcs = ignore_funcs or []

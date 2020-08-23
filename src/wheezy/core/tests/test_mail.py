@@ -40,8 +40,7 @@ class MiscTestCase(unittest.TestCase):
         self.patcher.stop()
 
     def test_recipients(self):
-        """ Ensure list is unique.
-        """
+        """Ensure list is unique."""
         from wheezy.core.mail import MailMessage
 
         m = MailMessage(
@@ -54,8 +53,7 @@ class MiscTestCase(unittest.TestCase):
         assert ["a", "b", "c", "d"] == sorted(m.recipients())
 
     def test_attachment_from_file(self):
-        """ Ensure attachment can be created from file.
-        """
+        """Ensure attachment can be created from file."""
         from wheezy.core.mail import Attachment
 
         self.mock_open.return_value.read.return_value = "hello"
@@ -67,8 +65,7 @@ class MiscTestCase(unittest.TestCase):
         assert "hello" == a.content
 
     def test_alternative(self):
-        """ Alternative default content type.
-        """
+        """Alternative default content type."""
         from wheezy.core.mail import Alternative
 
         a = Alternative("content")
@@ -76,8 +73,7 @@ class MiscTestCase(unittest.TestCase):
 
     @patch("wheezy.core.mail.guess_type")
     def test_related_from_file(self, mock_guess_type):
-        """ Ensure related can be created from file.
-        """
+        """Ensure related can be created from file."""
         from wheezy.core.mail import Related
 
         mock_guess_type.return_value = ("text/css", None)
@@ -92,8 +88,7 @@ class MiscTestCase(unittest.TestCase):
 
     @patch("wheezy.core.mail.guess_type")
     def test_related_from_file_unknown_type(self, mock_guess_type):
-        """ Ensure default content type if its unknown.
-        """
+        """Ensure default content type if its unknown."""
         from wheezy.core.mail import Related
 
         mock_guess_type.return_value = (None, None)
@@ -104,24 +99,25 @@ class MiscTestCase(unittest.TestCase):
 
 class MailAddressTestCase(unittest.TestCase):
     def test_mail_and_name(self):
-        """ Name or mail are ascii valid.
-        """
+        """Name or mail are ascii valid."""
         from wheezy.core.mail import mail_address
 
         assert "someone@dev.local" == mail_address("someone@dev.local")
         assert "Someone <someone@dev.local>" == mail_address(
             "someone@dev.local", "Someone"
         )
-        assert "=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>" == mail_address(
-            "x@dev.local",
-            b("\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442").decode(
-                "unicode_escape"
-            ),
-        ).replace("utf8", "utf-8")
+        assert (
+            "=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>"
+            == mail_address(
+                "x@dev.local",
+                b("\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442").decode(
+                    "unicode_escape"
+                ),
+            ).replace("utf8", "utf-8")
+        )
 
     def test_idna(self):
-        """ IDNA mail
-        """
+        """IDNA mail"""
         from wheezy.core.mail import mail_address
 
         mail = b(
@@ -160,8 +156,7 @@ class SMTPClientTestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_connect(self):
-        """ Ensure connected to right host and port
-        """
+        """Ensure connected to right host and port"""
         from wheezy.core.mail import MailMessage, SMTPClient
 
         client = SMTPClient("mail.dev.local", 125)
@@ -173,8 +168,7 @@ class SMTPClientTestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_use_tls(self):
-        """ Ensure start tls command is issued.
-        """
+        """Ensure start tls command is issued."""
         from wheezy.core.mail import MailMessage, SMTPClient
 
         client = SMTPClient(use_tls=True)
@@ -184,8 +178,7 @@ class SMTPClientTestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_login(self):
-        """ Ensure credentials are used.
-        """
+        """Ensure credentials are used."""
         from wheezy.core.mail import MailMessage, SMTPClient
 
         client = SMTPClient(username="user", password="pass")
@@ -194,8 +187,7 @@ class SMTPClientTestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_send(self):
-        """ Ensure from and to lists are valid in sending a single message.
-        """
+        """Ensure from and to lists are valid in sending a single message."""
         from wheezy.core.mail import MailMessage, SMTPClient
 
         client = SMTPClient(username="user", password="pass")
@@ -209,8 +201,7 @@ class SMTPClientTestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_send_multi(self):
-        """ Ensure from and to lists are valid in sending multiple messages.
-        """
+        """Ensure from and to lists are valid in sending multiple messages."""
         from mock import call
 
         from wheezy.core.mail import MailMessage, SMTPClient
@@ -233,8 +224,7 @@ class SMTPClientTestCase(unittest.TestCase):
 class MIMETestCase(unittest.TestCase):
     @patch("wheezy.core.mail.formatdate")
     def test_required_headers(self, mock_formatdate):
-        """ Ensure mail message information is included.
-        """
+        """Ensure mail message information is included."""
         from wheezy.core.mail import MailMessage, mime
 
         mock_formatdate.return_value = "x"
@@ -264,8 +254,7 @@ class MIMETestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_alternative(self):
-        """ Ensure alternative includes both plain and html.
-        """
+        """Ensure alternative includes both plain and html."""
         from wheezy.core.mail import Alternative, MailMessage, mime
 
         message = MailMessage(content="c")
@@ -280,8 +269,8 @@ class MIMETestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_alternative_no_plain(self):
-        """ Ensure if alternative available by plain is empty
-            only one included.
+        """Ensure if alternative available by plain is empty
+        only one included.
         """
         from wheezy.core.mail import Alternative, MailMessage, mime
 
@@ -294,8 +283,7 @@ class MIMETestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_attachment(self):
-        """ Ensure attachments added.
-        """
+        """Ensure attachments added."""
         from wheezy.core.mail import Attachment, MailMessage, mime
 
         message = MailMessage(content="c")
@@ -310,8 +298,7 @@ class MIMETestCase(unittest.TestCase):
 
     @unittest.skipIf(PYPY, "issue #3279")
     def test_everything(self):
-        """ Add plain, alternate and attachment.
-        """
+        """Add plain, alternate and attachment."""
         from wheezy.core.mail import Alternative, Attachment, MailMessage, mime
 
         message = MailMessage(content="c")
@@ -331,15 +318,13 @@ class MIMETestCase(unittest.TestCase):
 
 class MimeHeaderTestCase(unittest.TestCase):
     def test_ascii(self):
-        """ Value is ascii valid.
-        """
+        """Value is ascii valid."""
         from wheezy.core.mail import mime_header
 
         assert "x" == mime_header("x", "ascii")
 
     def test_encode(self):
-        """ Value is not ascii valid.
-        """
+        """Value is not ascii valid."""
         from wheezy.core.mail import mime_header
 
         value = b("\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442").decode(
@@ -350,8 +335,7 @@ class MimeHeaderTestCase(unittest.TestCase):
 
 class MIMEPartsTestCase(unittest.TestCase):
     def test_part(self):
-        """ Ensure base64 encoding for non text content.
-        """
+        """Ensure base64 encoding for non text content."""
         from wheezy.core.mail import mime_part
 
         m = mime_part("content", "text/plain")
@@ -361,8 +345,7 @@ class MIMEPartsTestCase(unittest.TestCase):
         assert "Y29udGVudA==" == m.get_payload().rstrip("\n")
 
     def test_multipart(self):
-        """ Ensure subparts.
-        """
+        """Ensure subparts."""
         from wheezy.core.mail import mime_multipart
 
         subparts = ["a"]
@@ -372,8 +355,7 @@ class MIMEPartsTestCase(unittest.TestCase):
 
     @patch("wheezy.core.mail.mime_part")
     def test_alternative(self, mock_mime_part):
-        """ Ensure alternative is built.
-        """
+        """Ensure alternative is built."""
         from wheezy.core.mail import Alternative, mime_alternative
 
         mock_mime_part.return_value = "x"
@@ -382,8 +364,7 @@ class MIMEPartsTestCase(unittest.TestCase):
         mock_mime_part.assert_called_once_with("content", "ct", "cs")
 
     def test_related(self):
-        """ Ensure related is built.
-        """
+        """Ensure related is built."""
         from wheezy.core.mail import Alternative, Related, mime_alternative
 
         a = Alternative("content", "text/html", "utf-8")
@@ -401,8 +382,7 @@ class MIMEPartsTestCase(unittest.TestCase):
         assert "cmM=" == m.get_payload().rstrip("\n")
 
     def test_attachment(self):
-        """ Ensure attachment is built.
-        """
+        """Ensure attachment is built."""
         from wheezy.core.mail import Attachment, mime_attachment
 
         a = Attachment("1.txt", "c", "text/plain")

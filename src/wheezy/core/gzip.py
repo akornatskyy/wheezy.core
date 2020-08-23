@@ -5,8 +5,7 @@ from wheezy.core.comp import BytesIO, GzipFile
 
 
 def compress(data, compresslevel=9):
-    """ Compress data in one shot.
-    """
+    """Compress data in one shot."""
     s = BytesIO()
     f = GzipFile(fileobj=s, mode="wb", mtime=0)
     f.write(data)
@@ -15,6 +14,5 @@ def compress(data, compresslevel=9):
 
 
 def decompress(data):
-    """ Decompress data in one shot.
-    """
+    """Decompress data in one shot."""
     return GzipFile(fileobj=BytesIO(data), mode="rb").read()

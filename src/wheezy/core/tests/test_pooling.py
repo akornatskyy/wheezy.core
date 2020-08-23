@@ -8,8 +8,7 @@ from mock import Mock
 
 class EagerPoolTestCase(unittest.TestCase):
     def test_init(self):
-        """ Tests if pool fills items per size requested.
-        """
+        """Tests if pool fills items per size requested."""
         from wheezy.core.pooling import EagerPool
 
         mock_create_factory = Mock()
@@ -20,8 +19,7 @@ class EagerPoolTestCase(unittest.TestCase):
         assert 10 == mock_create_factory.call_count
 
     def test_acquire(self):
-        """ If an item is aquired it is removed from pool.
-        """
+        """If an item is aquired it is removed from pool."""
         from wheezy.core.pooling import EagerPool
 
         pool = EagerPool(lambda: 1, 10)
@@ -31,8 +29,7 @@ class EagerPoolTestCase(unittest.TestCase):
         assert pool.count == 9
 
     def test_get_back(self):
-        """ An item is returned back to pool.
-        """
+        """An item is returned back to pool."""
         from wheezy.core.pooling import EagerPool
 
         pool = EagerPool(lambda: 1, 10)
@@ -44,8 +41,7 @@ class EagerPoolTestCase(unittest.TestCase):
         assert pool.count == 10
 
     def test_fifo(self):
-        """ Pool items are FIFO cycled.
-        """
+        """Pool items are FIFO cycled."""
         from wheezy.core.pooling import EagerPool
 
         items = [3, 2, 1]
@@ -62,8 +58,7 @@ class EagerPoolTestCase(unittest.TestCase):
 
 class LazyPoolTestCase(unittest.TestCase):
     def test_init(self):
-        """ Tests if pool fills items per size requested.
-        """
+        """Tests if pool fills items per size requested."""
         from wheezy.core.pooling import LazyPool
 
         mock_create_factory = Mock()
@@ -74,8 +69,7 @@ class LazyPoolTestCase(unittest.TestCase):
         assert not mock_create_factory.called
 
     def test_acquire(self):
-        """ If an item is aquired it is removed from pool.
-        """
+        """If an item is aquired it is removed from pool."""
         from wheezy.core.pooling import LazyPool
 
         pool = LazyPool(lambda x: 1, 10)
@@ -85,8 +79,8 @@ class LazyPoolTestCase(unittest.TestCase):
         assert pool.count == 9
 
     def test_acquire_error(self):
-        """ If an error has occurred during acquire then get back
-            an item to pool and re-raise error.
+        """If an error has occurred during acquire then get back
+        an item to pool and re-raise error.
         """
         from wheezy.core.pooling import LazyPool
 
@@ -98,8 +92,7 @@ class LazyPoolTestCase(unittest.TestCase):
         assert pool.count == 2
 
     def test_get_back(self):
-        """ An item is returned back to pool.
-        """
+        """An item is returned back to pool."""
         from wheezy.core.pooling import LazyPool
 
         pool = LazyPool(lambda x: 1, 10)
@@ -111,8 +104,7 @@ class LazyPoolTestCase(unittest.TestCase):
         assert pool.count == 10
 
     def test_lifo(self):
-        """ Pool items are LIFO cycled.
-        """
+        """Pool items are LIFO cycled."""
         from wheezy.core.pooling import LazyPool
 
         items = [3, 2, 1]
@@ -129,8 +121,7 @@ class LazyPoolTestCase(unittest.TestCase):
 
 class PooledTestCase(unittest.TestCase):
     def test_scope(self):
-        """ Pooled item is available only in the scope of `with` operator.
-        """
+        """Pooled item is available only in the scope of `with` operator."""
         from wheezy.core.pooling import EagerPool, Pooled
 
         pool = EagerPool(lambda: 1, 10)

@@ -32,8 +32,7 @@ del CHARSETS, SHORTEST, QP
 
 
 def mail_address(addr, name=None, charset="utf8"):
-    """ Returns mail address formatted string.
-    """
+    """Returns mail address formatted string."""
     try:
         addr.encode("us-ascii")
     except UnicodeEncodeError:
@@ -44,8 +43,7 @@ def mail_address(addr, name=None, charset="utf8"):
 
 
 class MailMessage(object):
-    """ Mail message.
-    """
+    """Mail message."""
 
     def __init__(
         self,
@@ -77,8 +75,7 @@ class MailMessage(object):
 
 
 class Attachment(object):
-    """ An attachment to mail message.
-    """
+    """An attachment to mail message."""
 
     def __init__(
         self,
@@ -98,8 +95,7 @@ class Attachment(object):
 
     @classmethod
     def from_file(cls, path):
-        """ Creates an attachment from file.
-        """
+        """Creates an attachment from file."""
         ignore, name = path_split(path)
         f = open(path, "rb")
         try:
@@ -109,8 +105,7 @@ class Attachment(object):
 
 
 class Alternative(object):
-    """ Represents alternative mail message.
-    """
+    """Represents alternative mail message."""
 
     def __init__(self, content, content_type="text/html", charset=None):
         self.content = content
@@ -120,8 +115,7 @@ class Alternative(object):
 
 
 class Related(object):
-    """ A resource related to alternative mail message.
-    """
+    """A resource related to alternative mail message."""
 
     def __init__(self, content_id, content, content_type):
         self.content_id = content_id
@@ -130,8 +124,7 @@ class Related(object):
 
     @classmethod
     def from_file(cls, path):
-        """ Creates a related mail resource from file.
-        """
+        """Creates a related mail resource from file."""
         ignore, name = path_split(path)
         content_type, ignore = guess_type(name)
         if content_type is None:
@@ -144,8 +137,7 @@ class Related(object):
 
 
 class SMTPClient(object):
-    """ SMTP client that can be used to send mail.
-    """
+    """SMTP client that can be used to send mail."""
 
     def __init__(
         self,
@@ -162,8 +154,7 @@ class SMTPClient(object):
         self.password = password
 
     def send(self, message):
-        """ Sends a single mail message.
-        """
+        """Sends a single mail message."""
         recepients = message.recipients()
         content = ntob(mime(message).as_string(), message.charset)
         # keep connection scope minimal
@@ -174,8 +165,7 @@ class SMTPClient(object):
             client.quit()
 
     def send_multi(self, messages):
-        """ Sends multiple mail messages.
-        """
+        """Sends multiple mail messages."""
         args = [
             (
                 message.from_addr,

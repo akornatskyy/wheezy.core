@@ -13,58 +13,58 @@ MAX_INT = int("FFFFFFFF", 16)
 
 
 def first_item_adapter(adaptee):
-    """ Adapts ``defaultdict(list)``.__getitem__ accessor to
-        return the first item from the list.
+    """Adapts ``defaultdict(list)``.__getitem__ accessor to
+    return the first item from the list.
 
-        >>> d = defaultdict(list)
-        >>> d['a'].extend([1, 2, 3])
-        >>> a = first_item_adapter(d)
+    >>> d = defaultdict(list)
+    >>> d['a'].extend([1, 2, 3])
+    >>> a = first_item_adapter(d)
 
-        Return a first item from the list.
+    Return a first item from the list.
 
-        >>> a['a']
-        1
+    >>> a['a']
+    1
     """
     return ItemAdapter(adaptee, 0)
 
 
 def last_item_adapter(adaptee):
-    """ Adapts ``defaultdict(list)``.__getitem__ accessor to
-        return the last item from the list.
+    """Adapts ``defaultdict(list)``.__getitem__ accessor to
+    return the last item from the list.
 
-        >>> d = defaultdict(list)
-        >>> d['a'].extend([1, 2, 3])
-        >>> a = last_item_adapter(d)
+    >>> d = defaultdict(list)
+    >>> d['a'].extend([1, 2, 3])
+    >>> a = last_item_adapter(d)
 
-        Return a last item from the list.
+    Return a last item from the list.
 
-        >>> a['a']
-        3
+    >>> a['a']
+    3
     """
     return ItemAdapter(adaptee, -1)
 
 
 class ItemAdapter(object):
-    """ Adapts ``defaultdict(list)``.__getitem__ accessor to
-        return item at ``index`` from the list. If ``key`` is not
-        found return None.
+    """Adapts ``defaultdict(list)``.__getitem__ accessor to
+    return item at ``index`` from the list. If ``key`` is not
+    found return None.
     """
 
     __slots__ = ("adaptee", "index")
 
     def __init__(self, adaptee, index):
-        """ ``adaptee`` must be defaultdict(list).
+        """``adaptee`` must be defaultdict(list).
 
-            >>> d = defaultdict(list)
-            >>> a = ItemAdapter(d, 0)
+        >>> d = defaultdict(list)
+        >>> a = ItemAdapter(d, 0)
 
-            Otherwise raise ``TypeError``.
+        Otherwise raise ``TypeError``.
 
-            >>> ItemAdapter(None, 0) # doctest: +ELLIPSIS
-            Traceback (most recent call last):
-                ...
-            TypeError: ...
-         """
+        >>> ItemAdapter(None, 0) # doctest: +ELLIPSIS
+        Traceback (most recent call last):
+            ...
+        TypeError: ...
+        """
         if adaptee is None or not isinstance(adaptee, dict):
             raise TypeError("first argument must be defaultdict(list)")
         self.adaptee = adaptee
@@ -72,25 +72,25 @@ class ItemAdapter(object):
 
     def __getitem__(self, key):
         """
-            >>> d = defaultdict(list)
-            >>> d['a'].extend([1, 2, 3])
-            >>> a = ItemAdapter(d, 0)
+        >>> d = defaultdict(list)
+        >>> d['a'].extend([1, 2, 3])
+        >>> a = ItemAdapter(d, 0)
 
-            Return a first item from the list.
+        Return a first item from the list.
 
-            >>> a['a']
-            1
+        >>> a['a']
+        1
 
-            >>> a = ItemAdapter(d, -1)
+        >>> a = ItemAdapter(d, -1)
 
-            Return a last item from the list.
+        Return a last item from the list.
 
-            >>> a['a']
-            3
+        >>> a['a']
+        3
 
-            If ``key`` not found return ``None``.
+        If ``key`` not found return ``None``.
 
-            >>> a['x']
+        >>> a['x']
         """
         items = self.adaptee[key]
         if items:
@@ -98,17 +98,17 @@ class ItemAdapter(object):
         return None
 
     def get(self, key, default=None):
-        """ Return the value for key if key is in the adaptee,
-            else default. If default is not given, it defaults
-            to None, so that this method never raises a KeyError.
+        """Return the value for key if key is in the adaptee,
+        else default. If default is not given, it defaults
+        to None, so that this method never raises a KeyError.
 
-            >>> d = defaultdict(list)
-            >>> d['a'].extend([1, 2, 3])
-            >>> a = ItemAdapter(d, 0)
-            >>> a.get('a')
-            1
-            >>> a.get('b', 100)
-            100
+        >>> d = defaultdict(list)
+        >>> d['a'].extend([1, 2, 3])
+        >>> a = ItemAdapter(d, 0)
+        >>> a.get('a')
+        1
+        >>> a.get('b', 100)
+        100
         """
         if key in self.adaptee:
             items = self.adaptee[key]
@@ -118,22 +118,22 @@ class ItemAdapter(object):
 
 
 class attrdict(dict):  # noqa: N801
-    """ A dictionary with attribute-style access. Maps attribute
-        access to dictionary.
+    """A dictionary with attribute-style access. Maps attribute
+    access to dictionary.
 
-        >>> d = attrdict(a=1, b=2)
-        >>> sorted(d.items())
-        [('a', 1), ('b', 2)]
-        >>> d.a
-        1
+    >>> d = attrdict(a=1, b=2)
+    >>> sorted(d.items())
+    [('a', 1), ('b', 2)]
+    >>> d.a
+    1
 
-        >>> d.c = 3
-        >>> d.c
-        3
-        >>> d.d # doctest: +ELLIPSIS
-        Traceback (most recent call last):
-            ...
-        AttributeError: ...
+    >>> d.c = 3
+    >>> d.c
+    3
+    >>> d.d # doctest: +ELLIPSIS
+    Traceback (most recent call last):
+        ...
+    AttributeError: ...
     """
 
     __slots__ = ()
@@ -149,18 +149,18 @@ class attrdict(dict):  # noqa: N801
 
 
 class defaultattrdict(defaultdict):  # noqa: N801
-    """ A dictionary with attribute-style access. Maps attribute
-        access to dictionary.
+    """A dictionary with attribute-style access. Maps attribute
+    access to dictionary.
 
-        >>> d = defaultattrdict(str, a=1, b=2)
-        >>> d.a
-        1
+    >>> d = defaultattrdict(str, a=1, b=2)
+    >>> d.a
+    1
 
-        >>> d.c = 3
-        >>> d.c
-        3
-        >>> d.d
-        ''
+    >>> d.c = 3
+    >>> d.c
+    3
+    >>> d.d
+    ''
     """
 
     __slots__ = ()
@@ -173,17 +173,17 @@ class defaultattrdict(defaultdict):  # noqa: N801
 
 
 def distinct(seq):
-    """ Returns generator for unique items in ``seq`` with preserved
-        order.
+    """Returns generator for unique items in ``seq`` with preserved
+    order.
 
-        >>> list(distinct('1234512345'))
-        ['1', '2', '3', '4', '5']
+    >>> list(distinct('1234512345'))
+    ['1', '2', '3', '4', '5']
 
-        If the order is not important consider using ``set`` which is
-        approximately eight times faster on large sequences.
+    If the order is not important consider using ``set`` which is
+    approximately eight times faster on large sequences.
 
-        >>> sorted(list(set('1234512345')))
-        ['1', '2', '3', '4', '5']
+    >>> sorted(list(set('1234512345')))
+    ['1', '2', '3', '4', '5']
     """
     unique = {}
     for item in seq:
@@ -193,14 +193,14 @@ def distinct(seq):
 
 
 def gzip_iterator(items, compress_level=6):
-    """ Iterates over ``items`` and returns generator of gzipped items.
+    """Iterates over ``items`` and returns generator of gzipped items.
 
-        ``items`` - a list of bytes
+    ``items`` - a list of bytes
 
-        >>> items = [ntob('Hello World', 'latin1')]
-        >>> result = list(gzip_iterator(items))
-        >>> assert 3 == len(result)
-        >>> assert GZIP_HEADER == result[0]
+    >>> items = [ntob('Hello World', 'latin1')]
+    >>> result = list(gzip_iterator(items))
+    >>> assert 3 == len(result)
+    >>> assert GZIP_HEADER == result[0]
     """
     size = 0
     crc = 0
@@ -219,42 +219,42 @@ def gzip_iterator(items, compress_level=6):
 
 
 def map_keys(function, dictionary):
-    """ Apply `function` to every key of `dictionary` and return
-        a dictionary of the results.
+    """Apply `function` to every key of `dictionary` and return
+    a dictionary of the results.
 
-        >>> d = {'1': 1, '2': 2}
-        >>> sorted_items(map_keys(lambda key: 'k' + key, d))
-        [('k1', 1), ('k2', 2)]
+    >>> d = {'1': 1, '2': 2}
+    >>> sorted_items(map_keys(lambda key: 'k' + key, d))
+    [('k1', 1), ('k2', 2)]
     """
     return dict([(function(key), value) for key, value in dictionary.items()])
 
 
 def map_values(function, dictionary):
-    """ Apply `function` to every value of `dictionary` and return
-        a dictionary of the results.
+    """Apply `function` to every value of `dictionary` and return
+    a dictionary of the results.
 
-        >>> d = {'1': 1, '2': 2}
-        >>> sorted_items(map_values(lambda value: 2 * value, d))
-        [('1', 2), ('2', 4)]
+    >>> d = {'1': 1, '2': 2}
+    >>> sorted_items(map_values(lambda value: 2 * value, d))
+    [('1', 2), ('2', 4)]
     """
     return dict([(key, function(value)) for key, value in dictionary.items()])
 
 
 def list_values(keys, dictionary):
-    """ Returns `dictionary` values orderd by `keys`.
+    """Returns `dictionary` values orderd by `keys`.
 
-        >>> d = {'1': 1, '2': 2}
-        >>> list_values(['1', '2', '3'], d)
-        [1, 2, None]
+    >>> d = {'1': 1, '2': 2}
+    >>> list_values(['1', '2', '3'], d)
+    [1, 2, None]
     """
     return [key in dictionary and dictionary[key] or None for key in keys]
 
 
 def sorted_items(dictionary):
-    """ Returns `dictionary` items sorted by key.
+    """Returns `dictionary` items sorted by key.
 
-        >>> d = {'1': 1, '2': 2}
-        >>> sorted_items(d)
-        [('1', 1), ('2', 2)]
+    >>> d = {'1': 1, '2': 2}
+    >>> sorted_items(d)
+    [('1', 1), ('2', 2)]
     """
     return sorted(dictionary.items(), key=itemgetter(1))

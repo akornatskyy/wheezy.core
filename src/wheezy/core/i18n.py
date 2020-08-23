@@ -12,17 +12,16 @@ null_translations = gettext.NullTranslations()
 
 
 class TranslationsManager(object):
-    """ Manages several languages and translation domains.
-    """
+    """Manages several languages and translation domains."""
 
     def __init__(self, directories=None, default_lang="en"):
         """
 
-            >>> curdir = os.path.dirname(__file__)
-            >>> localedir = os.path.join(curdir, 'tests', 'i18n')
-            >>> tm = TranslationsManager(directories=[localedir])
-            >>> sorted(tm.translations.keys()) # doctest: +ELLIPSIS
-            [...]
+        >>> curdir = os.path.dirname(__file__)
+        >>> localedir = os.path.join(curdir, 'tests', 'i18n')
+        >>> tm = TranslationsManager(directories=[localedir])
+        >>> sorted(tm.translations.keys()) # doctest: +ELLIPSIS
+        [...]
         """
         self.default_lang = default_lang
         self.fallbacks = {}
@@ -37,12 +36,12 @@ class TranslationsManager(object):
                 self.load(localedir)
 
     def add_fallback(self, languages):
-        """ Adds fallback languages.
+        """Adds fallback languages.
 
-            >>> tm = TranslationsManager()
-            >>> tm.add_fallback(('uk', 'ru'))
-            >>> tm.fallbacks
-            {'uk': ('uk', 'ru', 'en')}
+        >>> tm = TranslationsManager()
+        >>> tm.add_fallback(('uk', 'ru'))
+        >>> tm.fallbacks
+        {'uk': ('uk', 'ru', 'en')}
         """
         if self.default_lang not in languages:
             languages = list(languages)
@@ -50,48 +49,48 @@ class TranslationsManager(object):
         self.fallbacks[languages[0]] = tuple(languages)
 
     def load(self, localedir):
-        """ Load all available languages and domains from the
-            given directory.
+        """Load all available languages and domains from the
+        given directory.
 
-            {localedir}/{lang}/LC_MESSAGES/{domain}.mo
+        {localedir}/{lang}/LC_MESSAGES/{domain}.mo
 
-            In order to generate .mo file from .po file:
-            $ msgfmt domain.po
+        In order to generate .mo file from .po file:
+        $ msgfmt domain.po
 
-            >>> curdir = os.path.dirname(__file__)
-            >>> localedir = os.path.join(curdir, 'tests', 'i18n')
-            >>> tm = TranslationsManager()
-            >>> tm.load(localedir)
-            >>> sorted(tm.translations.keys()) # doctest: +ELLIPSIS
-            [...]
+        >>> curdir = os.path.dirname(__file__)
+        >>> localedir = os.path.join(curdir, 'tests', 'i18n')
+        >>> tm = TranslationsManager()
+        >>> tm.load(localedir)
+        >>> sorted(tm.translations.keys()) # doctest: +ELLIPSIS
+        [...]
 
-            Assess by language:
+        Assess by language:
 
-            >>> lang = tm['en']
-            >>> m = lang['messages']
-            >>> m.gettext('hello') # doctest: +ELLIPSIS
-            '...ello'
-            >>> lang = tm['de']
-            >>> m = lang['messages']
-            >>> m.gettext('hello') # doctest: +ELLIPSIS
-            '...'
+        >>> lang = tm['en']
+        >>> m = lang['messages']
+        >>> m.gettext('hello') # doctest: +ELLIPSIS
+        '...ello'
+        >>> lang = tm['de']
+        >>> m = lang['messages']
+        >>> m.gettext('hello') # doctest: +ELLIPSIS
+        '...'
 
-            Assess by translation domain:
+        Assess by translation domain:
 
-            >>> messages = tm.domains['messages']
-            >>> m = messages['en']
-            >>> m.gettext('hello') # doctest: +ELLIPSIS
-            '...ello'
+        >>> messages = tm.domains['messages']
+        >>> m = messages['en']
+        >>> m.gettext('hello') # doctest: +ELLIPSIS
+        '...ello'
 
-            Fallback to English:
+        Fallback to English:
 
-            >>> m.gettext('world') # doctest: +ELLIPSIS
-            '...orld'
+        >>> m.gettext('world') # doctest: +ELLIPSIS
+        '...orld'
 
-            If translation is unknown ``key`` returned
+        If translation is unknown ``key`` returned
 
-            >>> m.gettext('test')
-            'test'
+        >>> m.gettext('test')
+        'test'
         """
         for lang in os.listdir(localedir):
             if lang.startswith("."):  # pragma: nocover
@@ -112,6 +111,5 @@ class TranslationsManager(object):
                 self.domains[domain][lang] = translation
 
     def __getitem__(self, lang):
-        """ Returns language ``defaultdict`` with translation domains.
-        """
+        """Returns language ``defaultdict`` with translation domains."""
         return self.translations[lang]

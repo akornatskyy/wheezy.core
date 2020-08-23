@@ -8,8 +8,7 @@ from mock import Mock
 
 class BenchmarkTestCase(unittest.TestCase):
     def test_run(self):
-        """ Ensure targets are called.
-        """
+        """Ensure targets are called."""
         from wheezy.core.benchmark import Benchmark
 
         t1 = Mock()
@@ -29,8 +28,7 @@ class BenchmarkTestCase(unittest.TestCase):
         assert 30 == t2.call_count
 
     def test_run_timer(self):
-        """ Ensure timer is used.
-        """
+        """Ensure timer is used."""
         from mock import PropertyMock
 
         from wheezy.core.benchmark import Benchmark
@@ -52,8 +50,7 @@ class BenchmarkTestCase(unittest.TestCase):
         assert 2 == mock_timing.call_count
 
     def test_zero_division_error(self):
-        """ ZeroDivisionError is not raised when timing is 0.
-        """
+        """ZeroDivisionError is not raised when timing is 0."""
         from wheezy.core.benchmark import Benchmark
 
         t1 = Mock()
@@ -64,8 +61,7 @@ class BenchmarkTestCase(unittest.TestCase):
         b.report("sample")
 
     def test_report(self):
-        """ Ensure report is printed.
-        """
+        """Ensure report is printed."""
         from wheezy.core.benchmark import Benchmark
 
         t1 = Mock()
@@ -78,8 +74,7 @@ class BenchmarkTestCase(unittest.TestCase):
 
 class TimerTestCase(unittest.TestCase):
     def test_start_stop(self):
-        """ Ensure a call is intercepted.
-        """
+        """Ensure a call is intercepted."""
         from wheezy.core.benchmark import Timer
 
         mock_target = Mock()

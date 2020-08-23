@@ -45,13 +45,11 @@ else:  # pragma: nocover
 if PY3:  # pragma: nocover
 
     def ntob(n, encoding):
-        """ Converts native string to bytes
-        """
+        """Converts native string to bytes"""
         return n.encode(encoding)
 
     def bton(b, encoding):
-        """ Converts bytes to native string
-        """
+        """Converts bytes to native string"""
         return b.decode(encoding)
 
     def u(s):
@@ -61,13 +59,11 @@ if PY3:  # pragma: nocover
 else:  # pragma: nocover
 
     def ntob(n, encoding):  # noqa
-        """ Converts native string to bytes
-        """
+        """Converts native string to bytes"""
         return n
 
     def bton(b, encoding):  # noqa
-        """ Converts bytes to native string
-        """
+        """Converts bytes to native string"""
         return b
 
     def u(s):
@@ -203,6 +199,10 @@ if PY2 and PY_MINOR < 7:  # pragma: nocover
     __saved_gzipfile__ = GzipFile
 
     def GzipFile(  # noqa: N802
-        filename=None, mode=None, compresslevel=9, fileobj=None, mtime=None,
+        filename=None,
+        mode=None,
+        compresslevel=9,
+        fileobj=None,
+        mtime=None,
     ):
         return __saved_gzipfile__(filename, mode, compresslevel, fileobj)

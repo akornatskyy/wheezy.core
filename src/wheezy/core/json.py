@@ -18,10 +18,10 @@ time = import_name("datetime.time")
 
 
 def json_encode(obj):
-    """ Encode ``obj`` as a JSON formatted unicode string.
+    """Encode ``obj`` as a JSON formatted unicode string.
 
-        Correctly escapes forward slash to be able
-        embed javascript code.
+    Correctly escapes forward slash to be able
+    embed javascript code.
     """
     return json_dumps(
         obj, cls=JSONEncoder, ensure_ascii=False, separators=(",", ":")
@@ -29,8 +29,8 @@ def json_encode(obj):
 
 
 def json_decode(s):
-    """ Decode ``s`` (containing a JSON unicode string) to a Python
-        object.
+    """Decode ``s`` (containing a JSON unicode string) to a Python
+    object.
     """
     return json_loads(s, parse_float=Decimal)
 

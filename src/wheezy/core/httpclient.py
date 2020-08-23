@@ -15,14 +15,14 @@ from wheezy.core.gzip import decompress
 
 
 class HTTPClient(object):
-    """ HTTP client sends HTTP requests to server in order to accomplish
-        an application specific use cases, e.g. remote web server API, etc.
+    """HTTP client sends HTTP requests to server in order to accomplish
+    an application specific use cases, e.g. remote web server API, etc.
     """
 
     def __init__(self, url, headers=None):
         """
-            `url` - a base url for interaction with remote server.
-            `headers` - a dictionary of headers.
+        `url` - a base url for interaction with remote server.
+        `headers` - a dictionary of headers.
         """
         scheme, netloc, path, query, fragment = urlsplit(url)
         http_class = scheme == "http" and HTTPConnection or HTTPSConnection
@@ -45,49 +45,41 @@ class HTTPClient(object):
 
     @property
     def content(self):
-        """ Returns a content of the response.
-        """
+        """Returns a content of the response."""
         if self.__content is None:
             self.__content = self.body.decode("utf-8")
         return self.__content
 
     @property
     def json(self):
-        """ Returns a json response.
-        """
+        """Returns a json response."""
         if self.__json is None:
             assert "application/json" in self.headers["content-type"][0]
             self.__json = json_loads(self.content, object_hook=attrdict)
         return self.__json
 
     def get(self, path, **kwargs):
-        """ Sends GET HTTP request.
-        """
+        """Sends GET HTTP request."""
         return self.go(path, "GET", **kwargs)
 
     def ajax_get(self, path, **kwargs):
-        """ Sends GET HTTP AJAX request.
-        """
+        """Sends GET HTTP AJAX request."""
         return self.ajax_go(path, "GET", **kwargs)
 
     def head(self, path, **kwargs):
-        """ Sends HEAD HTTP request.
-        """
+        """Sends HEAD HTTP request."""
         return self.go(path, "HEAD", **kwargs)
 
     def post(self, path, **kwargs):
-        """ Sends POST HTTP request.
-        """
+        """Sends POST HTTP request."""
         return self.go(path, "POST", **kwargs)
 
     def ajax_post(self, path, **kwargs):
-        """ Sends POST HTTP AJAX request.
-        """
+        """Sends POST HTTP AJAX request."""
         return self.ajax_go(path, "POST", **kwargs)
 
     def follow(self):
-        """ Follows HTTP redirect (e.g. status code 302).
-        """
+        """Follows HTTP redirect (e.g. status code 302)."""
         sc = self.status_code
         assert sc in [207, 301, 302, 303, 307]
         location = self.headers["location"][0]
@@ -104,8 +96,7 @@ class HTTPClient(object):
         content_type="",
         body="",
     ):
-        """ Sends HTTP AJAX request to web server.
-        """
+        """Sends HTTP AJAX request to web server."""
         headers = headers or {}
         headers["X-Requested-With"] = "XMLHttpRequest"
         return self.go(path, method, params, headers, content_type, body)
@@ -119,10 +110,10 @@ class HTTPClient(object):
         content_type="",
         body="",
     ):
-        """ Sends HTTP request to web server.
+        """Sends HTTP request to web server.
 
-            The ``content_type`` takes priority over ``params`` to use
-            ``body``. The ``body`` can be a string or file like object.
+        The ``content_type`` takes priority over ``params`` to use
+        ``body``. The ``body`` can be a string or file like object.
         """
         self.method = method
         headers = (

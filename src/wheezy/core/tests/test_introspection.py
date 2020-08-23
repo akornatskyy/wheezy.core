@@ -11,8 +11,7 @@ class LooksLike(object):
         self.assertEquals(msg, str(self.w[-1].message))
 
     def test_func(self):
-        """ Tests if there is any function missing.
-        """
+        """Tests if there is any function missing."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -27,8 +26,7 @@ class LooksLike(object):
         self.assert_warning("'foo': is missing.")
 
     def test_ignore_func(self):
-        """ Tests if function is ignored.
-        """
+        """Tests if function is ignored."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -42,8 +40,7 @@ class LooksLike(object):
         assert looks(Foo).like(IFoo, ignore_funcs=["foo"])
 
     def test_redundant_ignore(self):
-        """ Tests function is set to be ignored but it is not found.
-        """
+        """Tests function is set to be ignored but it is not found."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -58,8 +55,7 @@ class LooksLike(object):
         self.assert_warning("'foo': redundant ignore.")
 
     def test_args(self):
-        """ Tests if there any function args corresponds.
-        """
+        """Tests if there any function args corresponds."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -76,8 +72,7 @@ class LooksLike(object):
         )
 
     def test_ignore_args(self):
-        """ Tests if function args ignored.
-        """
+        """Tests if function args ignored."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -91,8 +86,7 @@ class LooksLike(object):
         assert looks(Foo).like(IFoo, ignore_argspec="foo")
 
     def test_property(self):
-        """ Tests if there any @property corresponds.
-        """
+        """Tests if there any @property corresponds."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -108,8 +102,7 @@ class LooksLike(object):
         self.assert_warning("'foo': is not property.")
 
     def test_inheritance(self):
-        """ Test inheritance use case.
-        """
+        """Test inheritance use case."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -131,8 +124,7 @@ class LooksLike(object):
         assert looks(Bar).like(IFoo)
 
     def test_special_method(self):
-        """ Test if __?__ are checked
-        """
+        """Test if __?__ are checked"""
         from wheezy.core.introspection import looks
 
         class IFoo(object):
@@ -154,8 +146,7 @@ class LooksLike(object):
         assert looks(Foo).like(IFoo, notice=["__len__"])
 
     def test_decorator(self):
-        """ Decorator argspec doesn't match.
-        """
+        """Decorator argspec doesn't match."""
         from wheezy.core.introspection import looks
 
         def bar():
@@ -182,8 +173,7 @@ class LooksLike(object):
         )
 
     def test_type(self):
-        """ Test if decorator types do not match.
-        """
+        """Test if decorator types do not match."""
         from wheezy.core.descriptors import attribute
         from wheezy.core.introspection import looks
 
@@ -201,8 +191,7 @@ class LooksLike(object):
         self.assert_warning("'foo': is not attribute.")
 
     def test_various(self):
-        """ Tests if there are no errors.
-        """
+        """Tests if there are no errors."""
         from wheezy.core.introspection import looks
 
         class IFoo(object):

@@ -29,17 +29,16 @@ else:  # pragma: nocover
 
 
 class Benchmark(object):
-    """ Measure execution time of your code.
-    """
+    """Measure execution time of your code."""
 
     def __init__(self, targets, number, warmup_number=None, timer=None):
         """
-            ``targets`` - a list of targets (callables) to be tested.
+        ``targets`` - a list of targets (callables) to be tested.
 
-            ``number`` - how many times each target is executed.
+        ``number`` - how many times each target is executed.
 
-            ``warmup_number`` - how many times each target is warmed up
-            before the bechmark is measured.
+        ``warmup_number`` - how many times each target is warmed up
+        before the bechmark is measured.
         """
         self.targets = targets
         self.number = number
@@ -89,8 +88,8 @@ class Benchmark(object):
 
 
 class Timer(object):
-    """ Intercept a call to given method in order to compute
-        timing.
+    """Intercept a call to given method in order to compute
+    timing.
     """
 
     def __init__(self, target, name):

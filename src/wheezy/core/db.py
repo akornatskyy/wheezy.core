@@ -14,19 +14,19 @@ SESSION_STATUS_ACTIVE = 2
 
 
 class Session(object):
-    """ Session works with a pool of database connections.
-        Database connection must be implemented per Database API
-        Specification v2.0
-        (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
+    """Session works with a pool of database connections.
+    Database connection must be implemented per Database API
+    Specification v2.0
+    (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
     """
 
     __slots__ = ("pool", "status", "__connection")
 
     def __init__(self, pool):
-        """ Initialize a new instance of database session.
+        """Initialize a new instance of database session.
 
-            The *pool* argument is an object that implement pooling
-            interface (acquire/get_back).
+        The *pool* argument is an object that implement pooling
+        interface (acquire/get_back).
         """
         self.pool = pool
         self.status = SESSION_STATUS_IDLE
@@ -39,8 +39,8 @@ class Session(object):
 
     @property
     def connection(self):
-        """ Return the session connection. Not intended to be used
-            directly, use `cursor` method instead.
+        """Return the session connection. Not intended to be used
+        directly, use `cursor` method instead.
         """
         if self.__connection:
             return self.__connection
@@ -54,13 +54,11 @@ class Session(object):
         pass
 
     def cursor(self, *args, **kwargs):
-        """ Return a new cursor object using the session connection.
-        """
+        """Return a new cursor object using the session connection."""
         return self.connection.cursor(*args, **kwargs)
 
     def commit(self):
-        """ Commit any pending transaction to the database.
-        """
+        """Commit any pending transaction to the database."""
         assert self.status != SESSION_STATUS_IDLE
         if self.status != SESSION_STATUS_ACTIVE:
             return
@@ -84,11 +82,11 @@ class Session(object):
 
 
 class TPCSession(object):
-    """ Two-Phase Commit protocol session that works with a pool of
-        database connections.
-        Database connection must be implemented per Database API
-        Specification v2.0
-        (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
+    """Two-Phase Commit protocol session that works with a pool of
+    database connections.
+    Database connection must be implemented per Database API
+    Specification v2.0
+    (see `PEP0249 <http://www.python.org/dev/peps/pep-0249/>`_).
     """
 
     __slots__ = (
@@ -102,7 +100,7 @@ class TPCSession(object):
     def __init__(
         self, format_id=7, global_transaction_id=None, branch_qualifier=""
     ):
-        """ Initialize a new instance of Two-Phase Commit protocol database
+        """Initialize a new instance of Two-Phase Commit protocol database
         session.
         """
         self.format_id = format_id
@@ -118,8 +116,7 @@ class TPCSession(object):
         return self
 
     def enlist(self, session):
-        """ Begins a TPC transaction with the given session.
-        """
+        """Begins a TPC transaction with the given session."""
         assert session
         assert self.status != SESSION_STATUS_IDLE
         self.enlised_sessions.append(session)
@@ -134,8 +131,7 @@ class TPCSession(object):
         self.status = SESSION_STATUS_ACTIVE
 
     def commit(self):
-        """ Commit any pending transaction to the database.
-        """
+        """Commit any pending transaction to the database."""
         assert self.status != SESSION_STATUS_IDLE
         if self.status != SESSION_STATUS_ACTIVE:
             return
@@ -169,8 +165,7 @@ class TPCSession(object):
 
 
 class NullSession(object):
-    """ Null session is supposed to be used in mock scenarios.
-    """
+    """Null session is supposed to be used in mock scenarios."""
 
     def __init__(self):
         self.status = SESSION_STATUS_IDLE
@@ -187,13 +182,11 @@ class NullSession(object):
         )
 
     def cursor(self, *args, **kwargs):
-        """ Ensure session is entered.
-        """
+        """Ensure session is entered."""
         assert self.status == SESSION_STATUS_ENTERED
 
     def commit(self):
-        """ Simulates commit. Asserts the session is used in scope.
-        """
+        """Simulates commit. Asserts the session is used in scope."""
         assert self.status != SESSION_STATUS_IDLE
         self.status = SESSION_STATUS_ENTERED
 
@@ -203,8 +196,7 @@ class NullSession(object):
 
 
 class NullTPCSession(object):
-    """ Null TPC session is supposed to be used in mock scenarios.
-    """
+    """Null TPC session is supposed to be used in mock scenarios."""
 
     def __init__(self):
         self.status = SESSION_STATUS_IDLE
@@ -215,15 +207,13 @@ class NullTPCSession(object):
         return self
 
     def enlist(self, session):
-        """ Ensure session is entered.
-        """
+        """Ensure session is entered."""
         assert session
         assert self.status != SESSION_STATUS_IDLE
         self.status = SESSION_STATUS_ACTIVE
 
     def commit(self):
-        """ Simulates commit. Asserts the session is used in scope.
-        """
+        """Simulates commit. Asserts the session is used in scope."""
         assert self.status != SESSION_STATUS_IDLE
         self.status = SESSION_STATUS_ENTERED
 

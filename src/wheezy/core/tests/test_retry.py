@@ -18,8 +18,7 @@ class RetryTestCase(unittest.TestCase):
         self.sleep_patcher.stop()
 
     def test_asserts(self):
-        """ Ensure arguments asserts
-        """
+        """Ensure arguments asserts"""
         from wheezy.core.retry import make_retry
 
         # timeout > 0.0
@@ -52,8 +51,8 @@ class RetryTestCase(unittest.TestCase):
         )
 
     def test_immediately(self):
-        """ Ensure first succeed attempt does not require calls to
-            time and sleep.
+        """Ensure first succeed attempt does not require calls to
+        time and sleep.
         """
         from wheezy.core.retry import make_retry
 
@@ -63,8 +62,7 @@ class RetryTestCase(unittest.TestCase):
         assert not self.mock_sleep.called
 
     def test_default(self):
-        """ Ensure sleep sequence when defaults are in use.
-        """
+        """Ensure sleep sequence when defaults are in use."""
         from wheezy.core.retry import make_retry
 
         retry = make_retry(timeout=10.0, start=0.5)
@@ -80,8 +78,7 @@ class RetryTestCase(unittest.TestCase):
         ] == self.mock_sleep.call_args_list
 
     def test_slope(self):
-        """ Ensure sleep sequence when slope argument is used.
-        """
+        """Ensure sleep sequence when slope argument is used."""
         from wheezy.core.retry import make_retry
 
         retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
@@ -97,8 +94,7 @@ class RetryTestCase(unittest.TestCase):
         ] == self.mock_sleep.call_args_list
 
     def test_step(self):
-        """ Ensure sleep sequence when step argument is used.
-        """
+        """Ensure sleep sequence when step argument is used."""
         from wheezy.core.retry import make_retry
 
         retry = make_retry(timeout=10.0, start=0.5, end=2.0, step=0.5)
@@ -114,8 +110,8 @@ class RetryTestCase(unittest.TestCase):
         ] == self.mock_sleep.call_args_list
 
     def test_remains_skip(self):
-        """ Ensure the function returns immediately when there is no
-            remaining time left.
+        """Ensure the function returns immediately when there is no
+        remaining time left.
         """
         from wheezy.core.retry import make_retry
 
@@ -126,8 +122,7 @@ class RetryTestCase(unittest.TestCase):
         assert [call(0.5)] == self.mock_sleep.call_args_list
 
     def test_remains_timeout(self):
-        """ Ensure the function sleeps for remaining time left.
-        """
+        """Ensure the function sleeps for remaining time left."""
         from wheezy.core.retry import make_retry
 
         retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)

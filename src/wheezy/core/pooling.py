@@ -5,9 +5,9 @@ from wheezy.core.comp import LifoQueue, Queue, xrange
 
 
 class EagerPool(object):
-    """ Eager pool implementation.
+    """Eager pool implementation.
 
-        Allocates all pool items during initialization.
+    Allocates all pool items during initialization.
     """
 
     def __init__(self, create_factory, size):
@@ -21,21 +21,20 @@ class EagerPool(object):
 
     @property
     def count(self):
-        """ Returns a number of available items in the pool.
-        """
+        """Returns a number of available items in the pool."""
         return self.__items.qsize()
 
 
 class LazyPool(object):
-    """ Lazy pool implementation.
+    """Lazy pool implementation.
 
-        Allocates pool items as necessary.
+    Allocates pool items as necessary.
     """
 
     def __init__(self, create_factory, size):
         """
-            `create_factory` is a callable with an `item` as argument,
-            this allows control `item` status before returning.
+        `create_factory` is a callable with an `item` as argument,
+        this allows control `item` status before returning.
         """
         self.size = size
         items = LifoQueue(size)
@@ -46,8 +45,8 @@ class LazyPool(object):
         self.create_factory = create_factory
 
     def acquire(self):
-        """ Return an item from pool. Blocks until an item
-            is available.
+        """Return an item from pool. Blocks until an item
+        is available.
         """
         item = self.__items.get()
         try:
@@ -58,19 +57,18 @@ class LazyPool(object):
 
     @property
     def count(self):
-        """ Returns a number of available items in the pool.
-        """
+        """Returns a number of available items in the pool."""
         return self.__items.qsize()
 
 
 class Pooled(object):
-    """ ``Pooled`` serves context manager purpose, effectively acquiring and
-        returning item to the pool.
+    """``Pooled`` serves context manager purpose, effectively acquiring and
+    returning item to the pool.
 
-        Here is an example::
+    Here is an example::
 
-            with Pooled(pool) as item:
-                # do something with item
+        with Pooled(pool) as item:
+            # do something with item
     """
 
     __slots__ = ("pool", "item")
