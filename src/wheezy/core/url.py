@@ -1,7 +1,7 @@
 """ ``url`` module
 """
 
-from wheezy.core.comp import urlunsplit
+from urllib.parse import urlunsplit
 
 
 def urlparts(
@@ -14,7 +14,7 @@ def urlparts(
     ``parts`` must be a 5-tuple:
     (scheme, netloc, path, query, fragment)
 
-    >>> from wheezy.core.comp import urlsplit
+    >>> from urllib.parse import urlsplit
     >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
     >>> urlparts(parts)
     urlparts('http', 'www.python.org', '/dev/peps/pep-3333', '', '')
@@ -46,7 +46,7 @@ class UrlParts(tuple):
     def geturl(self):
         """Return the re-combined version of the original URL as a string.
 
-        >>> from wheezy.core.comp import urlsplit
+        >>> from urllib.parse import urlsplit
         >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
         >>> parts = urlparts(parts)
         >>> parts.geturl()
@@ -61,7 +61,7 @@ class UrlParts(tuple):
 
         Query and Fragment parts are taken unconditionally from ``other``.
 
-        >>> from wheezy.core.comp import urlsplit
+        >>> from urllib.parse import urlsplit
         >>> parts = urlsplit('http://www.python.org/dev/peps/pep-3333')
         >>> parts = urlparts(parts)
         >>> parts = parts.join(urlparts(scheme='https', path='/test'))

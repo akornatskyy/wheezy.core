@@ -6,8 +6,6 @@ from os.path import split as path_split
 from smtplib import SMTP
 from time import time
 
-from wheezy.core.comp import ntob
-
 try:
     from email.charset import CHARSETS, QP, SHORTEST
     from email.encoders import encode_base64
@@ -156,7 +154,7 @@ class SMTPClient(object):
     def send(self, message):
         """Sends a single mail message."""
         recepients = message.recipients()
-        content = ntob(mime(message).as_string(), message.charset)
+        content = mime(message).as_string().encode(message.charset)
         # keep connection scope minimal
         client = self.connect()
         try:
@@ -170,7 +168,7 @@ class SMTPClient(object):
             (
                 message.from_addr,
                 message.recipients(),
-                ntob(mime(message).as_string(), message.charset),
+                mime(message).as_string().encode(message.charset),
             )
             for message in messages
         ]

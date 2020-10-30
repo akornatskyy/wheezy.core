@@ -4,15 +4,14 @@
 import unittest
 from decimal import Decimal
 
-from wheezy.core.comp import str_type
 from wheezy.core.json import date, datetime, json_decode, json_encode, time
 
 
-class JSONEncode(object):
+class JSONEncodeTestCase(unittest.TestCase):
     """Test the ``json_encode`` function."""
 
     def test_encode_return_unicode_string(self):
-        self.assertTrue(str_type, json_encode({}))
+        self.assertTrue(isinstance(json_encode({}), str))
 
     def test_encode_date(self):
         self.assertEqual(
@@ -40,9 +39,7 @@ class JSONEncode(object):
         self.assertEqual(json_encode({"d": Decimal("14.79")}), '{"d":"14.79"}')
 
     def test_encode_unicode(self):
-        from wheezy.core.comp import u
-
-        self.assertEqual(json_encode({"d": u("x")}), '{"d":"x"}')
+        self.assertEqual(json_encode({"d": "x"}), '{"d":"x"}')
 
     def test_forward_slashes_escaped(self):
         self.assertEqual(
@@ -50,34 +47,18 @@ class JSONEncode(object):
         )
 
 
-class JSONDecode(object):
+class JSONDecodeTestCase(unittest.TestCase):
     """Test the ``json_encode`` function."""
 
     def test_decode_returns_unicode_strings(self):
         d = json_decode('{"d": "x"}')
-        self.assertTrue(str_type, list(d.keys())[0])
-        self.assertTrue(str_type, d["d"])
+        self.assertTrue(isinstance(list(d.keys())[0], str))
+        self.assertTrue(isinstance(d["d"], str))
 
     def test_decode_date(self):
-        from wheezy.core.comp import u
-
         d = json_decode('{"d": "2012-02-22"}')
-        self.assertEqual(u("2012-02-22"), d["d"])
+        self.assertEqual("2012-02-22", d["d"])
 
     def test_decode_decimal(self):
         d = json_decode('{"d": 12.79}')
         self.assertTrue(isinstance(d["d"], Decimal))
-
-
-try:
-    json_encode({})
-
-    class JSONEncodeTestCase(unittest.TestCase, JSONEncode):
-        """Test the ``json_encode`` function."""
-
-    class JSONDecodeTestCase(unittest.TestCase, JSONDecode):
-        """Test the ``json_encode`` function."""
-
-
-except NotImplementedError:  # pragma: nocover
-    pass

@@ -3,13 +3,10 @@
 
 from base64 import b64decode, b64encode
 from binascii import Error
+from uuid import UUID
 
-from wheezy.core.comp import bton, ntob
-from wheezy.core.introspection import import_name
-
-BASE64_ALTCHARS = ntob("-_", "latin1")
-BASE64_SUFFIX = ntob("==", "latin1")
-UUID = import_name("uuid.UUID")
+BASE64_ALTCHARS = "-_".encode("latin1")
+BASE64_SUFFIX = "==".encode("latin1")
 UUID_EMPTY = UUID("00000000-0000-0000-0000-000000000000")
 
 
@@ -26,7 +23,7 @@ def shrink_uuid(uuid):
     'AAAAAAAAAAAAAAAAAAAAAA'
     """
     assert isinstance(uuid, UUID)
-    return bton(b64encode(uuid.bytes, BASE64_ALTCHARS)[:22], "latin1")
+    return (b64encode(uuid.bytes, BASE64_ALTCHARS)[:22]).decode("latin1")
 
 
 def parse_uuid(s):
@@ -56,7 +53,7 @@ def parse_uuid(s):
     if not s or len(s) != 22:
         return UUID_EMPTY
     try:
-        raw = b64decode(ntob(s, "latin1") + BASE64_SUFFIX, BASE64_ALTCHARS)
+        raw = b64decode(s.encode("latin1") + BASE64_SUFFIX, BASE64_ALTCHARS)
     except (TypeError, Error):  # Incorrect padding
         return UUID_EMPTY
     assert len(raw) == 16

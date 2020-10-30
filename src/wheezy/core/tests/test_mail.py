@@ -5,18 +5,9 @@ import unittest
 
 from mock import ANY, patch
 
-from wheezy.core.comp import PY3
 
-if PY3:  # pragma: nocover
-
-    def b(s):
-        return s.encode("ascii")
-
-
-else:  # pragma: nocover
-
-    def b(s):  # noqa
-        return s
+def b(s):
+    return s.encode("ascii")
 
 
 try:
@@ -397,16 +388,7 @@ class MIMEPartsTestCase(unittest.TestCase):
         assert 'text/plain; charset="utf-8"' == m["Content-Type"]
         a = Attachment("1.txt", "c", "text/plain", name_charset="utf-8")
         m = mime_attachment(a)
-        if PY3:  # pragma: nocover
-            assert (
-                "attachment; filename*=utf-8''1.txt"
-                == m["Content-Disposition"]
-            )
-        else:  # pragma: nocover
-            assert (
-                "attachment; filename*=\"utf-8''1.txt\""
-                == m["Content-Disposition"]
-            )
+        assert "attachment; filename*=utf-8''1.txt" == m["Content-Disposition"]
         a = Attachment("1", b("c"))
         m = mime_attachment(a)
         assert "application/octet-stream" == m["Content-Type"]

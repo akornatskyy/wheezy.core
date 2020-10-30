@@ -4,11 +4,10 @@
 
 import struct
 import zlib
+from collections import defaultdict
 from operator import itemgetter
 
-from wheezy.core.comp import defaultdict, ntob
-
-GZIP_HEADER = ntob("\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF", "latin1")
+GZIP_HEADER = "\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF".encode("latin1")
 MAX_INT = int("FFFFFFFF", 16)
 
 
@@ -197,7 +196,7 @@ def gzip_iterator(items, compress_level=6):
 
     ``items`` - a list of bytes
 
-    >>> items = [ntob('Hello World', 'latin1')]
+    >>> items = ['Hello World'.encode('latin1')]
     >>> result = list(gzip_iterator(items))
     >>> assert 3 == len(result)
     >>> assert GZIP_HEADER == result[0]

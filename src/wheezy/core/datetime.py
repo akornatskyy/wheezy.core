@@ -1,9 +1,9 @@
 """ ``datetime`` module.
 """
 
+from email.utils import parsedate
 from time import localtime, mktime
 
-from wheezy.core.comp import parsedate
 from wheezy.core.introspection import import_name
 
 # The lines below are equivalent to:

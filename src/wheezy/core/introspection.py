@@ -1,17 +1,5 @@
-""" ``introspection`` module.
-"""
-
 import warnings
-from inspect import isfunction
-
-from wheezy.core.comp import PY2
-
-if PY2:
-    from inspect import getargspec as signature  # pragma: nocover
-else:
-    from inspect import signature  # pragma: nocover
-
-from wheezy.core.comp import __import__  # noqa: I202
+from inspect import isfunction, signature
 
 
 def import_name(fullname):
@@ -22,7 +10,7 @@ def import_name(fullname):
     True
     """
     namespace, name = fullname.rsplit(".", 1)
-    obj = __import__(namespace, None, None, [name])
+    obj = __import__(namespace, None, None, [name], 0)
     return getattr(obj, name)
 
 

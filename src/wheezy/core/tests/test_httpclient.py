@@ -9,14 +9,13 @@ from mock import Mock, patch
 class HTTPClientTestCase(unittest.TestCase):
     def setUp(self):
         from wheezy.core import __version__, httpclient
-        from wheezy.core.comp import ntob
 
         self.patcher = patch.object(httpclient, "HTTPConnection")
         self.mock_c_class = self.patcher.start()
         self.headers = [("date", "Sat, 12 Oct 2013 18:29:13 GMT")]
         self.mock_response = Mock()
         self.mock_response.getheaders.return_value = self.headers
-        self.mock_response.read.return_value = ntob("", "utf-8")
+        self.mock_response.read.return_value = "".encode("utf-8")
         self.mock_c = Mock()
         self.mock_c.getresponse.return_value = self.mock_response
         self.mock_c_class.return_value = self.mock_c
@@ -119,7 +118,6 @@ class HTTPClientTestCase(unittest.TestCase):
     def test_json(self):
         """json response."""
         from wheezy.core import httpclient
-        from wheezy.core.comp import ntob
 
         patcher = patch.object(httpclient, "json_loads")
         mock_json_loads = patcher.start()
@@ -127,18 +125,17 @@ class HTTPClientTestCase(unittest.TestCase):
         self.headers.append(
             ("content-type", "application/json; charset=UTF-8")
         )
-        self.mock_response.read.return_value = ntob("{}", "utf-8")
+        self.mock_response.read.return_value = "{}".encode("utf-8")
         self.client.get("auth/token")
         assert {} == self.client.json
         patcher.stop()
 
     def test_gzip(self):
         """Ensure gzip decompression."""
-        from wheezy.core.comp import ntob
         from wheezy.core.gzip import compress
 
         self.headers.append(("content-encoding", "gzip"))
-        self.mock_response.read.return_value = compress(ntob("test", "utf-8"))
+        self.mock_response.read.return_value = compress("test".encode("utf-8"))
         self.client.get("auth/token")
         assert "test" == self.client.content
 

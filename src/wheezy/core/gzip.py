@@ -1,7 +1,8 @@
 """ One-shot compression and decompression.
 """
 
-from wheezy.core.comp import BytesIO, GzipFile
+from gzip import GzipFile
+from io import BytesIO
 
 
 def compress(data, compresslevel=9):

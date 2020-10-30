@@ -1,31 +1,8 @@
 """ ``bechmark`` module.
 """
 
-from wheezy.core.comp import PY2, PY_MINOR
-
-if PY2 and PY_MINOR < 6:  # pragma: nocover
-    import gc
-    from itertools import repeat
-    from time import time as default_timer
-
-    def timeit(f, number=1000000):
-        it = repeat(None, number)
-        e = gc.isenabled()
-        gc.disable()
-        try:
-            t0 = default_timer()
-            for _ in it:
-                f()
-            t1 = default_timer()
-            return t1 - t0
-        finally:
-            if e:
-                gc.enable()
-
-
-else:  # pragma: nocover
-    from timeit import default_timer  # noqa
-    from timeit import timeit
+from timeit import default_timer  # noqa
+from timeit import timeit
 
 
 class Benchmark(object):

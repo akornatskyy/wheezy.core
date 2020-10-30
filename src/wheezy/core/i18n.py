@@ -4,10 +4,8 @@
 import gettext
 import os
 import os.path
+from collections import defaultdict
 
-from wheezy.core.comp import defaultdict, ref_gettext
-
-assert ref_gettext
 null_translations = gettext.NullTranslations()
 
 

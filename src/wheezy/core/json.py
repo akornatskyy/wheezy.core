@@ -2,13 +2,12 @@
 """
 
 from decimal import Decimal
-
-from wheezy.core.comp import (
-    SimpleJSONEncoder,
-    json_dumps,
-    json_loads,
-    str_type,
+from json import (
+    JSONEncoder as SimpleJSONEncoder,
+    dumps as json_dumps,
+    loads as json_loads,
 )
+
 from wheezy.core.datetime import format_iso_datetime, format_iso_time
 from wheezy.core.introspection import import_name
 
@@ -39,15 +38,15 @@ class JSONEncoder(SimpleJSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime):
             if obj == datetime.min:
-                return str_type("")
+                return ""
             return format_iso_datetime(obj)
         elif isinstance(obj, date):
             if obj == date.min:
-                return str_type("")
+                return ""
             return obj.isoformat()
         elif isinstance(obj, time):
             return format_iso_time(obj)
         elif isinstance(obj, Decimal):
-            return str_type(obj)
+            return str(obj)
         else:  # pragma: nocover
             return super(JSONEncoder, self).default(obj)

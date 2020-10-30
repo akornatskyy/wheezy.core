@@ -1,16 +1,9 @@
-"""
-"""
+from http.client import HTTPConnection, HTTPSConnection
+from http.cookies import SimpleCookie
+from json import loads as json_loads
+from urllib.parse import urlencode, urljoin, urlsplit
 
 from wheezy.core.collections import attrdict, defaultdict
-from wheezy.core.comp import (
-    HTTPConnection,
-    HTTPSConnection,
-    SimpleCookie,
-    json_loads,
-    urlencode,
-    urljoin,
-    urlsplit,
-)
 from wheezy.core.gzip import decompress
 
 

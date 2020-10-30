@@ -1,7 +1,7 @@
 """ ``pooling`` module.
 """
 
-from wheezy.core.comp import LifoQueue, Queue, xrange
+from queue import LifoQueue, Queue
 
 
 class EagerPool(object):
@@ -13,7 +13,7 @@ class EagerPool(object):
     def __init__(self, create_factory, size):
         self.size = size
         items = Queue(size)
-        for _ in xrange(size):
+        for _ in range(size):
             items.put(create_factory())
         self.__items = items
         self.acquire = items.get
@@ -38,7 +38,7 @@ class LazyPool(object):
         """
         self.size = size
         items = LifoQueue(size)
-        for _ in xrange(size):
+        for _ in range(size):
             items.put(None)
         self.__items = items
         self.get_back = items.put
