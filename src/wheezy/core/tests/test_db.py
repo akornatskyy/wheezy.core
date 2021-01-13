@@ -2,14 +2,20 @@
 """
 
 import unittest
+import warnings
+from unittest.mock import Mock
 
-from mock import Mock
+from wheezy.core.db import (  # isort:skip
+    NullSession,
+    NullTPCSession,
+    SESSION_STATUS_ACTIVE,
+    Session,
+    TPCSession,
+)
 
 
 class SessionTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.core.db import Session
-
         self.mock_pool = Mock()
         self.session = Session(self.mock_pool)
 
@@ -32,7 +38,6 @@ class SessionTestCase(unittest.TestCase):
 
     def test_on_active(self):
         """Ensure on_active is called once."""
-        from wheezy.core.db import Session
 
         class MockSession(Session):
             pass
@@ -121,8 +126,6 @@ class SessionTestCase(unittest.TestCase):
 
 class TPCSessionTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.core.db import TPCSession
-
         self.mock_pool = Mock()
         self.session = TPCSession(self.mock_pool)
 
@@ -170,8 +173,6 @@ class TPCSessionTestCase(unittest.TestCase):
 
     def test_commit_prepare_error(self):
         """An error is raised while working with connection."""
-        from wheezy.core.db import SESSION_STATUS_ACTIVE
-
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -186,8 +187,6 @@ class TPCSessionTestCase(unittest.TestCase):
 
     def test_commit_error(self):
         """An error is raised while working with connection."""
-        from wheezy.core.db import SESSION_STATUS_ACTIVE
-
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -202,8 +201,6 @@ class TPCSessionTestCase(unittest.TestCase):
 
     def test_commit(self):
         """Enlisted sessions are exited."""
-        from wheezy.core.db import SESSION_STATUS_ACTIVE
-
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -234,8 +231,6 @@ class TPCSessionTestCase(unittest.TestCase):
 
     def test_exit_active(self):
         """There are active sessions enlisted."""
-        from wheezy.core.db import SESSION_STATUS_ACTIVE
-
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -250,10 +245,6 @@ class TPCSessionTestCase(unittest.TestCase):
         """There are active sessions enlisted and error is raised
         while working with connection.
         """
-        import warnings
-
-        from wheezy.core.db import SESSION_STATUS_ACTIVE
-
         self.session.__enter__()
         session = Mock()
         session.__enter__ = Mock()
@@ -270,8 +261,6 @@ class TPCSessionTestCase(unittest.TestCase):
 
 class NullSessionTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.core.db import NullSession
-
         self.session = NullSession()
 
     def test_enter(self):
@@ -314,8 +303,6 @@ class NullSessionTestCase(unittest.TestCase):
 
 class NullTPCSessionTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.core.db import NullTPCSession
-
         self.session = NullTPCSession()
 
     def test_enter(self):

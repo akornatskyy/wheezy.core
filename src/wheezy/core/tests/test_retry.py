@@ -2,8 +2,9 @@
 """
 
 import unittest
+from unittest.mock import Mock, call, patch
 
-from mock import Mock, call, patch
+from wheezy.core.retry import make_retry
 
 
 class RetryTestCase(unittest.TestCase):
@@ -19,8 +20,6 @@ class RetryTestCase(unittest.TestCase):
 
     def test_asserts(self):
         """Ensure arguments asserts"""
-        from wheezy.core.retry import make_retry
-
         # timeout > 0.0
         self.assertRaises(
             AssertionError, lambda: make_retry(timeout=0, start=0)
@@ -54,8 +53,6 @@ class RetryTestCase(unittest.TestCase):
         """Ensure first succeed attempt does not require calls to
         time and sleep.
         """
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10, start=1)
         assert retry(lambda: True)
         assert not self.mock_time.called
@@ -63,8 +60,6 @@ class RetryTestCase(unittest.TestCase):
 
     def test_default(self):
         """Ensure sleep sequence when defaults are in use."""
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10.0, start=0.5)
         self.mock_time.return_value = 0.0
         mock_acquire = Mock(side_effect=[False, False, False, False, True])
@@ -79,8 +74,6 @@ class RetryTestCase(unittest.TestCase):
 
     def test_slope(self):
         """Ensure sleep sequence when slope argument is used."""
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.return_value = 0.0
         mock_acquire = Mock(side_effect=[False, False, False, False, True])
@@ -95,8 +88,6 @@ class RetryTestCase(unittest.TestCase):
 
     def test_step(self):
         """Ensure sleep sequence when step argument is used."""
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10.0, start=0.5, end=2.0, step=0.5)
         self.mock_time.return_value = 0.0
         mock_acquire = Mock(side_effect=[False, False, False, False, True])
@@ -113,8 +104,6 @@ class RetryTestCase(unittest.TestCase):
         """Ensure the function returns immediately when there is no
         remaining time left.
         """
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.side_effect = [0.0, 10.25]
         assert not retry(lambda: False)
@@ -123,8 +112,6 @@ class RetryTestCase(unittest.TestCase):
 
     def test_remains_timeout(self):
         """Ensure the function sleeps for remaining time left."""
-        from wheezy.core.retry import make_retry
-
         retry = make_retry(timeout=10.0, start=0.5, end=2.5, slope=2.0)
         self.mock_time.side_effect = [0.0, 1.0, 9.25]
         assert not retry(lambda: False)

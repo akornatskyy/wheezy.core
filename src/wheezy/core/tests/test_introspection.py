@@ -3,6 +3,9 @@
 
 import unittest
 
+from wheezy.core.descriptors import attribute
+from wheezy.core.introspection import looks
+
 
 class LooksLike(object):
     def assert_warning(self, msg):
@@ -12,7 +15,6 @@ class LooksLike(object):
 
     def test_func(self):
         """Tests if there is any function missing."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self):
@@ -27,7 +29,6 @@ class LooksLike(object):
 
     def test_ignore_func(self):
         """Tests if function is ignored."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self):
@@ -41,7 +42,6 @@ class LooksLike(object):
 
     def test_redundant_ignore(self):
         """Tests function is set to be ignored but it is not found."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def bar(self):
@@ -56,7 +56,6 @@ class LooksLike(object):
 
     def test_args(self):
         """Tests if there any function args corresponds."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self, a, b=1):
@@ -73,7 +72,6 @@ class LooksLike(object):
 
     def test_ignore_args(self):
         """Tests if function args ignored."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self, a, b=1):
@@ -87,7 +85,6 @@ class LooksLike(object):
 
     def test_property(self):
         """Tests if there any @property corresponds."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             @property
@@ -103,7 +100,6 @@ class LooksLike(object):
 
     def test_inheritance(self):
         """Test inheritance use case."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self):
@@ -125,7 +121,6 @@ class LooksLike(object):
 
     def test_special_method(self):
         """Test if __?__ are checked"""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def __len__(self):
@@ -147,7 +142,6 @@ class LooksLike(object):
 
     def test_decorator(self):
         """Decorator argspec doesn't match."""
-        from wheezy.core.introspection import looks
 
         def bar():
             def decorate(m):
@@ -174,8 +168,6 @@ class LooksLike(object):
 
     def test_type(self):
         """Test if decorator types do not match."""
-        from wheezy.core.descriptors import attribute
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             @attribute
@@ -192,7 +184,6 @@ class LooksLike(object):
 
     def test_various(self):
         """Tests if there are no errors."""
-        from wheezy.core.introspection import looks
 
         class IFoo(object):
             def foo(self, a, b=1):

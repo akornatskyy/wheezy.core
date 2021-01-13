@@ -2,14 +2,14 @@
 """
 
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
+from wheezy.core import __version__, httpclient
+from wheezy.core.gzip import compress
 
 
 class HTTPClientTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.core import __version__, httpclient
-
         self.patcher = patch.object(httpclient, "HTTPConnection")
         self.mock_c_class = self.patcher.start()
         self.headers = [("date", "Sat, 12 Oct 2013 18:29:13 GMT")]
@@ -117,8 +117,6 @@ class HTTPClientTestCase(unittest.TestCase):
 
     def test_json(self):
         """json response."""
-        from wheezy.core import httpclient
-
         patcher = patch.object(httpclient, "json_loads")
         mock_json_loads = patcher.start()
         mock_json_loads.return_value = {}
@@ -132,8 +130,6 @@ class HTTPClientTestCase(unittest.TestCase):
 
     def test_gzip(self):
         """Ensure gzip decompression."""
-        from wheezy.core.gzip import compress
-
         self.headers.append(("content-encoding", "gzip"))
         self.mock_response.read.return_value = compress("test".encode("utf-8"))
         self.client.get("auth/token")
