@@ -159,7 +159,8 @@ class TPCSession(object):
                 except Exception:
                     warnings.warn(
                         "An error occured while rolling back "
-                        "two phase transaction."
+                        "two phase transaction.",
+                        stacklevel=2,
                     )
             s.__exit__(exc_type, exc_value, traceback)
 
