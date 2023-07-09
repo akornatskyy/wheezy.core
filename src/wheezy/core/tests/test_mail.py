@@ -99,15 +99,12 @@ class MailAddressTestCase(unittest.TestCase):
         assert "Someone <someone@dev.local>" == mail_address(
             "someone@dev.local", "Someone"
         )
-        assert (
-            "=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>"
-            == mail_address(
-                "x@dev.local",
-                b("\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442").decode(
-                    "unicode_escape"
-                ),
-            ).replace("utf8", "utf-8")
-        )
+        assert "=?utf-8?b?0L/RgNC40LLQtdGC?= <x@dev.local>" == mail_address(
+            "x@dev.local",
+            b("\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442").decode(
+                "unicode_escape"
+            ),
+        ).replace("utf8", "utf-8")
 
     def test_idna(self):
         """IDNA mail"""

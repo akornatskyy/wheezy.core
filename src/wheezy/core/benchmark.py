@@ -48,7 +48,7 @@ class Benchmark(object):
         )
         print("%s %s %s %s" % ("baseline", "throughput", "change", "target"))
         base = None
-        for (name, result) in self.run():
+        for name, result in self.run():
             if not result:
                 print("     - %      - rps    - % " + name)
                 continue
