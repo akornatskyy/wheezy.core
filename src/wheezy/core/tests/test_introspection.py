@@ -11,7 +11,7 @@ class LooksLike(object):
     def assert_warning(self, msg):
         print([str(w.message) for w in self.w])
         assert len(self.w) == 1
-        self.assertEquals(msg, str(self.w[-1].message))
+        self.assertEqual(msg, str(self.w[-1].message))
 
     def test_func(self):
         """Tests if there is any function missing."""
