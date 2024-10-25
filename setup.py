@@ -40,7 +40,7 @@ VERSION = (
 setup(
     name="wheezy.core",
     version=VERSION,
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     description="A lightweight core library",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -54,7 +54,6 @@ setup(
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
