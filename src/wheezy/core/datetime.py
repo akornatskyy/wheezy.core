@@ -3,21 +3,9 @@
 
 from email.utils import parsedate
 from time import localtime, mktime
+from datetime import datetime, timedelta, tzinfo, timezone
 
-from wheezy.core.introspection import import_name
-
-# The lines below are equivalent to:
-# from datetime import timedelta
-# However it is not used due module name confict
-# since the use of relative imports by default.
-# absolute imports are available since python 2.5,
-# however we want keep compatibility with python 2.4
-datetime = import_name("datetime.datetime")
-time = import_name("datetime.time")
-timedelta = import_name("datetime.timedelta")
-tzinfo = import_name("datetime.tzinfo")
-
-
+UTC = timezone.utc
 ZERO = timedelta(0)
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 MONTHS = (
@@ -45,13 +33,13 @@ def format_http_datetime(stamp):
     'Mon, 19 Sep 2011 10:45:30 GMT'
 
     if timezone is not set in datetime instance the ``stamp``
-    is assumed to be in UTC (``datetime.utcnow``).
+    is assumed to be in UTC.
 
     >>> now = datetime(2011, 9, 19, 10, 45, 30, 0)
     >>> format_http_datetime(now)
     'Mon, 19 Sep 2011 10:45:30 GMT'
 
-    >>> now = datetime.utcnow()
+    >>> now = datetime.now(UTC)
     >>> assert format_http_datetime(now)
 
     if ``stamp`` is a string just return it
@@ -122,6 +110,7 @@ def format_iso_time(stamp):
 
     see http://en.wikipedia.org/wiki/ISO_8601.
 
+    >>> from datetime import time
     >>> class EET(tzinfo):
     ...     def utcoffset(self, dt):
     ...         return timedelta(minutes=120)
