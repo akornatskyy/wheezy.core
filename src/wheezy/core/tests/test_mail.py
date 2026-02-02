@@ -28,9 +28,16 @@ try:
     # for +: 'NoneType' and 'int'
     # https://foss.heptapod.net/pypy/pypy/-/issues/3279
     sys.pypy_version_info
-    PYPY = True  # pragma: nocover
-except AttributeError:  # pragma: nocover
+    PYPY = True
+except AttributeError:
     PYPY = False
+
+try:
+    import Cython  # noqa
+
+    CYTHON = True
+except ImportError:
+    CYTHON = False
 
 
 class MiscTestCase(unittest.TestCase):
@@ -52,6 +59,7 @@ class MiscTestCase(unittest.TestCase):
         )
         assert ["a", "b", "c", "d"] == sorted(m.recipients())
 
+    @unittest.skipIf(CYTHON, "mock_open")
     def test_attachment_from_file(self):
         """Ensure attachment can be created from file."""
         self.mock_open.return_value.read.return_value = "hello"
@@ -67,6 +75,7 @@ class MiscTestCase(unittest.TestCase):
         a = Alternative("content")
         assert "text/html" == a.content_type
 
+    @unittest.skipIf(CYTHON, "mock_open")
     @patch("wheezy.core.mail.guess_type")
     def test_related_from_file(self, mock_guess_type):
         """Ensure related can be created from file."""
@@ -80,6 +89,7 @@ class MiscTestCase(unittest.TestCase):
         assert "text/css" == r.content_type
         assert "a {}" == r.content
 
+    @unittest.skipIf(CYTHON, "mock_open")
     @patch("wheezy.core.mail.guess_type")
     def test_related_from_file_unknown_type(self, mock_guess_type):
         """Ensure default content type if its unknown."""
