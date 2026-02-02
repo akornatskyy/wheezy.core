@@ -1,6 +1,3 @@
-"""
-"""
-
 import unittest
 
 from wheezy.core.gzip import compress, decompress

@@ -1,6 +1,3 @@
-""" ``test_json`` module.
-"""
-
 import unittest
 from decimal import Decimal
 

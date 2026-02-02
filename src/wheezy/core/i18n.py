@@ -1,6 +1,3 @@
-""" ``i18n`` module.
-"""
-
 import gettext
 import os
 import os.path

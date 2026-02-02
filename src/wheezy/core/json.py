@@ -1,6 +1,3 @@
-""" ``json`` module.
-"""
-
 from decimal import Decimal
 from json import (
     JSONEncoder as SimpleJSONEncoder,

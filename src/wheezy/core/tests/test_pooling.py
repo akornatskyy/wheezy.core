@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.pooling``.
-"""
-
 import unittest
 from unittest.mock import Mock
 

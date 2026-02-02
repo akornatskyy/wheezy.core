@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.db``.
-"""
-
 import unittest
 import warnings
 from unittest.mock import Mock

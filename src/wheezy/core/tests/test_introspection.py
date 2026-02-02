@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.introspection``.
-"""
-
 import unittest
 
 from wheezy.core.descriptors import attribute

@@ -1,6 +1,3 @@
-""" ``session`` module.
-"""
-
 import warnings
 
 from wheezy.core.introspection import import_name

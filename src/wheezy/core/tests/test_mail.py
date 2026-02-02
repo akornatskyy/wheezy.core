@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.mail``.
-"""
-
 import unittest
 from unittest.mock import ANY, call, patch
 

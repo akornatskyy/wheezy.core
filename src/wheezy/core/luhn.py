@@ -1,7 +1,3 @@
-""" ``luhn`` module.
-"""
-
-
 def luhn_checksum(n):
     """Calculates checksum based on Luhn algorithm, also known as
     the "modulus 10" algorithm.

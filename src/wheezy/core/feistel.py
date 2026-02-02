@@ -1,7 +1,3 @@
-""" ``feistel`` module.
-"""
-
-
 def make_feistel_number(f):
     """Generate pseudo random consistent reversal number
     per Feistel cypher algorithm.

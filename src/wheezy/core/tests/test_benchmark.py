@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.benchmark``.
-"""
-
 import unittest
 from unittest.mock import Mock, PropertyMock
 

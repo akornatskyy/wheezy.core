@@ -1,9 +1,6 @@
-""" ``datetime`` module.
-"""
-
+from datetime import datetime, timedelta, timezone, tzinfo
 from email.utils import parsedate
 from time import localtime, mktime
-from datetime import datetime, timedelta, tzinfo, timezone
 
 UTC = timezone.utc
 ZERO = timedelta(0)

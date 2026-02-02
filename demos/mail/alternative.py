@@ -1,6 +1,3 @@
-"""
-"""
-
 import os.path
 
 from wheezy.core.mail import Alternative, MailMessage, Related, SMTPClient

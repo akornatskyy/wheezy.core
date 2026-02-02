@@ -1,6 +1,3 @@
-""" ``mail`` module.
-"""
-
 from mimetypes import guess_type
 from os.path import split as path_split
 from smtplib import SMTP

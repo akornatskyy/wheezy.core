@@ -1,6 +1,3 @@
-""" ``retry`` module.
-"""
-
 from time import sleep, time
 
 

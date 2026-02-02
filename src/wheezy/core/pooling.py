@@ -1,6 +1,3 @@
-""" ``pooling`` module.
-"""
-
 from queue import LifoQueue, Queue
 
 

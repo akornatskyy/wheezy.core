@@ -1,13 +1,9 @@
-""" The ``collections`` module  contains types and functions that define
-    various collections and algorithms.
-"""
-
 import struct
 import zlib
 from collections import defaultdict
 from operator import itemgetter
 
-GZIP_HEADER = "\x1F\x8B\x08\x00\x00\x00\x00\x00\x02\xFF".encode("latin1")
+GZIP_HEADER = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x02\xff".encode("latin1")
 MAX_INT = int("FFFFFFFF", 16)
 
 

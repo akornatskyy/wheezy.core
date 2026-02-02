@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.core.httpclient import HTTPClient
 
 client = HTTPClient("http://buildbot.buildbot.net/json/")

@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.core.mail import MailMessage, SMTPClient
 
 mail = MailMessage(

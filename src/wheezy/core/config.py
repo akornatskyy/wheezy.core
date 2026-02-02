@@ -1,6 +1,3 @@
-""" ``config`` module.
-"""
-
 DEBUG = False
 
 

@@ -1,6 +1,3 @@
-""" ``uuid`` module.
-"""
-
 from base64 import b64decode, b64encode
 from binascii import Error
 from uuid import UUID

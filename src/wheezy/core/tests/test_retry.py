@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.core.retry``.
-"""
-
 import unittest
 from unittest.mock import Mock, call, patch
 

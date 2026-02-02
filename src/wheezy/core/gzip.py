@@ -1,6 +1,3 @@
-""" One-shot compression and decompression.
-"""
-
 from gzip import GzipFile
 from io import BytesIO
 

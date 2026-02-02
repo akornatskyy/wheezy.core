@@ -1,6 +1,6 @@
 # wheezy.core
 
-[![Build Status](https://travis-ci.org/akornatskyy/wheezy.core.svg?branch=master)](https://travis-ci.org/akornatskyy/wheezy.core)
+[![tests](https://github.com/akornatskyy/wheezy.core/actions/workflows/tests.yml/badge.svg)](https://github.com/akornatskyy/wheezy.core/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/akornatskyy/wheezy.core/badge.svg?branch=master)](https://coveralls.io/github/akornatskyy/wheezy.core?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/wheezycore/badge/?version=latest)](https://wheezycore.readthedocs.io/en/latest/?badge=latest)
 [![pypi version](https://badge.fury.io/py/wheezy.core.svg)](https://badge.fury.io/py/wheezy.core)

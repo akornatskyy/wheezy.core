@@ -1,6 +1,3 @@
-""" ``url`` module
-"""
-
 from urllib.parse import urlunsplit
 
 

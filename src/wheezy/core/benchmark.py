@@ -1,6 +1,3 @@
-""" ``bechmark`` module.
-"""
-
 from timeit import default_timer  # noqa
 from timeit import timeit
 
