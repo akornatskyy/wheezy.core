@@ -138,8 +138,14 @@ def parse_http_datetime(stamp):
 
     >>> parse_http_datetime('Mon, 19 Sep 2011 10:45:30 GMT')
     datetime.datetime(2011, 9, 19, 10, 45, 30)
+
+    >>> parse_http_datetime('')
     """
-    return datetime.fromtimestamp(mktime(parsedate(stamp)))
+    t = parsedate(stamp)
+    if isinstance(t, tuple):
+        year, month, day, hour, min, second, *_ = t
+        return datetime(year, month, day, hour, min, second)
+    return None
 
 
 def total_seconds(delta):
